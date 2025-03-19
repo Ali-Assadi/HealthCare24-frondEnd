@@ -1,0 +1,20 @@
+.hero-section {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+  }
+  .hero-image {
+    height: 70vh;
+    margin-top: 5vh;
+    width: 100%;
+    object-fit: cover;
+  }
+  .product-card {
+    transition: transform 0.3s;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .custom-section, .footer-section {
+    background: #f8f9fa;
+  }
