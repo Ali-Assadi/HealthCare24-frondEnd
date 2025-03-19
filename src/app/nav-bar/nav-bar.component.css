@@ -1,0 +1,26 @@
+body {
+    background-color: #EDF4F2;
+}
+.navbar {
+    background-color: #31473A;
+}
+.nav-link {
+    color: #EDF4F2;
+    font-weight: bold;
+}
+.btn-custom {
+    background-color: #EDF4F2;
+    color: #31473A;
+    border: none;
+}
+.btn-custom:hover {
+    background-color: #31473A;
+    color: #EDF4F2;
+}
+.navbar-brand {
+    flex-grow: 1;
+    text-align: center;
+}
+.icon {
+    color: #EDF4F2;
+}

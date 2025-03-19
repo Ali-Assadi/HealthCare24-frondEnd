@@ -20,12 +20,7 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": ["src/assets"],
             "styles": [
               "src/styles.css"
             ],
@@ -78,12 +73,7 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": ["src/assets"],
             "styles": [
               "src/styles.css"
             ],
@@ -92,5 +82,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "e6c15fd2-a327-4451-b35f-4bcdb211674e"
   }
 }
