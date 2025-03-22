@@ -1,32 +1,70 @@
 body {
+    margin-top: 5.5dvh;
     font-family: Arial, sans-serif;
-    background-color: #eef4f5;
-    padding: 20px;
+    background-color: #f0f8ff; /* Soft light blue */
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
+.head {
+    position: relative;
 }
-h1 {
+
+.head-img {
+    height: 428px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.head-text {
+    background: rgba(255, 255, 255, 0.847);
+    color: black;
+    margin-left: 3dvh;
+    padding: 1dvh 1dvw;
+    position: absolute;
+    bottom: calc(10dvh - 13%);
+    text-align: center;
+}
+
+.head-text-h1 {
+    margin-left: 1dvh;
+    font-weight: bold;
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    background-color: #e4f4fb; /* Light blue */
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+/* Section Titles */
+.sections h1,
+.section-title {
+    font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
     border-bottom: 3px solid #ffc107;
     display: inline-block;
-    margin-left: -30%;
-    padding-bottom: 5px; 
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.sections h1 {
+    margin-left: 0;
 }
 
 h2 {
-    font-size: 22px;
+    font-size: large;
     font-weight: bold;
     text-transform: uppercase;
-    border-bottom: 3px solid #ffc107;
     display: inline-block;
-    margin-left: -25%;
+    margin-left: 0;
     padding-bottom: 5px;
 }
 
+/* Grid Layouts */
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -52,16 +90,7 @@ h2 {
     margin-top: 10px;
 }
 
-/* Updated Gardening Section */
-.section-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-bottom: 4px solid #d1b000;
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
+/* Gardening Section */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -89,28 +118,12 @@ h2 {
     padding: 15px;
 }
 
-.container {
-    max-width: 1100px;
-    margin: auto;
-}
-
 /* Shopping & Style Section */
 .shopping-container {
-    background-color: #e4eff2; /* Light blue-gray */
+    background-color: #e4f4fb; /* Match light blue tone */
     padding: 30px;
     border-radius: 10px;
     margin-top: 40px;
-    margin-left: -5%;
-}
-
-/* Section Title */
-.section-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-bottom: 4px solid #d1b000;
-    display: inline-block;
-    padding-bottom: 5px;
 }
 
 /* Subtitle */
@@ -121,14 +134,13 @@ h2 {
     font-weight: normal;
 }
 
-/* Shopping Grid (2-column layout) */
+/* Shopping Grid */
 .shopping-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 50px;
 }
 
-/* Shopping Cards */
 .shopping-card {
     background: white;
     border-radius: 10px;
@@ -142,17 +154,15 @@ h2 {
     padding: 10px;
 }
 
-/* Image Styling */
 .shopping-card img {
-    width: 150px; /* Smaller image */
-    height: 140x;
+    width: 150px;
+    height: 140px;
     object-fit: cover;
     border-radius: 5px;
     background-color: #dff3f5;
     padding: 10px;
 }
 
-/* Sale Badge */
 .sale-badge {
     position: absolute;
     top: 10px;
@@ -165,7 +175,6 @@ h2 {
     border-radius: 5px;
 }
 
-/* Text Styling */
 .shopping-card p {
     font-size: 18px;
     font-weight: bold;
@@ -186,5 +195,13 @@ h2 {
 
     .shopping-card p {
         max-width: 100%;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
     }
 }
