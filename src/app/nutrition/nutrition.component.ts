@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-nutrition',
-  imports: [],
   templateUrl: './nutrition.component.html',
-  styleUrl: './nutrition.component.css'
+  styleUrls: ['./nutrition.component.css']
 })
 export class NutritionComponent {
+  constructor(private viewportScroller: ViewportScroller) {}
 
+  // Method to scroll to a specific section
+  scrollTo(sectionId: string): void {
+    this.viewportScroller.scrollToAnchor(sectionId);
+  }
 }
