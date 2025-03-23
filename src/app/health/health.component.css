@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
+    background: #d8f3dc;
     color: #333;
 }
 
@@ -152,4 +152,19 @@ body {
     .news-item p {
         font-size: 13px;
     }
+}
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fade-In Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
 }
