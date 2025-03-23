@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top" [ngStyle]="{'background-color': getNavbarColor()}">
         <div class="container">
             <!-- Navbar Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -18,10 +18,18 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a routerLink="/health" routerLinkActive="active" class="nav-link">Health</a></li>
-                    <li class="nav-item"><a routerLink="/nutrition" routerLinkActive="active" class="nav-link">Nutrition</a></li>
-                    <li class="nav-item"><a routerLink="/life" routerLinkActive="active" class="nav-link">Life</a></li>
-                    <li class="nav-item"><a routerLink="/fitness" routerLinkActive="active" class="nav-link">Fitness</a></li>
+                    <li class="nav-item">
+                        <a routerLink="/health" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Health</a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/nutrition" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Nutrition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/life" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Life</a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/fitness" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Fitness</a>
+                    </li>
                 </ul>
             </div>
     
@@ -34,6 +42,6 @@
                 </a>
             </div>
         </div>
-    </nav>        
+    </nav>      
 </body>
 </html>
