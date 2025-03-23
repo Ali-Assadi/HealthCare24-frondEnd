@@ -14,7 +14,7 @@ body {
 }
 
 .head-text {
-    background: white;
+    background: #fff8f0d2;
     color: black;
     margin-left: 3dvh;
     padding: 1dvh 1dvw;
@@ -35,7 +35,7 @@ body {
 }
 
 .text-container {
-    background: #EAF2F2;
+    background: #FFF8F0; /* light peach */
     padding: 40px;
     flex: 1;
     display: flex;
@@ -45,7 +45,7 @@ body {
 }
 
 .text-container h3 {
-    font-size: 14px;
+    color: #FF6347;
     font-weight: bold;
     margin: 0;
 }
@@ -53,11 +53,12 @@ body {
 .underline {
     width: 50px;
     height: 3px;
-    background: #F4C542;
+    background: #FF6347; /* tomato red */
     margin-top: 5px;
 }
 
 .text-container h2 {
+    color: #333;
     font-size: 24px;
     font-weight: bold;
     margin-top: 20px;
@@ -160,4 +161,18 @@ body {
 .healthy-recipes img{
     object-fit: contain;
     height: 150px;
+}
+.diets, .healthy-recipes {
+    background: #FFF8F0;
+}
+
+/* Card elements */
+.diet-item, .recipe-item {
+    background: #FFFFFF;
+    border: 2px solid #FF6347;
+}
+.diet-item:hover, .recipe-item:hover {
+    background-color: #FFF0E0;
+    border-color: #ffa600;
+    transition: 0.3s ease;
 }
