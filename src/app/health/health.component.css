@@ -67,6 +67,7 @@ body {
 }
 
 .news-item {
+    border: 2px solid #52b788;
     width: 40dvh;
     background: #ffffff;
     border-radius: 12px;
@@ -112,6 +113,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     height: 350px;
+    border: 2px solid #52b788;
 }
 
 .card:hover {
