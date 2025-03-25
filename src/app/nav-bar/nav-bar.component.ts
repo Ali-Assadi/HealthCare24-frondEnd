@@ -29,6 +29,8 @@ export class NavBarComponent {
         return '#223182'; // Life color
       case '/health':
         return '#4A8F63'; // Health color
+      case '/fitness':
+        return 'hsl(247, 49%, 38%)'; // Health color
       default:
         return '#4A8F63'; // Default color
     }

@@ -21,7 +21,7 @@ body {
     margin-left: 3dvh;
     padding: 1dvh 1dvw;
     position: absolute;
-    bottom: 10dvh;
+    bottom: 2dvh;
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);

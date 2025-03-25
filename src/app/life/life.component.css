@@ -28,12 +28,13 @@ html {
 }
 
 .head-text {
-    background: rgba(255, 255, 255, 0.847);
+    background: rgba(255, 255, 255, 0.688);
     color: black;
-    margin-left: 3dvh;
+    margin-left: 3dvw;
     padding: 1dvh 1dvw;
     position: absolute;
-    bottom: calc(10dvh - 13%);
+    bottom: 1.5dvh;
+    border-radius: 6px;
     text-align: center;
 }
 
@@ -89,6 +90,7 @@ h2 {
     background: white;
     padding: 15px;
     border-radius: 10px;
+    width: 25dvw;
     text-align: center;
     border: 2px solid #223182;
 }
