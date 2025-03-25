@@ -10,9 +10,7 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 })
 export class NavBarComponent {
   currentRoute: string = '';
-
   constructor(private router: Router) {
-    // Listen for route changes
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
@@ -20,23 +18,23 @@ export class NavBarComponent {
     });
   }
 
-  // Method to determine navbar color based on the current route
+  // navBar Color
   getNavbarColor(): string {
     switch (this.currentRoute) {
       case '/nutrition':
-        return '#A63D2E'; // Nutrition color
+        return '#A63D2E';
       case '/life':
-        return '#223182'; // Life color
+        return '#223182';
       case '/health':
-        return '#4A8F63'; // Health color
+        return '#4A8F63';
       case '/fitness':
-        return 'hsl(247, 49%, 38%)'; // Health color
+        return 'hsl(247, 49%, 38%)';
       default:
-        return '#4A8F63'; // Default color
+        return '';
     }
   }
 
-  // Method to collapse the navbar menu
+  // navBar Collapse
   collapseMenu(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const navbarCollapse = document.getElementById('navbarNav');

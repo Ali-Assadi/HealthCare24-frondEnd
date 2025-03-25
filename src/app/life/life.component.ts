@@ -1,12 +1,17 @@
 import { Component, HostListener, ElementRef, Renderer2, QueryList, ViewChildren } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-life',
   templateUrl: './life.component.html',
-  styleUrls: ['./life.component.css']
+  styleUrls: ['./life.component.css'],
+  imports: [FooterComponent]
 })
 export class LifeComponent {
+
+
+  //Scroll Method
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
   constructor(
     private viewportScroller: ViewportScroller,
