@@ -8,6 +8,7 @@ import { LifeComponent } from './life/life.component';
 import { NutritionComponent } from './nutrition/nutrition.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: 'sign-in', component: SignInComponent },
     { path: 'subscribe', component: SubscribeComponent },
     { path: 'cart', component: CartComponent },
+    { path: 'signup', component: SignUpComponent },
     { path: '**', component: NotFoundComponent }
 ];

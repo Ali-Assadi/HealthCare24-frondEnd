@@ -17,17 +17,17 @@ body {
     text-align: center;
 }
 
-.sign-in-form h2 {
+.sign-up-form h2 {
     margin-bottom: 20px;
 }
 
-.sign-in-form label {
+.sign-up-form label {
     display: block;
     text-align: left;
     margin-top: 10px;
 }
 
-.sign-in-form input {
+.sign-up-form input {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -35,10 +35,10 @@ body {
     border-radius: 5px;
 }
 
-.sign-in-form button {
+.sign-up-form button {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
@@ -46,16 +46,16 @@ body {
     cursor: pointer;
 }
 
-.sign-in-form button:hover {
-    background-color: #0056b3;
+.sign-up-form button:hover {
+    background-color: #218838;
 }
 
-.signup-link {
+.signin-link {
     margin-top: 15px;
     font-size: 14px;
 }
 
-.signup-link a {
+.signin-link a {
     color: #007BFF;
     text-decoration: none;
-} 
+}

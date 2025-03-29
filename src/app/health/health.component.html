@@ -26,19 +26,19 @@
             <div class="underline"></div>
             <div class="flex-center">
                 <div class="news-section">
-                    <article class="news-item">
+                    <article class="news-item" routerLink="['/healthDetails']" queryParams="{ section: 'article-alzheimers' }">
                         <img src="assets/health/alzheimer.webp" alt="News Image">
                         <h3>Is Alzheimer’s Hereditary?</h3>
                         <p>Alzheimer’s disease has a genetic component, but it’s not purely hereditary...</p>
                     </article>
-                    <article class="news-item">
+                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'">
                         <img src="assets/health/Why Women Live Longer Than Men.jpg" alt="News Image">
                         <h3>Scientists: Why Women Live Longer Than Men</h3>
                         <p>Studies suggest biological and lifestyle factors contribute to women's longer lifespan...</p>
                     </article>
 
 
-                    <article class="news-item">
+                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'">
                         <img src="assets/health/Cholesterol Changes Linked to Higher Dementia Risk.jpg"
                             alt="News Image">
                         <h3>Cholesterol Changes Linked to Higher Dementia Risk</h3>
@@ -46,7 +46,7 @@
                             decline and dementia over time.</p>
                     </article>
 
-                    <article class="news-item fade-in" #fadeElement appFadeIn>
+                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'" #fadeElement appFadeIn>
                         <img src="assets/health/Memory and Memory Loss, Explained.jpg" alt="News Image">
                         <h3>Memory and Memory Loss, Explained</h3>
                         <p>Memory loss can be a normal part of aging, but certain factors like stress, diet, and
