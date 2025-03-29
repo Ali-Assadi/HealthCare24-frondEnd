@@ -9,17 +9,19 @@ import { NutritionComponent } from './nutrition/nutrition.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { HealthDetailsComponent } from './health-details/health-details.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'health', component: HealthComponent },
+    { path: 'health-details', component: HealthDetailsComponent },
     { path: 'fitness', component: FitnessComponent },
     { path: 'life', component: LifeComponent },
     { path: 'nutrition', component: NutritionComponent },
     { path: 'sign-in', component: SignInComponent },
     { path: 'subscribe', component: SubscribeComponent },
     { path: 'cart', component: CartComponent },
-    { path: 'signup', component: SignUpComponent },
+    { path: 'sign-up', component: SignUpComponent },
     { path: '**', component: NotFoundComponent }
 ];

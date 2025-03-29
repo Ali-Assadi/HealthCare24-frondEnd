@@ -26,46 +26,42 @@
             <div class="underline"></div>
             <div class="flex-center">
                 <div class="news-section">
-                    <article class="news-item" routerLink="['/healthDetails']" queryParams="{ section: 'article-alzheimers' }">
+                    <article class="news-item" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-alzheimers' }">
                         <img src="assets/health/alzheimer.webp" alt="News Image">
                         <h3>Is Alzheimer’s Hereditary?</h3>
                         <p>Alzheimer’s disease has a genetic component, but it’s not purely hereditary...</p>
-                    </article>
-                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'">
+                      </article>
+                      
+                      <article class="news-item" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-women-live-longer' }">
                         <img src="assets/health/Why Women Live Longer Than Men.jpg" alt="News Image">
                         <h3>Scientists: Why Women Live Longer Than Men</h3>
                         <p>Studies suggest biological and lifestyle factors contribute to women's longer lifespan...</p>
-                    </article>
-
-
-                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'">
-                        <img src="assets/health/Cholesterol Changes Linked to Higher Dementia Risk.jpg"
-                            alt="News Image">
+                      </article>
+                      
+                      <article class="news-item" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-cholesterol-dementia' }">
+                        <img src="assets/health/Cholesterol Changes Linked to Higher Dementia Risk.jpg" alt="News Image">
                         <h3>Cholesterol Changes Linked to Higher Dementia Risk</h3>
-                        <p>New research finds that fluctuating cholesterol levels may increase the risk of cognitive
-                            decline and dementia over time.</p>
-                    </article>
-
-                    <article class="news-item" routerLink="['/healthDetails']" fragment="'article-alzheimers'" #fadeElement appFadeIn>
+                        <p>New research finds that fluctuating cholesterol levels may increase the risk of cognitive decline and dementia over time.</p>
+                      </article>
+                      
+                      <article class="news-item fade-in" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-memory-loss' }" #fadeElement appFadeIn>
                         <img src="assets/health/Memory and Memory Loss, Explained.jpg" alt="News Image">
                         <h3>Memory and Memory Loss, Explained</h3>
-                        <p>Memory loss can be a normal part of aging, but certain factors like stress, diet, and
-                            exercise influence cognitive function.</p>
-                    </article>
-
-                    <article class="news-item fade-in" #fadeElement appFadeIn>
+                        <p>Memory loss can be a normal part of aging, but certain factors like stress, diet, and exercise influence cognitive function.</p>
+                      </article>
+                      
+                      <article class="news-item fade-in" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-blood-test' }" #fadeElement appFadeIn>
                         <img src="assets/health/bloodTest.jpg" alt="News Image">
                         <h3>This Blood Test for Alzheimer’s Is 90% Accurate</h3>
-                        <p>Scientists have developed a blood test that detects early Alzheimer’s with high accuracy,
-                            offering hope for early diagnosis.</p>
-                    </article>
-
-                    <article class="news-item fade-in" #fadeElement appFadeIn>
+                        <p>Scientists have developed a blood test that detects early Alzheimer’s with high accuracy, offering hope for early diagnosis.</p>
+                      </article>
+                      
+                      <article class="news-item fade-in" [routerLink]="['/health-details']" [queryParams]="{ section: 'article-ozempic' }" #fadeElement appFadeIn>
                         <img src="assets/health/Ozempic May Lower Your Risk of Cognitive Decline.jpg" alt="News Image">
                         <h3>Ozempic May Lower Your Risk of Cognitive Decline</h3>
-                        <p>New studies show that diabetes medications like Ozempic might help protect brain health and
-                            reduce the risk of dementia.</p>
-                    </article>
+                        <p>New studies show that diabetes medications like Ozempic might help protect brain health and reduce the risk of dementia.</p>
+                      </article>
+                      
                 </div>
             </div>
         </div>

@@ -30,7 +30,7 @@ export class NavBarComponent {
       case '/fitness':
         return 'hsl(247, 49%, 38%)';
       default:
-        return '';
+        return '#000';
     }
   }
 

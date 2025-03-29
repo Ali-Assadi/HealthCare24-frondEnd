@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { FooterComponent } from "../footer/footer.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-health',
-  imports: [FooterComponent],
+  imports: [FooterComponent , RouterLink],
   templateUrl: './health.component.html',
   styleUrls: ['./health.component.css'],
 })
