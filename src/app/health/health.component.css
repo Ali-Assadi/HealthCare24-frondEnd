@@ -8,6 +8,16 @@ body {
 .head {
     position: relative;
 }
+article {
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: transform 0.3s ease-in-out;
+}
+
+article:hover {
+    cursor: ; /* Changes cursor to crosshair on hover */
+    transform: scale(1.05); /* Slightly enlarges the article */
+}
+
 
 .head-img {
     height: 45dvh;

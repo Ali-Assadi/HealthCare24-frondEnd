@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-brain-health-5',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './brain-health-5.component.html',
   styleUrl: './brain-health-5.component.css'
 })
