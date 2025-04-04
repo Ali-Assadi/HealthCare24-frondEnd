@@ -29,8 +29,10 @@ export class NavBarComponent {
         return '#4A8F63';
       case '/fitness':
         return 'hsl(247, 49%, 38%)';
+      case '/subscribe':
+        return '';
       default:
-        return '#000';
+        return '#2c3e50';
     }
   }
 

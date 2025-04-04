@@ -1,20 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f2f4f3;
+  color: #31473A;
+}
+
 .hero-section {
-    height: 90vh;
-    display: flex;
-    align-items: center;
-  }
-  .hero-image {
-    height: 70vh;
-    margin-top: 5vh;
-    width: 100%;
-    object-fit: cover;
-  }
-  .product-card {
-    transition: transform 0.3s;
-  }
-  .product-card:hover {
-    transform: scale(1.05);
-  }
-  .custom-section, .footer-section {
-    background: #f8f9fa;
-  }
+  height: 90vh;
+  background: linear-gradient(to right, #d9e4dd, #edf4f2);
+  display: flex;
+  align-items: center;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.hero-image {
+  height: 70vh;
+  margin-top: 5vh;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  background: #F4F5F5;
+}
+
+.text-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.text-content .highlight {
+  color: #145a16;
+}
+
+.text-content .lead {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero-btn {
+  background-color: #31473A;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #1f3028;
+  transform: translateY(-2px);
+}
+
+.custom-section {
+  background: #ffffff;
+  padding: 60px 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  color: #777;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.feature-card {
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #f7f9f8;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background-color: #edf4f2;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #31473A;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}

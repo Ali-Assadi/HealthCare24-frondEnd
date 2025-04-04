@@ -21,33 +21,47 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a routerLink="/life" (click)="collapseMenu()" routerLinkActive="active"
-                            class="nav-link">Life</a>
+                        <a routerLink="/home" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/health" (click)="collapseMenu()" routerLinkActive="active"
-                            class="nav-link">Health</a>
+                        <a routerLink="/health" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Health</a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/nutrition" (click)="collapseMenu()" routerLinkActive="active"
-                            class="nav-link">Nutrition</a>
+                        <a routerLink="/nutrition" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Nutrition</a>
                     </li>
-
                     <li class="nav-item">
-                        <a routerLink="/fitness" (click)="collapseMenu()" routerLinkActive="active"
-                            class="nav-link">Fitness</a>
+                        <a routerLink="/fitness" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Fitness</a>
                     </li>
                 </ul>
+                
             </div>
 
             <!-- Right-Side Buttons & Icons -->
             <div class="d-flex align-items-center">
-                <button routerLink="/subscribe" class="btn btn-custom me-2">Subscribe</button>
-                <button routerLink="/sign-in" class="btn btn-custom me-2">Sign In</button>
-                <a routerLink="/cart" class="nav-link">
+                <button 
+                    routerLink="/subscribe" 
+                    routerLinkActive="active" 
+                    class="btn btn-custom me-2">
+                    Subscribe
+                </button>
+            
+                <button 
+                    routerLink="/sign-in" 
+                    routerLinkActive="active" 
+                    class="btn btn-custom me-2">
+                    Sign In
+                </button>
+            
+                <a 
+                    routerLink="/cart" 
+                    routerLinkActive="active" 
+                    class="nav-link icon-link">
                     <i class="fas fa-shopping-cart icon"></i>
                 </a>
             </div>
+            
         </div>
     </nav>
 </body>

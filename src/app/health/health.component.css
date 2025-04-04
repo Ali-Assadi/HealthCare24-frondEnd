@@ -14,7 +14,7 @@ article {
 }
 
 article:hover {
-    cursor: ; /* Changes cursor to crosshair on hover */
+    cursor: pointer; /* Changes cursor to crosshair on hover */
     transform: scale(1.05); /* Slightly enlarges the article */
 }
 

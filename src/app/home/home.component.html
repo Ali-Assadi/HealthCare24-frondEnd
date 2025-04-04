@@ -4,41 +4,48 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 text-content">
-          <h1>Welcome to Our Store</h1>
-          <p>Discover the best products at unbeatable prices.</p>
+          <h1>Welcome to <span class="highlight">Our Store</span></h1>
+          <p class="lead">Discover the best products at unbeatable prices.</p>
+          <button class="hero-btn">Shop Now</button>
         </div>
         <div class="col-md-6">
-          <img src="assets/home/mainPicture.jpg" class="img-fluid hero-image" alt="Hero Image">
+          <img src="assets/home/home-bg (1).png" style="object-fit: contain;" class="img-fluid hero-image" alt="Hero Image">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 2: Items for Sale -->
-  <!-- <section class="products-section py-5">
-      <div class="container">
-        <h2 class="text-center mb-4">Our Products</h2>
-        <div class="row">
-          <div class="col-md-4" *ngFor="let item of items">
-            <div class="card product-card">
-              <img src="{{ item.image }}" class="card-img-top" alt="{{ item.name }}">
-              <div class="card-body">
-                <h5 class="card-title">{{ item.name }}</h5>
-                <p class="card-text">{{ item.price | currency }}</p>
-                <button class="btn btn-primary">Buy Now</button>
-              </div>
-            </div>
+  <!-- Section 2: Featured Area -->
+  <section class="custom-section py-5 text-center">
+    <div class="container">
+      <h2 class="section-title">What We Offer</h2>
+      <p class="section-subtitle">Handpicked collections just for you.</p>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-shipping-fast feature-icon"></i>
+            <h4>Fast Delivery</h4>
+            <p>Lightning-speed shipping right to your doorstep.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-tags feature-icon"></i>
+            <h4>Great Deals</h4>
+            <p>Unbeatable prices every day of the week.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-headset feature-icon"></i>
+            <h4>24/7 Support</h4>
+            <p>Always here to help with anything you need.</p>
           </div>
         </div>
       </div>
-    </section> -->
-
-  <!-- Section 3: Placeholder -->
-  <section class="custom-section py-5 text-center">
-    <h2>Custom Section</h2>
-    <p>Add any additional content here.</p>
+    </div>
   </section>
 
-  <!-- Section 4: Footer -->
+  <!-- Section 3: Footer -->
   <app-footer></app-footer>
 </div>

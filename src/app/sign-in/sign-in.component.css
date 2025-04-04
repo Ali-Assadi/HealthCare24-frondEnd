@@ -1,61 +1,88 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #e0e0e0, #f5f5f5);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-}
+  }
 
-.container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+  .container {
+    background: #ffffff;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
     text-align: center;
-}
+  }
 
-.sign-in-form h2 {
-    margin-bottom: 20px;
-}
+  h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+  }
 
-.sign-in-form label {
+  label {
     display: block;
     text-align: left;
-    margin-top: 10px;
-}
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
 
-.sign-in-form input {
+  input {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+    padding: 12px 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.sign-in-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.sign-in-form button:hover {
-    background-color: #0056b3;
-}
-
-.signup-link {
-    margin-top: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
     font-size: 14px;
-}
+    transition: border-color 0.3s ease;
+  }
 
-.signup-link a {
-    color: #007BFF;
-    text-decoration: none;
-} 
+  input:focus {
+    outline: none;
+    border-color: #888;
+  }
+
+  button {
+    width: 100%;
+    background: linear-gradient(to right, #888, #666);
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: linear-gradient(to right, #666, #444);
+  }
+
+  .signup-link {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .signup-link a button {
+    margin-left: 10px;
+    background: transparent;
+    border: 2px solid #888;
+    color: #555;
+    padding: 10px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .signup-link a button:hover {
+    background-color: #eee;
+    border-color: #555;
+    color: #333;
+  }
