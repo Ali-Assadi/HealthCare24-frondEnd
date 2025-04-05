@@ -26,6 +26,10 @@ import { BetterSleep1Component } from './health/better-sleep-1/better-sleep-1.co
 import { BetterSleep2Component } from './health/better-sleep-2/better-sleep-2.component';
 import { BetterSleep3Component } from './health/better-sleep-3/better-sleep-3.component';
 import { BetterSleep4Component } from './health/better-sleep-4/better-sleep-4.component';
+import { UserHomeComponent } from './user-home/user-home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -58,6 +62,10 @@ export const routes: Routes = [
     { path: 'better-sleep-3', component: BetterSleep3Component },
     { path: 'better-sleep-4', component: BetterSleep4Component },
 
-    
+    //User-Side
+    { path: 'user-home', component: UserHomeComponent },
+    { path: 'profile', component: ProfileComponent },
+    { path: 'update-password', component: UpdatePasswordComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: '**', component: NotFoundComponent }
 ];

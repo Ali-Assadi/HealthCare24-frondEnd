@@ -11,8 +11,13 @@
       <h1>Become a VIP Member</h1>
       <p>Unlock exclusive access to personalized nutrition plans, exercise programs, and direct communication with our expert manager.</p>
       
-      <form action="#" method="POST" class="vip-form">
-        <input type="email" placeholder="Enter your email address" required />
+      <form (ngSubmit)="subscribe()" #form="ngForm" class="vip-form">
+        <input 
+          type="email" 
+          placeholder="Enter your email address" 
+          [(ngModel)]="email" 
+          name="email" 
+          required />
         <button type="submit">Join Now</button>
       </form>
 
@@ -27,6 +32,5 @@
       <small>By joining, you agree to our <a href="#">Terms & Conditions</a>.</small>
     </div>
   </div>
-
 </body>
 </html>

@@ -11,7 +11,12 @@
 
 <body>
     <nav class="navbar navbar-expand-lg fixed-top" [ngStyle]="{'background-color': getNavbarColor()}">
-        <div class="container">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div *ngIf="isLoggedIn">
+                <a routerLink="/profile" class="nav-link icon-link">
+                    <i class="fas fa-user-circle icon" style="font-size: 1.8rem;"></i>
+                </a>
+            </div>
             <!-- Navbar Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -26,42 +31,40 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/health" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Health</a>
+                        <a routerLink="/health" (click)="collapseMenu()" routerLinkActive="active"
+                            class="nav-link">Health</a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/nutrition" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Nutrition</a>
+                        <a routerLink="/nutrition" (click)="collapseMenu()" routerLinkActive="active"
+                            class="nav-link">Nutrition</a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/fitness" (click)="collapseMenu()" routerLinkActive="active" class="nav-link">Fitness</a>
+                        <a routerLink="/fitness" (click)="collapseMenu()" routerLinkActive="active"
+                            class="nav-link">Fitness</a>
                     </li>
                 </ul>
-                
             </div>
 
             <!-- Right-Side Buttons & Icons -->
             <div class="d-flex align-items-center">
-                <button 
-                    routerLink="/subscribe" 
-                    routerLinkActive="active" 
-                    class="btn btn-custom me-2">
+                <!-- Always visible -->
+                <button routerLink="/subscribe" routerLinkActive="active" class="btn btn-custom me-2">
                     Subscribe
                 </button>
-            
-                <button 
-                    routerLink="/sign-in" 
-                    routerLinkActive="active" 
-                    class="btn btn-custom me-2">
+                <!-- Show logout button if logged in -->
+                <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-custom me-2">
+                    Logout
+                </button>
+                <!-- Only show Sign In if NOT logged in -->
+                <button *ngIf="!isLoggedIn" routerLink="/sign-in" routerLinkActive="active" class="btn btn-custom me-2">
                     Sign In
                 </button>
-            
-                <a 
-                    routerLink="/cart" 
-                    routerLinkActive="active" 
-                    class="nav-link icon-link">
+
+                <!-- Only show Cart if logged in -->
+                <a *ngIf="isLoggedIn" routerLink="/cart" routerLinkActive="active" class="nav-link icon-link">
                     <i class="fas fa-shopping-cart icon"></i>
                 </a>
             </div>
-            
         </div>
     </nav>
 </body>
