@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './brain-health-2.component.css'
 })
 export class BrainHealth2Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

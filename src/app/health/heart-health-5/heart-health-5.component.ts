@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './heart-health-5.component.css'
 })
 export class HeartHealth5Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

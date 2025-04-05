@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './better-sleep-1.component.css'
 })
 export class BetterSleep1Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }  
 }

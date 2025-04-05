@@ -8,14 +8,18 @@ body {
 .head {
     position: relative;
 }
+
 article {
-    cursor: pointer; /* Changes cursor to pointer */
+    cursor: pointer;
+    /* Changes cursor to pointer */
     transition: transform 0.3s ease-in-out;
 }
 
 article:hover {
-    cursor: pointer; /* Changes cursor to crosshair on hover */
-    transform: scale(1.05); /* Slightly enlarges the article */
+    cursor: pointer;
+    /* Changes cursor to crosshair on hover */
+    transform: scale(1.05);
+    /* Slightly enlarges the article */
 }
 
 
@@ -34,7 +38,7 @@ article:hover {
     bottom: 2dvh;
     text-align: center;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .head-text-h1 {
@@ -64,10 +68,11 @@ article:hover {
     border-radius: 2px;
 }
 
-.flex-center{
+.flex-center {
     display: flex;
     justify-content: center;
 }
+
 /* News Section Grid */
 .news-section {
     display: grid;
@@ -82,13 +87,13 @@ article:hover {
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .news-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
 }
 
 .news-item img {
@@ -119,16 +124,17 @@ article:hover {
 .card {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     height: 350px;
     border: 2px solid #52b788;
+    cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card img {
@@ -157,7 +163,8 @@ article:hover {
         font-size: 28px;
     }
 
-    .news-item h3, .card h2 {
+    .news-item h3,
+    .card h2 {
         font-size: 16px;
     }
 
@@ -165,11 +172,11 @@ article:hover {
         font-size: 13px;
     }
 }
+
 html {
     scroll-behavior: smooth;
 }
 
-/* Fade-In Animation */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -179,4 +186,20 @@ html {
 .fade-in.active {
     opacity: 1;
     transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.brain-health {
+    animation: fadeIn 1.2s ease-in-out;
 }
