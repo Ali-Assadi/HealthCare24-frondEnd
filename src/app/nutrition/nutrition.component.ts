@@ -28,6 +28,7 @@ export class NutritionComponent {
   }
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
+    if (!this.fadeElements) return;
     this.fadeElements.forEach((element) => {
       const nativeElement = element.nativeElement;
       const rect = nativeElement.getBoundingClientRect();

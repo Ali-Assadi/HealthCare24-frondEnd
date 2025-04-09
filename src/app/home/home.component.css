@@ -29,8 +29,11 @@ body {
 }
 
 .text-content .highlight {
-  color: #145a16;
+  background: linear-gradient(to right, rgb(42, 224, 197), #478748);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
 
 .text-content .lead {
   font-size: 1.2rem;
