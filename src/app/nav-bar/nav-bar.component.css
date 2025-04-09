@@ -18,10 +18,27 @@ body {
   }
   
   .btn-custom:hover {
-    background-color: #31473A;
+    background-color: #3b3b3b;
     color: #EDF4F2;
   }
   
   .icon {
     color: #EDF4F2;
+
   }
+  .nav-link.active, .nav-link:hover {
+    color: #000000;
+  }
+  
+  .nav-link i {
+    margin-right: 5px;
+  }
+
+.btn-custom.active {
+  background-color: #575757;
+  color: #EDF4F2;
+}
+
+.icon-link.active .icon {
+  color: #000;
+}

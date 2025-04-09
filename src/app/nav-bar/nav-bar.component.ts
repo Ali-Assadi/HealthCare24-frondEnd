@@ -4,42 +4,55 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
-  imports:[CommonModule,RouterModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
   currentRoute: string = '';
+  isLoggedIn: boolean = false;
 
   constructor(private router: Router) {
-    // Listen for route changes
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
+        this.checkLoginStatus();
       }
     });
   }
 
-  // Method to determine navbar color based on the current route
+  ngOnInit() {
+    this.checkLoginStatus();
+  }
+
+  checkLoginStatus() {
+    const userEmail = localStorage.getItem('userEmail');
+    this.isLoggedIn = !!userEmail;
+  }
+
   getNavbarColor(): string {
     switch (this.currentRoute) {
-      case '/nutrition':
-        return '#A63D2E'; // Nutrition color
-      case '/life':
-        return '#223182'; // Life color
-      case '/health':
-        return '#4A8F63'; // Health color
-      default:
-        return '#4A8F63'; // Default color
+      case '/nutrition': return '#A63D2E';
+      case '/life': return '#223182';
+      case '/health': return '#4A8F63';
+      case '/fitness': return 'hsl(247, 49%, 38%)';
+      default: return '#2c3e50';
     }
   }
 
-  // Method to collapse the navbar menu
   collapseMenu(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const navbarCollapse = document.getElementById('navbarNav');
-    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+    if (navbarCollapse?.classList.contains('show')) {
       navbarCollapse.classList.remove('show');
     }
   }
+  
+  logout(): void {
+    localStorage.removeItem('userEmail');
+    this.isLoggedIn = false;
+    this.router.navigate(['/sign-in']);
+  }
+  
 }
