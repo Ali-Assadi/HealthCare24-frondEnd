@@ -33,13 +33,21 @@ export class NavBarComponent {
 
   getNavbarColor(): string {
     switch (this.currentRoute) {
-      case '/nutrition': return '#A63D2E';
-      case '/life': return '#223182';
-      case '/health': return '#4A8F63';
-      case '/fitness': return 'hsl(247, 49%, 38%)';
-      default: return '#2c3e50';
+      case '/nutrition':
+      case '/my-dietPlan':
+      case '/diet-plan':
+        return '#A63D2E';
+      case '/life':
+        return '#223182';
+      case '/health':
+        return '#4A8F63';
+      case '/fitness':
+        return 'hsl(247, 49%, 38%)';
+      default:
+        return '#2c3e50';
     }
   }
+  
 
   collapseMenu(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -1,0 +1,49 @@
+<body>
+<div class="diet-plan-container">
+    <h2 class="title">🎯 Generate Your Personalized Diet Plan</h2>
+  
+    <!-- Goal Selector -->
+    <div class="select-goal" *ngIf="!hideGoalSelector">
+      <label for="goal">Choose your goal:</label>
+      <select [(ngModel)]="userGoal" name="goal" id="goal" required>
+        <option value="" disabled selected>Select your goal</option>
+        <option value="loss">Lose Weight</option>
+        <option value="gain">Gain Muscle</option>
+        <option value="balance">Balanced</option>
+      </select>
+      <button class="btn-generate" (click)="generatePlan()" [disabled]="!userGoal">
+        Generate Plan 🚀
+      </button>
+    </div>
+  
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-message">
+      <div class="spinner"></div>
+      <p>Generating your diet plan... Please wait.</p>
+    </div>
+  
+    <!-- Plan Output -->
+    <div *ngIf="showPlan" class="generated-plan">
+        <h4 class="goal-title">Goal: {{ userGoal | titlecase }}</h4>
+        <p class="goal-info">
+          <strong>Height:</strong> {{ userInfo.height }} cm &nbsp;|&nbsp;
+          <strong>Weight:</strong> {{ userInfo.weight }} kg
+        </p>
+      
+        <div *ngFor="let week of generatedPlans; let wi = index" class="week-card">
+          <h5>📅 Week {{ wi + 1 }}</h5>
+      
+          <div *ngFor="let day of week.days; let di = index" class="day-block">
+            <h6>🍽️ Day {{ di + 1 }}</h6>
+            <ul>
+              <li><strong>Breakfast:</strong> {{ day.breakfast }}</li>
+              <li><strong>Lunch:</strong> {{ day.lunch }}</li>
+              <li><strong>Dinner:</strong> {{ day.dinner }}</li>
+              <li *ngIf="day.snack"><strong>Snack:</strong> {{ day.snack }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+  </div>
+</body>

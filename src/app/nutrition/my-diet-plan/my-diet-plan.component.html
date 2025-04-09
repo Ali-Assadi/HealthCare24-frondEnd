@@ -1,0 +1,32 @@
+<body>
+    <div class="container">
+        <h2>📋 Your Monthly Diet Plan</h2>
+
+        <div class="week-grid">
+            <div *ngFor="let week of generatedPlans; let wi = index" class="week-card" [ngClass]="{
+            'grid-half': wi < 2,
+            'full-width': wi >= 2 && showAllWeeks,
+            'hidden': wi >= 2 && !showAllWeeks
+          }">
+                <h5>📅 Week {{ wi + 1 }}</h5>
+                <div *ngFor="let day of week.days; let di = index" class="day-block">
+                    <h6>🍽️ Day {{ di + 1 }}</h6>
+                    <ul>
+                        <li><strong>Breakfast:</strong> {{ day.breakfast }}</li>
+                        <li><strong>Lunch:</strong> {{ day.lunch }}</li>
+                        <li><strong>Dinner:</strong> {{ day.dinner }}</li>
+                        <li *ngIf="day.snack"><strong>Snack:</strong> {{ day.snack }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Toggle Button -->
+        <div class="text-center mt-4">
+            <button class="btn-toggle" (click)="showAllWeeks = !showAllWeeks">
+                {{ showAllWeeks ? '🔽 Show Less' : '🔼 Show All Weeks' }}
+            </button>
+        </div>
+    </div>
+</body>

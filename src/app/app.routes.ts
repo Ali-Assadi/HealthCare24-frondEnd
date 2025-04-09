@@ -30,13 +30,19 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { DietPlanComponent } from './nutrition/diet-plan/diet-plan.component';
+import { MyDietPlanComponent } from './nutrition/my-diet-plan/my-diet-plan.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'health', component: HealthComponent },
     { path: 'fitness', component: FitnessComponent },
+    //Nutrition
     { path: 'nutrition', component: NutritionComponent },
+    { path: 'diet-plan', component: DietPlanComponent },
+    { path: 'my-dietPlan', component: MyDietPlanComponent },
+    
     { path: 'sign-in', component: SignInComponent },
     { path: 'subscribe', component: SubscribeComponent },
     { path: 'cart', component: CartComponent },
