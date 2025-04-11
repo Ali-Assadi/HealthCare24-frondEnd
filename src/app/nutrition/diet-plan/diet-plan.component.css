@@ -1,11 +1,13 @@
 body{
     margin-top: 5.8dvh;
     background: #ffdfcd;
+    min-height: 94.2dvh;
     display: flex;
     justify-content: center;
 }
 .diet-plan-container {
     max-width: 800px;
+    height: 60dvh;
     padding: 40px;
     background: linear-gradient(to right, #FFF8F0, #fbe0d2);
     border-radius: 25px;

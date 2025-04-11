@@ -1,0 +1,50 @@
+.requests-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .requests-container h2 {
+    margin-bottom: 20px;
+    color: #dc3545;
+  }
+  
+  .request-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .chat-btn:hover {
+    background-color: #bb2d3b;
+  }
+  

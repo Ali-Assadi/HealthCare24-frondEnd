@@ -40,17 +40,9 @@ export class NutritionComponent implements OnInit {
   
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
-        console.log('🧠 Loaded user:', user);
-        console.log('📋 dietPlan exists?', Array.isArray(user.dietPlan));
-        console.log('📦 dietPlan length:', user.dietPlan?.length);
-  
         this.userInfo = user;
-  
         // ✅ Check if user has dietPlan with at least 1 week
-        this.hasPlan = Array.isArray(user.dietPlan) && user.dietPlan.length > 0;
-  
-        console.log('✅ hasPlan set to:', this.hasPlan);
-  
+        this.hasPlan = Array.isArray(user.dietPlan) && user.dietPlan.length > 0;  
         // show plan if exists
         this.showPlan = this.hasPlan;
         this.generatedPlans = user.dietPlan || [];

@@ -32,6 +32,13 @@ import { UpdatePasswordComponent } from './update-password/update-password.compo
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DietPlanComponent } from './nutrition/diet-plan/diet-plan.component';
 import { MyDietPlanComponent } from './nutrition/my-diet-plan/my-diet-plan.component';
+import { AdminComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminDietsComponent } from './admin-diets/admin-diets.component';
+import { AdminRequestsComponent } from './admin-requests/admin-requests.component';
+import { UserChatComponent } from './user-chat/user-chat.component';
+import { AdminChatComponent } from './admin-chat/admin-chat.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -67,11 +74,22 @@ export const routes: Routes = [
     { path: 'better-sleep-2', component: BetterSleep2Component },
     { path: 'better-sleep-3', component: BetterSleep3Component },
     { path: 'better-sleep-4', component: BetterSleep4Component },
-
+    //Admin-Side
+    { path: 'admin-dashboard', component: AdminComponent },
+    { path: 'admin-users', component: AdminUsersComponent },
+    { path: 'admin-diets', component: AdminDietsComponent },
+    { path: 'admin-requests', component: AdminRequestsComponent },
+    { path: 'admin-chat/:email', component: AdminChatComponent },
     //User-Side
     { path: 'user-home', component: UserHomeComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'update-password', component: UpdatePasswordComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'user-chat', component: UserChatComponent },
+    { path: 'contact', component: ContactUsComponent },
+
+
     { path: '**', component: NotFoundComponent }
+    
+
 ];

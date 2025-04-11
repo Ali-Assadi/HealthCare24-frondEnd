@@ -1,2 +1,4 @@
-<app-nav-bar></app-nav-bar>
+<app-nav-bar *ngIf="!isAdminUser"></app-nav-bar>
+<app-admin-sidebar *ngIf="isAdminUser"></app-admin-sidebar>
+
 <router-outlet></router-outlet>

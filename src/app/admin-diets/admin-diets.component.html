@@ -1,0 +1,65 @@
+<div class="admin-diets-container">
+    <h2 class="section-title">🥗 Manage Diet Plans</h2>
+  
+    <!-- Search Box -->
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search by email..."
+        [(ngModel)]="searchEmail"
+        (input)="searchByEmail()"
+      />
+    </div>
+  
+    <div class="admin-diets-content">
+      <!-- Left Panel: User List -->
+      <div class="user-list">
+        <h4>Users</h4>
+        <ul>
+          <li
+            *ngFor="let user of filteredUsers; let i = index"
+            [class.selected]="i === selectedIndex"
+            (click)="selectUser(user, i)"
+          >
+            {{ user.email }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Right Panel: Diet Details -->
+      <div class="diet-details" *ngIf="selectedUser">
+        <h4 class="email-label">Editing: {{ selectedUser.email }}</h4>
+  
+        <div *ngFor="let week of selectedUser.dietPlan; let wi = index" class="week-card">
+          <h5>📅 Week {{ wi + 1 }}</h5>
+  
+          <div *ngFor="let day of week.days; let di = index" class="day-card">
+            <h6>🍽️ Day {{ di + 1 }}</h6>
+            <div class="form-group">
+              <label>Breakfast</label>
+              <input [(ngModel)]="day.breakfast" (input)="updateMeal(wi, di, 'breakfast', day.breakfast)" />
+            </div>
+            <div class="form-group">
+              <label>Lunch</label>
+              <input [(ngModel)]="day.lunch" (input)="updateMeal(wi, di, 'lunch', day.lunch)" />
+            </div>
+            <div class="form-group">
+              <label>Dinner</label>
+              <input [(ngModel)]="day.dinner" (input)="updateMeal(wi, di, 'dinner', day.dinner)" />
+            </div>
+            <div class="form-group">
+              <label>Snack (optional)</label>
+              <input
+                [(ngModel)]="day.snack"
+                (input)="updateMeal(wi, di, 'snack', day.snack)"
+                placeholder="Add snack..."
+              />
+            </div>
+          </div>
+        </div>
+  
+        <button class="btn-save" (click)="saveChanges()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+  
