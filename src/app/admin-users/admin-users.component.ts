@@ -35,10 +35,17 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
-  clearPlan(id: string): void {
+  clearDietPlan(id: string): void {
     this.http.put(`http://localhost:3000/api/admin/users/${id}/clear-plan`, {}).subscribe({
       next: () => this.loadUsers(),
       error: () => alert('❌ Failed to clear diet plan')
     });
   }
+  
+  clearExercisePlan(id: string): void {
+    this.http.put(`http://localhost:3000/api/admin/users/${id}/clear-exercise`, {}).subscribe({
+      next: () => this.loadUsers(),
+      error: () => alert('❌ Failed to clear exercise plan')
+    });
+  }  
 }

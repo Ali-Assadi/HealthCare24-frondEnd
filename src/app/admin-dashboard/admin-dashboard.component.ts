@@ -13,6 +13,7 @@ import { AdminSidebarComponent } from "../admin-sidebar/admin-sidebar.component"
 export class AdminComponent implements OnInit {
   userCount: number = 0;
   plansGenerated: number = 0;
+  exercisePlansGenerated: number = 0;
   loading = true;
 
   constructor(private http: HttpClient) {}
@@ -22,8 +23,8 @@ export class AdminComponent implements OnInit {
       next: (data) => {
         this.userCount = data.userCount;
         this.plansGenerated = data.plansGenerated;
+        this.exercisePlansGenerated = data.exercisePlansGenerated; // 👈 NEW
         this.loading = false;
-        console.log(data.plansGenerated);
       },
       error: (err) => {
         console.error('Failed to load admin stats:', err);

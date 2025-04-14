@@ -1,36 +1,27 @@
 <div class="chat-container">
-    <!-- Chat Header -->
-    <div class="chat-header">
-      💬 Chat with {{ userEmail }}
-    </div>
-  
-    <!-- Chat Messages -->
-    <div class="chat-messages" #scrollBottom>
-        <div *ngIf="messages.length === 0" class="no-messages">
-          No messages yet. Start the conversation!
-        </div>
-      
-        <div
-          *ngFor="let msg of messages"
-          class="message"
-          [ngClass]="{ 'from-admin': msg.from === 'admin', 'from-user': msg.from !== 'admin' }"
-        >
-          <span class="sender">{{ msg.from === 'admin' ? '🛡️ Admin' : msg.from }}</span>
-          <p>{{ msg.content }}</p>
-        </div>
-      </div>
-      
-  
-    <!-- Chat Input -->
-    <form class="chat-input" (ngSubmit)="sendMessage()">
-      <input
-        type="text"
-        [(ngModel)]="newMessage"
-        name="message"
-        placeholder="Type a message..."
-        required
-      />
-      <button type="submit">Send 🚀</button>
-    </form>
+  <!-- Chat Header -->
+  <div class="chat-header d-flex align-items-center justify-content-between">
+    <button class="back-button" routerLink="/admin-requests">← Back</button>
+    💬 Chat with {{ userEmail }}
   </div>
-  
+
+  <!-- Chat Messages -->
+  <div class="chat-messages" #scrollBottom>
+    <div *ngIf="messages.length === 0" class="no-messages">
+      No messages yet. Start the conversation!
+    </div>
+
+    <div *ngFor="let msg of messages" class="message"
+      [ngClass]="{ 'from-admin': msg.from === 'admin', 'from-user': msg.from !== 'admin' }">
+      <span class="sender">{{ msg.from === 'admin' ? '🛡️ Admin' : msg.from }}</span>
+      <p>{{ msg.content }}</p>
+    </div>
+  </div>
+
+
+  <!-- Chat Input -->
+  <form class="chat-input" (ngSubmit)="sendMessage()">
+    <input type="text" [(ngModel)]="newMessage" name="message" placeholder="Type a message..." required />
+    <button type="submit">Send 🚀</button>
+  </form>
+</div>

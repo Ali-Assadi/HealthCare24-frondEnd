@@ -42,6 +42,7 @@ export class NavBarComponent {
       case '/health':
         return '#4A8F63';
       case '/fitness':
+      case '/exercise-plan':
         return 'hsl(247, 49%, 38%)';
       default:
         return '#2c3e50';

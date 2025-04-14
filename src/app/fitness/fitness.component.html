@@ -18,7 +18,24 @@
             <h1 class="head-text-h1">Fitness</h1>
         </div>
     </div>
-
+    <div class="exercise-buttons">
+        <h3>🎯 Your Fitness Plan Options</h3>
+      
+        <button *ngIf="!hasExercisePlan" class="btn btn-primary" routerLink="/exercise-plan">
+          Generate My Exercise Program 🏋️
+        </button>
+      
+        <button *ngIf="hasExercisePlan" class="btn btn-outline-info" routerLink="/my-exercise-plan">
+          View My Exercise Plan 📋
+        </button>
+      
+        <button *ngIf="hasExercisePlan" class="btn btn-outline-warning" (click)="requestChange()">
+          Request Plan Change 🔁
+        </button>
+      </div>
+      
+      
+      
     <!-- Strength Training Section -->
     <section id="strength-training" class="strength-training new-section-left">
         <div class="text-container">

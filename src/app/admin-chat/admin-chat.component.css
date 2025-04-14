@@ -19,6 +19,20 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
+  .back-button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    color: #ffd6d6;
+  }
   
   .chat-messages {
     flex: 1;
@@ -99,6 +113,12 @@
   
   /* Responsive */
   @media (max-width: 768px) {
+    .chat-header {
+      font-size: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
     .chat-container {
       margin: 20px;
       height: 90vh;

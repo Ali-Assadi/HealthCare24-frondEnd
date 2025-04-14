@@ -1,0 +1,16 @@
+<div class="exercise-container" *ngIf="!loading">
+    <h2 class="goal-title">🏋️ Your Exercise Plan - Goal: {{ goal | titlecase }}</h2>
+  
+    <div *ngFor="let week of exercisePlan; let w = index" class="week-box">
+      <h4>Week {{ w + 1 }}</h4>
+  
+      <div *ngFor="let day of week.days" class="day-box">
+        <strong>Day {{ day.day }}:</strong>
+        <span class="type-label">{{ day.type }}</span>
+        <p>{{ day.workout }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="loading" class="loading-text">Loading your plan...</div>
+  

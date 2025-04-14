@@ -39,12 +39,18 @@ import { AdminRequestsComponent } from './admin-requests/admin-requests.componen
 import { UserChatComponent } from './user-chat/user-chat.component';
 import { AdminChatComponent } from './admin-chat/admin-chat.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { ExercisePlanComponent } from './fitness/exercise-plan/exercise-plan.component';
+import { MyExercisePlanComponent } from './fitness/my-exercise-plan/my-exercise-plan.component';
+import { AdminExerciseComponent } from './admin-exercise/admin-exercise.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'health', component: HealthComponent },
+    //Fitness
     { path: 'fitness', component: FitnessComponent },
+    { path: 'exercise-plan', component: ExercisePlanComponent },
+    { path: 'my-exercise-plan', component: MyExercisePlanComponent },
     //Nutrition
     { path: 'nutrition', component: NutritionComponent },
     { path: 'diet-plan', component: DietPlanComponent },
@@ -78,6 +84,7 @@ export const routes: Routes = [
     { path: 'admin-dashboard', component: AdminComponent },
     { path: 'admin-users', component: AdminUsersComponent },
     { path: 'admin-diets', component: AdminDietsComponent },
+    { path: 'admin-exercise', component: AdminExerciseComponent },
     { path: 'admin-requests', component: AdminRequestsComponent },
     { path: 'admin-chat/:email', component: AdminChatComponent },
     //User-Side

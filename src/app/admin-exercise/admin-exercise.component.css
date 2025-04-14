@@ -1,0 +1,132 @@
+
+  /* admin-exercise.component.css */
+  .admin-exercise-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .section-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #6c5ce7;
+    text-align: center;
+  }
+  
+  .search-box {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .search-box input {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 300px;
+  }
+  
+  .admin-exercise-content {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .user-list {
+    flex: 1;
+    max-width: 300px;
+    border-right: 1px solid #eee;
+  }
+  
+  .user-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .user-list li {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s;
+  }
+  
+  .user-list li.selected,
+  .user-list li:hover {
+    background-color: #e0e7ff;
+  }
+  
+  .exercise-details {
+    flex: 2;
+    padding: 10px;
+  }
+  
+  .email-label {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .week-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+  }
+  
+  .day-card {
+    background: #f2f4f8;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .btn-sm {
+    margin-right: 10px;
+    padding: 6px 12px;
+    border: none;
+    background-color: #6c5ce7;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  
+  .btn-sm:hover {
+    background-color: #5a4ecb;
+  }
+  
+  .btn-save {
+    background-color: #2ecc71;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .btn-save:hover {
+    background-color: #27ae60;
+  }
+  
+  .week-controls,
+  .day-controls {
+    margin-top: 10px;
+  }
+  

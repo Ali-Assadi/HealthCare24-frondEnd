@@ -1,0 +1,50 @@
+.exercise-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  .goal-title {
+    text-align: center;
+    font-size: 28px;
+    color: #6c5ce7;
+    margin-bottom: 40px;
+  }
+  
+  .week-box {
+    background: #f4f6ff;
+    border: 2px solid #a29bfe;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+  }
+  
+  .day-box {
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .day-box:last-child {
+    border-bottom: none;
+  }
+  
+  .type-label {
+    background-color: #dfe6ff;
+    color: #2e2e2e;
+    padding: 2px 10px;
+    border-radius: 8px;
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  
+  .loading-text {
+    text-align: center;
+    font-size: 20px;
+    color: #888;
+    padding: 40px;
+  }
+  

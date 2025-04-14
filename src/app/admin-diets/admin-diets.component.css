@@ -146,3 +146,37 @@
     cursor: pointer;
   }
   
+  .week-header,
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.btn-delete-week,
+.btn-delete-day,
+.btn-add-day,
+.btn-add-week {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.btn-delete-day {
+  background-color: #ffa502;
+}
+
+.btn-add-day {
+  background-color: #1dd1a1;
+}
+
+.btn-add-week {
+  background-color: #0984e3;
+  margin-top: 10px;
+}

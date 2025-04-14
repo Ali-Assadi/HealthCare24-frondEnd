@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './admin-diets.component.html',
-  styleUrls: ['./admin-diets.component.css']
+  styleUrls: ['./admin-diets.component.css'],
 })
 export class AdminDietsComponent implements OnInit {
   diets: any[] = [];
@@ -38,7 +38,7 @@ export class AdminDietsComponent implements OnInit {
     if (!email) {
       this.filteredUsers = this.diets;
     } else {
-      this.filteredUsers = this.diets.filter(user =>
+      this.filteredUsers = this.diets.filter((user) =>
         user.email.toLowerCase().includes(email)
       );
     }
@@ -60,6 +60,47 @@ export class AdminDietsComponent implements OnInit {
   addSnack(day: any): void {
     day.snack = 'New Snack';
   }
+  
+  addWeek(): void {
+    if (this.selectedUser.dietPlan.length >= 5) {
+      alert('⚠️ Maximum of 5 weeks allowed per plan.');
+      return;
+    }
+  
+    this.selectedUser.dietPlan.push({
+      days: [
+        {
+          breakfast: '',
+          lunch: '',
+          dinner: '',
+          snack: ''
+        }
+      ]
+    });
+  }
+  
+
+  deleteWeek(index: number): void {
+    if (confirm('Are you sure you want to delete this week?')) {
+      this.selectedUser.dietPlan.splice(index, 1);
+    }
+  }
+
+  addDay(weekIndex: number): void {
+    const days = this.selectedUser.dietPlan[weekIndex].days;
+    if (days.length >= 7) {
+      alert('⚠️ There is no 8 days in a week , Dont try');
+      return;
+    }
+  
+    days.push({ breakfast: '', lunch: '', dinner: '', snack: '' });
+  }
+
+  deleteDay(weekIndex: number, dayIndex: number): void {
+    if (confirm('Delete this day?')) {
+      this.selectedUser.dietPlan[weekIndex].days.splice(dayIndex, 1);
+    }
+  }
 
   saveChanges(): void {
     if (!this.selectedUser?.email) return;
@@ -76,7 +117,7 @@ export class AdminDietsComponent implements OnInit {
         },
         error: () => {
           alert('❌ Failed to update diet');
-        }
+        },
       });
   }
 }

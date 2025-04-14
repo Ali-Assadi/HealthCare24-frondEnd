@@ -5,7 +5,7 @@ import {
   Renderer2,
   QueryList,
   ViewChildren,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -37,12 +37,12 @@ export class NutritionComponent implements OnInit {
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
-  
+
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
         this.userInfo = user;
         // ✅ Check if user has dietPlan with at least 1 week
-        this.hasPlan = Array.isArray(user.dietPlan) && user.dietPlan.length > 0;  
+        this.hasPlan = Array.isArray(user.dietPlan) && user.dietPlan.length > 0;
         // show plan if exists
         this.showPlan = this.hasPlan;
         this.generatedPlans = user.dietPlan || [];
@@ -50,25 +50,23 @@ export class NutritionComponent implements OnInit {
       },
       error: (err) => {
         console.error('❌ Failed to load user profile.', err);
-      }
+      },
     });
   }
-  
-  
-  
-  
 
   requestNewPlan(): void {
     const email = localStorage.getItem('userEmail');
     if (!email) return alert('You must be signed in.');
 
-    this.http.post('http://localhost:3000/api/request-new-plan', {
-      email,
-      message: `User ${email} is requesting a new diet plan.`
-    }).subscribe({
-      next: () => alert('📩 Request sent to admin!'),
-      error: () => alert('❌ Failed to send request to admin.')
-    });
+    this.http
+      .post('http://localhost:3000/api/request-new-plan', {
+        email,
+        message: `User ${email} is requesting a new diet plan.`,
+      })
+      .subscribe({
+        next: () => alert('📩 Request sent to admin!'),
+        error: () => alert('❌ Failed to send request to admin.'),
+      });
   }
 
   scrollTo(sectionId: string): void {
