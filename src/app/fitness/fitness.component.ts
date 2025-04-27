@@ -13,6 +13,12 @@ import { RouterLink } from '@angular/router';
 })
 export class FitnessComponent {
   selectedGoal: string = 'loss';
+  isLoggedIn: boolean = false;
+
+  checkLoginStatus() {
+    const userEmail = localStorage.getItem('userEmail');
+    this.isLoggedIn = !!userEmail;
+  }
   
   //Scroll Method
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
@@ -52,6 +58,7 @@ export class FitnessComponent {
   }
   hasExercisePlan = false;
   ngOnInit(): void {
+      this.checkLoginStatus();
       const email = localStorage.getItem('userEmail');
       this.http.get(`http://localhost:3000/api/user/${email}`).subscribe({
         next: (user: any) => {

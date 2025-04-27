@@ -18,7 +18,7 @@
         </div>
     </div>
     <!-- Diet Plan Actions -->
-    <section class="plan-actions-section my-5">
+    <section *ngIf="isLoggedIn" class="plan-actions-section my-5">
         <div class="container text-center">
             <h2 class="mb-4 fw-bold">📋 Your Personal Diet Journey</h2>
             <p class="text-muted">Stay on track and take control of your health goals</p>

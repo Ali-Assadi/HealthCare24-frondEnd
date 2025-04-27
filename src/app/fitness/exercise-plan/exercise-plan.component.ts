@@ -21,18 +21,25 @@ export class ExercisePlanComponent {
   generatePlan() {
     if (!this.goal) return;
     this.generating = true;
-
+  
     this.http.post(`http://localhost:3000/api/exercise/generate`, {
       email: this.userEmail,
       goal: this.goal
     }).subscribe({
-      next: () => {
-        setTimeout(() => this.router.navigate(['/fitness']), 10000);
+      next: (res) => {
+        console.log('✅ Exercise Plan Generated', res);
+        alert('✅ Exercise plan generated! Now refreshing your plan...');
+  
+        // After generating, immediately reload page or redirect
+        setTimeout(() => {
+          window.location.href = '/fitness'; // Full reload to refresh updated data
+        }, 1000);
       },
       error: () => {
         this.generating = false;
-        alert('Failed to generate plan');
+        alert('❌ Failed to generate plan');
       }
     });
   }
+  
 }

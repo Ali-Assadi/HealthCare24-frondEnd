@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness & Strength</title>
-    <style>
-        /* Add your premium color styles or external stylesheet here */
-    </style>
+
 </head>
 
 <body>
@@ -18,7 +16,7 @@
             <h1 class="head-text-h1">Fitness</h1>
         </div>
     </div>
-    <div class="exercise-buttons">
+    <div *ngIf="isLoggedIn" class="exercise-buttons">
         <h3>🎯 Your Fitness Plan Options</h3>
       
         <button *ngIf="!hasExercisePlan" class="btn btn-primary" routerLink="/exercise-plan">

@@ -20,6 +20,12 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./nutrition.component.css'],
 })
 export class NutritionComponent implements OnInit {
+  isLoggedIn:boolean = false;
+
+  checkLoginStatus() {
+    const userEmail = localStorage.getItem('userEmail');
+    this.isLoggedIn = !!userEmail;
+  }
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
 
   userInfo: any = {};
@@ -35,6 +41,7 @@ export class NutritionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkLoginStatus();
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
