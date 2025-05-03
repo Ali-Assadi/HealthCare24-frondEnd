@@ -1,4 +1,5 @@
 <div class="home-container">
+
   <!-- Section 1: Hero Section -->
   <section class="hero-section d-flex align-items-center">
     <div class="container">
@@ -9,7 +10,26 @@
           <button class="hero-btn">Shop Now</button>
         </div>
         <div class="col-md-6">
-          <img src="assets/home/home-bg (1).png" style="object-fit: contain;" class="img-fluid hero-image" alt="Hero Image">
+          <img src="assets/home/home-bg (1).png"  style="object-fit: contain;" class="img-fluid hero-image" alt="Hero Image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔁 Section 1.5: Recommended -->
+  <section class="custom-section py-5 text-center" *ngIf="recommendations.length">
+    <div class="container">
+      <h2 class="section-title">Recommended for You</h2>
+      <p class="section-subtitle">Based on what you've been exploring</p>
+      <div class="row mt-4">
+        <div class="col-md-3" *ngFor="let topic of recommendations">
+          <a [routerLink]="['/' + topic]" class="recommendation-card">
+            <div class="feature-card">
+              <i class="fas fa-star feature-icon"></i>
+              <h5 class="topic-name">{{ formatTopicName(topic) }}</h5>
+              <p>Click to revisit this article</p>
+            </div>
+          </a>
         </div>
       </div>
     </div>

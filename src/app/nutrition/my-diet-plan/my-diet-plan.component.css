@@ -27,6 +27,7 @@ h2 {
 }
 
 .week-card {
+  margin-top: 2dvh;
   background: #fff8f0;
   border: 1.5px solid #ffcbb7;
   border-radius: 12px;
@@ -42,7 +43,7 @@ h2 {
   flex: 0 0 100%;
 }
 .week-card:hover {
-  transform: scale(1.02);
+  transform: scale(0.98);
 }
 
 .week-card h5 {

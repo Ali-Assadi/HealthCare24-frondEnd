@@ -7,26 +7,33 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
-import { FooterComponent } from "../footer/footer.component";
+import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-health',
-  imports: [FooterComponent , RouterLink],
+  imports: [FooterComponent, RouterLink],
   templateUrl: './health.component.html',
   styleUrls: ['./health.component.css'],
 })
 export class HealthComponent {
-
-  //Scroll Method
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
+
   constructor(
     private viewportScroller: ViewportScroller,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private http: HttpClient
   ) {}
+
   scrollTo(sectionId: string): void {
     this.viewportScroller.scrollToAnchor(sectionId);
   }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     if (!this.fadeElements) return;
@@ -38,8 +45,18 @@ export class HealthComponent {
       }
     });
   }
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // 🔹 Log the view to backend
+  logView(topic: string) {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http
+      .post('http://localhost:3000/api/log-view', {
+        email,
+        topic,
+        section: 'health',
+      })
+      .subscribe();
   }
-  
 }

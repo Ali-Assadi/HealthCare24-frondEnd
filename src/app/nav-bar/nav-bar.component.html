@@ -65,6 +65,13 @@
                     Sign In
                 </button>
 
+                <!-- Notification Bell Icon -->
+                <a *ngIf="isLoggedIn" routerLink="/notifications" routerLinkActive="active" class="nav-link icon-link me-2 position-relative">
+                    <i class="fas fa-bell icon"></i>
+                    <span *ngIf="hasUnread" class="notification-dot"></span>
+                </a>
+                  
+  
                 <!-- Only show Cart if logged in -->
                 <a *ngIf="isLoggedIn" routerLink="/cart" routerLinkActive="active" class="nav-link icon-link">
                     <i class="fas fa-shopping-cart icon"></i>

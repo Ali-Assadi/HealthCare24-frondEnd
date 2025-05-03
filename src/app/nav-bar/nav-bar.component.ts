@@ -7,11 +7,12 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
+  styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
   currentRoute: string = '';
   isLoggedIn: boolean = false;
+  hasUnread: boolean = false;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
@@ -23,7 +24,26 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+        this.checkLoginStatus();
+        this.checkNotifications();
+      }
+    });
+
     this.checkLoginStatus();
+    this.checkNotifications();
+  }
+
+  checkNotifications() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    fetch(`http://localhost:3000/api/notifications/unread/${email}`)
+      .then((res) => res.json())
+      .then((data) => (this.hasUnread = data.unreadCount > 0))
+      .catch(() => (this.hasUnread = false));
   }
 
   checkLoginStatus() {
@@ -48,7 +68,6 @@ export class NavBarComponent {
         return '#2c3e50';
     }
   }
-  
 
   collapseMenu(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -57,11 +76,10 @@ export class NavBarComponent {
       navbarCollapse.classList.remove('show');
     }
   }
-  
+
   logout(): void {
     localStorage.removeItem('userEmail');
     this.isLoggedIn = false;
     this.router.navigate(['/sign-in']);
   }
-  
 }

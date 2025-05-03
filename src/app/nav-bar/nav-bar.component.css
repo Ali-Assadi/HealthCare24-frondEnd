@@ -42,3 +42,15 @@ body {
 .icon-link.active .icon {
   color: #000;
 }
+.icon-link:hover .fa-bell {
+  color: #FFD700; /* gold highlight on hover */
+}
+.notification-dot {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
