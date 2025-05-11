@@ -43,6 +43,25 @@ import { ExercisePlanComponent } from './fitness/exercise-plan/exercise-plan.com
 import { MyExercisePlanComponent } from './fitness/my-exercise-plan/my-exercise-plan.component';
 import { AdminExerciseComponent } from './admin-exercise/admin-exercise.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { HEALTHYMEALSComponent } from './nutrition/information/healthy-meals/healthy-meals.component';
+import { DIETS1Component } from './nutrition/information/diets1/diets1.component';
+import { DIETS2Component } from './nutrition/information/diets2/diets2.component';
+import { DIETS3Component } from './nutrition/information/diets3/diets3.component';
+import { DIETS4Component } from './nutrition/information/diets4/diets4.component';
+import { HEALTHYRECIPES1Component } from './nutrition/information/healthy-recipes1/healthy-recipes1.component';
+import { HEALTHYRECIPES2Component } from './nutrition/information/healthy-recipes2/healthy-recipes2.component';
+import { HEALTHYRECIPES3Component } from './nutrition/information/healthy-recipes3/healthy-recipes3.component';
+import { HEALTHYRECIPES4Component } from './nutrition/information/healthy-recipes4/healthy-recipes4.component';
+import { STRENGTHTRAINING1Component } from './fitness/fitnessComponents/strength-training1/strength-training1.component';
+import { STRENGTHTRAINING2Component } from './fitness/fitnessComponents/strength-training2/strength-training2.component';
+import { STRENGTHTRAINING3Component } from './fitness/fitnessComponents/strength-training3/strength-training3.component';
+import { STRENGTHTRAINING4Component } from './fitness/fitnessComponents/strength-training4/strength-training4.component';
+import { CARDIOFITNESS1Component } from './fitness/fitnessComponents/cardio-fitness1/cardio-fitness1.component';
+import { CARDIOFITNESS2Component } from './fitness/fitnessComponents/cardio-fitness2/cardio-fitness2.component';
+import { CARDIOFITNESS3Component } from './fitness/fitnessComponents/cardio-fitness3/cardio-fitness3.component';
+import { CARDIOFITNESS4Component } from './fitness/fitnessComponents/cardio-fitness4/cardio-fitness4.component';
+import { CARDIOFITNESS5Component } from './fitness/fitnessComponents/cardio-fitness5/cardio-fitness5.component';
+import { CARDIOFITNESS6Component } from './fitness/fitnessComponents/cardio-fitness6/cardio-fitness6.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -52,10 +71,31 @@ export const routes: Routes = [
   { path: 'fitness', component: FitnessComponent },
   { path: 'exercise-plan', component: ExercisePlanComponent },
   { path: 'my-exercise-plan', component: MyExercisePlanComponent },
+  { path: 'strength-training1', component: STRENGTHTRAINING1Component },
+  { path: 'strength-training2', component: STRENGTHTRAINING2Component },
+  { path: 'strength-training3', component: STRENGTHTRAINING3Component },
+  { path: 'strength-training4', component: STRENGTHTRAINING4Component },
+  { path: 'CARDIO-FITNESS1', component: CARDIOFITNESS1Component },
+  { path: 'CARDIO-FITNESS2', component: CARDIOFITNESS2Component },
+  { path: 'CARDIO-FITNESS3', component: CARDIOFITNESS3Component },
+  { path: 'CARDIO-FITNESS4', component: CARDIOFITNESS4Component },
+  { path: 'CARDIO-FITNESS5', component: CARDIOFITNESS5Component },
+  { path: 'CARDIO-FITNESS6', component: CARDIOFITNESS6Component },
+
   //Nutrition
   { path: 'nutrition', component: NutritionComponent },
   { path: 'diet-plan', component: DietPlanComponent },
   { path: 'my-dietPlan', component: MyDietPlanComponent },
+  { path: 'healthy-meals', component: HEALTHYMEALSComponent },
+  { path: 'diets1', component: DIETS1Component },
+  { path: 'diets2', component: DIETS2Component },
+  { path: 'diets3', component: DIETS3Component },
+  { path: 'diets4', component: DIETS4Component },
+  { path: 'healthy-recips1', component: HEALTHYRECIPES1Component },
+  { path: 'healthy-recips2', component: HEALTHYRECIPES2Component },
+  { path: 'healthy-recips3', component: HEALTHYRECIPES3Component },
+  { path: 'healthy-recips4', component: HEALTHYRECIPES4Component },
+
 
   { path: 'sign-in', component: SignInComponent },
   { path: 'subscribe', component: SubscribeComponent },
