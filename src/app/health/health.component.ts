@@ -5,26 +5,34 @@ import {
   Renderer2,
   QueryList,
   ViewChildren,
+  OnInit,
 } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-health',
-  imports: [FooterComponent, RouterLink],
+  imports: [FooterComponent, RouterLink, CommonModule],
   templateUrl: './health.component.html',
   styleUrls: ['./health.component.css'],
 })
-export class HealthComponent {
+export class HealthComponent implements OnInit {
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
+  products: any[] = [];
 
   constructor(
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
+
+  ngOnInit() {
+    this.loadProducts();
+  }
 
   scrollTo(sectionId: string): void {
     this.viewportScroller.scrollToAnchor(sectionId);
@@ -46,7 +54,15 @@ export class HealthComponent {
     });
   }
 
-  // 🔹 Log the view to backend
+  // Load products from MongoDB
+  loadProducts() {
+    this.http.get<any[]>('http://localhost:3000/api/products').subscribe({
+      next: (data) => (this.products = data),
+      error: (err) => console.error('Failed to load products', err),
+    });
+  }
+
+  // Log the view to backend
   logView(topic: string) {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
@@ -58,5 +74,34 @@ export class HealthComponent {
         section: 'health',
       })
       .subscribe();
+  }
+  addToCart(product: any) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    this.http
+      .post(`http://localhost:3000/api/cart/${userId}/add`, {
+        productId: product._id,
+        quantity: 1,
+      })
+      .subscribe({
+        next: () => alert(`${product.name} added to cart.`),
+        error: (err) => console.error('Failed to add to cart', err),
+      });
+  }
+
+  buyNow(product: any) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    this.http
+      .post(`http://localhost:3000/api/cart/${userId}/add`, {
+        productId: product._id,
+        quantity: 1,
+      })
+      .subscribe({
+        next: () => this.router.navigate(['/cart']),
+        error: (err) => console.error('Failed to buy now', err),
+      });
   }
 }

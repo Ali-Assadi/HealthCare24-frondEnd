@@ -16,7 +16,11 @@ export class SignInComponent {
   email = '';
   password = '';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   signIn() {
     this.http
@@ -32,10 +36,12 @@ export class SignInComponent {
           }
 
           localStorage.setItem('userEmail', response.email);
+          localStorage.setItem('userId', response._id);
+
           this.authService.setAdminStatus(response.isAdmin || false);
 
           alert('Signin success!');
-
+          console.log(response);
           if (response.mustUpdate) {
             this.router.navigate(['/update-password']);
           } else if (response.isAdmin) {
