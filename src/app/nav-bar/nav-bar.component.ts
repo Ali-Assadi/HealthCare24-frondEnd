@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { CartService } from '../service/cart.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,21 +10,21 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   currentRoute: string = '';
   isLoggedIn: boolean = false;
   hasUnread: boolean = false;
+  hasCartItems = false;
 
-  constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.url;
-        this.checkLoginStatus();
-      }
-    });
-  }
+  constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit() {
+    const userId = localStorage.getItem('userId');
+
+    this.checkLoginStatus();
+    this.checkNotifications();
+
+    // 🔁 Update current route + login + notifications
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
@@ -32,8 +33,15 @@ export class NavBarComponent {
       }
     });
 
-    this.checkLoginStatus();
-    this.checkNotifications();
+    // 🔴 Check cart state on app load
+    if (userId) {
+      this.cartService.checkCart(userId);
+    }
+
+    // 🔁 Subscribe to cart updates
+    this.cartService.hasItems$.subscribe((hasItems) => {
+      this.hasCartItems = hasItems;
+    });
   }
 
   checkNotifications() {
@@ -79,7 +87,9 @@ export class NavBarComponent {
 
   logout(): void {
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userId');
     this.isLoggedIn = false;
+    this.cartService.setCartState(false);
     this.router.navigate(['/sign-in']);
   }
 }

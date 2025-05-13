@@ -35,31 +35,16 @@
       
       
     <!-- Strength Training Section -->
-    <section id="strength-training" class="strength-training new-section-left">
+    <section id="strength-training" class="strength-training new-section-left fade-in" #fadeElement appFadeIn>
         <div class="text-container">
             <h3>STRENGTH TRAINING</h3>
             <div class="underline"></div>
             <div class="flex-center">
                 <div class="strength-section">
-                    <article class="news-item">
-                        <img src="assets/fitness/weightlifting-1.jpeg" alt="News Image"  routerLink="/strength-training1">
-                        <h3>Benefits of Weightlifting</h3>
-                        <p>Weightlifting enhances muscle strength, boosts metabolism, and improves overall health...</p>
-                    </article>
-                    <article class="news-item" routerLink="/strength-training2">
-                        <img src="assets/fitness/homeWorkOut-2.jpg" alt="News Image">
-                        <h3>Effective Home Workouts</h3>
-                        <p>No gym? No problem! Discover strength-building exercises you can do at home...</p>
-                    </article>
-                    <article class="news-item" routerLink="/strength-training3">
-                        <img src="assets/fitness/proper-form-3.jpg" alt="News Image">
-                        <h3>Mastering Proper Form</h3>
-                        <p>Using proper form during strength training helps prevent injuries and maximize results...</p>
-                    </article>
-                    <article class="news-item" routerLink="/strength-training4">
-                        <img src="assets/fitness/resistance-bands-4.png" alt="News Image">
-                        <h3>Resistance Bands for Strength</h3>
-                        <p>Resistance bands are portable and effective tools to build muscle strength anywhere...</p>
+                    <article *ngFor="let item of strengthArticles" class="news-item fade-in" #fadeElement appFadeIn [routerLink]="[item.route]" (click)="logView(item.route)">
+                        <img [src]="item.image" [alt]="item.title">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
                     </article>
                 </div>
             </div>
@@ -67,41 +52,16 @@
     </section>
 
     <!-- Cardio Section -->
-    <section id="cardio" class="cardio new-section-left fade-in"#fadeElement appFadeIn>
+    <section id="cardio" class="cardio new-section-left fade-in" #fadeElement appFadeIn>
         <div class="text-container">
             <h3>CARDIO FITNESS</h3>
             <div class="underline"></div>
             <div class="flex-center">
                 <div class="news-section">
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS1">
-                        <img src="assets/fitness/running-1.png" alt="News Image">
-                        <h3>How Running Improves Health</h3>
-                        <p>Running strengthens the heart, burns calories, and enhances endurance...</p>
-                    </article>
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS2">
-                        <img src="assets/fitness/cycling-2.png" alt="News Image">
-                        <h3>The Benefits of Cycling</h3>
-                        <p>Cycling is a low-impact workout that boosts cardiovascular health...</p>
-                    </article>
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS3">
-                        <img src="assets/fitness/rope-3.jpeg" alt="News Image">
-                        <h3>Jump Rope for Cardio</h3>
-                        <p>Jumping rope improves coordination, agility, and cardiovascular strength in minutes a day...</p>
-                    </article>
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS4">
-                        <img src="assets/fitness/HIIT-4.jpg" alt="News Image">
-                        <h3>HIIT: Maximum Burn in Less Time</h3>
-                        <p>High-Intensity Interval Training (HIIT) is perfect for quick, effective cardio workouts...</p>
-                    </article>
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS5">
-                        <img src="assets/fitness/swimming-5.png" alt="News Image">
-                        <h3>Swimming for Full-Body Cardio</h3>
-                        <p>Swimming works your whole body and is excellent for heart and lung health...</p>
-                    </article>
-                    <article class="news-item fade-in"#fadeElement appFadeIn routerLink="/CARDIO-FITNESS6">
-                        <img src="assets/fitness/rowing-workout-6.jpg" alt="News Image">
-                        <h3>Rowing Workouts for Endurance</h3>
-                        <p>Rowing builds cardiovascular endurance while strengthening muscles across the body...</p>
+                    <article *ngFor="let item of cardioArticles" class="news-item fade-in" #fadeElement appFadeIn [routerLink]="[item.route]" (click)="logView(item.route)">
+                        <img [src]="item.image" [alt]="item.title">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
                     </article>
                 </div>
             </div>

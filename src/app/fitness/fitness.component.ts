@@ -1,35 +1,66 @@
-import { Component, HostListener, ElementRef, Renderer2, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  ElementRef,
+  Renderer2,
+  QueryList,
+  ViewChildren,
+  OnInit,
+} from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
-import { FooterComponent } from "../footer/footer.component";
+import { FooterComponent } from '../footer/footer.component';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-fitness',
-  imports: [FooterComponent,FormsModule,CommonModule,RouterLink],
+  standalone: true,
+  imports: [FooterComponent, FormsModule, CommonModule, RouterLink],
   templateUrl: './fitness.component.html',
-  styleUrl: './fitness.component.css'
+  styleUrl: './fitness.component.css',
 })
-export class FitnessComponent {
+export class FitnessComponent implements OnInit {
   selectedGoal: string = 'loss';
   isLoggedIn: boolean = false;
+  hasExercisePlan = false;
+
+  strengthArticles: any[] = [];
+  cardioArticles: any[] = [];
+
+  @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
+
+  constructor(
+    private viewportScroller: ViewportScroller,
+    private renderer: Renderer2,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    this.checkLoginStatus();
+    this.loadArticles('strength');
+    this.loadArticles('cardio');
+
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http.get(`http://localhost:3000/api/user/${email}`).subscribe({
+      next: (user: any) => {
+        this.hasExercisePlan = user.exercisePlan?.length > 0;
+      },
+      error: (err) => console.error('❌ Failed to fetch user data.', err),
+    });
+  }
 
   checkLoginStatus() {
     const userEmail = localStorage.getItem('userEmail');
     this.isLoggedIn = !!userEmail;
   }
-  
-  //Scroll Method
-  @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
-  constructor(
-    private viewportScroller: ViewportScroller,
-    private renderer: Renderer2,
-    private http : HttpClient
-  ) {}
+
   scrollTo(sectionId: string): void {
     this.viewportScroller.scrollToAnchor(sectionId);
   }
+
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     if (!this.fadeElements) return;
@@ -41,41 +72,59 @@ export class FitnessComponent {
       }
     });
   }
+
   generatePlan() {
     const email = localStorage.getItem('userEmail');
     if (!email) return alert('You must be signed in.');
 
-    this.http.post('http://localhost:3000/api/generate-exercise-plan', {
-      email,
-      goal: this.selectedGoal
-    }).subscribe({
-      next: (res) => {
-        alert('Your workout plan has been saved!');
-        console.log(res);
-      },
-      error: () => alert('Failed to generate workout plan.')
-    });
-  }
-  hasExercisePlan = false;
-  ngOnInit(): void {
-      this.checkLoginStatus();
-      const email = localStorage.getItem('userEmail');
-      this.http.get(`http://localhost:3000/api/user/${email}`).subscribe({
-        next: (user: any) => {
-        this.hasExercisePlan = user.exercisePlan?.length > 0;
-      }
-    });
-  }
-  requestChange(){
-      const email = localStorage.getItem('userEmail');
-      if (!email) return alert('You must be signed in.');
-  
-      this.http.post('http://localhost:3000/api/request-new-plan', {
+    this.http
+      .post('http://localhost:3000/api/generate-exercise-plan', {
         email,
-        message: `User ${email} is requesting a new Exercise plan.`
-      }).subscribe({
-        next: () => alert('📩 Request sent to admin!'),
-        error: () => alert('❌ Failed to send request to admin.')
+        goal: this.selectedGoal,
+      })
+      .subscribe({
+        next: () => alert('Your workout plan has been saved!'),
+        error: () => alert('Failed to generate workout plan.'),
       });
+  }
+
+  requestChange() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return alert('You must be signed in.');
+
+    this.http
+      .post('http://localhost:3000/api/request-new-plan', {
+        email,
+        message: `User ${email} is requesting a new Exercise plan.`,
+      })
+      .subscribe({
+        next: () => alert('📩 Request sent to admin!'),
+        error: () => alert('❌ Failed to send request to admin.'),
+      });
+  }
+
+  loadArticles(category: 'strength' | 'cardio') {
+    this.http
+      .get<any[]>(`http://localhost:3000/api/fitnessArticles/${category}`)
+      .subscribe({
+        next: (data) => {
+          if (category === 'strength') this.strengthArticles = data;
+          else if (category === 'cardio') this.cardioArticles = data;
+        },
+        error: (err) =>
+          console.error(`Failed to load ${category} articles`, err),
+      });
+  }
+  logView(topic: string) {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http
+      .post('http://localhost:3000/api/log-view', {
+        email,
+        topic,
+        section: 'health', // or 'fitness', or 'nutrition'
+      })
+      .subscribe();
   }
 }

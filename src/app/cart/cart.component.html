@@ -1,17 +1,19 @@
-<!-- Updated Cart + Orders View -->
 <body>
-<!-- Updated Cart + Orders View with Working PDF -->
+<!-- Cart View -->
 <div *ngIf="cart && cart.items.length > 0; else emptyCart" class="cart-wrapper">
   <h2>Your Cart</h2>
+
   <div *ngFor="let item of cart.items" class="cart-item">
     <p><strong>{{ item.productId.name }}</strong></p>
     <p>Quantity: {{ item.quantity }}</p>
-    <p>Price: ${{ item.price }}</p>
+    <p>Price: ${{ item.price.toFixed(2) }}</p>
     <button class="remove-btn" (click)="removeItem(item.productId._id)">Remove</button>
   </div>
+
   <hr />
+
   <div class="cart-summary">
-    <p><strong>Total: ${{ cart.totalPrice }}</strong></p>
+<p><strong>Total: ${{ cart.totalPrice.toFixed(2) }}</strong></p>
     <div class="cart-buttons">
       <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
       <button class="purchase-btn" (click)="purchase()">Purchase</button>
@@ -19,42 +21,52 @@
   </div>
 </div>
 
+<!-- Empty Cart View -->
 <ng-template #emptyCart>
-  <p class="empty-msg">🛒 Your cart is empty.</p>
+  <div class="cart-wrapper text-center">
+    <h2>Your Cart is Empty</h2>
+    <p class="empty-msg">Looks like you haven't added anything yet.</p>
+    <img src="../../assets/cart/empty-cart.png" alt="Empty Cart" style="width: 180px; margin-top: 20px;" />
+  </div>
 </ng-template>
 
-<hr />
+<!-- View Orders Button -->
+<button class="view-orders-btn" (click)="showOrders()">📦 View My Orders</button>
 
-<div class="orders-wrapper">
-  <h2>🧾 My Orders</h2>
-  <div *ngIf="orders.length === 0">
-    <p>You have no orders yet.</p>
-  </div>
+<!-- Orders Modal Popup -->
+<div class="orders-modal" *ngIf="showOrdersPopup">
+  <div class="orders-wrapper">
+    <button class="close-btn" (click)="closeOrders()">✖ Close</button>
+    <h2>🧾 My Orders</h2>
 
-  <div *ngFor="let order of orders" class="order-box">
-    <div class="order-header">
-      <p><strong>Order ID:</strong> {{ order._id }}</p>
-      <p><strong>Date:</strong> {{ order.createdAt | date: 'medium' }}</p>
-      <p><strong>Status:</strong> {{ order.status }}</p>
+    <div *ngIf="orders.length === 0">
+      <p>You have no orders yet.</p>
     </div>
 
-    <div class="order-items">
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.productId.name }} - ${{ item.price }} × {{ item.quantity }}
-        </li>
-      </ul>
-    </div>
+    <div *ngFor="let order of orders" class="order-box">
+      <div class="order-header">
+        <p><strong>Order ID:</strong> {{ order._id }}</p>
+        <p><strong>Date:</strong> {{ order.createdAt | date: 'medium' }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+      </div>
 
-    <p class="order-total"><strong>Total: ${{ order.totalPrice }}</strong></p>
+      <div class="order-items">
+        <ul>
+          <li *ngFor="let item of order.items">
+            {{ item.productId.name }} - ${{ item.price }} × {{ item.quantity }}
+          </li>
+        </ul>
+      </div>
 
-    <div class="order-actions">
-      <button (click)="downloadReceipt(order)">Download Receipt (PDF)</button>
+      <p class="order-total"><strong>Total: ${{ order.totalPrice }}</strong></p>
+
+      <div class="order-actions">
+        <button (click)="downloadReceipt(order)">Download Receipt (PDF)</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Script tag for jsPDF -->
+<!-- jsPDF CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 </body>

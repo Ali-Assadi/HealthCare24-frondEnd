@@ -15,13 +15,18 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-health',
+  standalone: true,
   imports: [FooterComponent, RouterLink, CommonModule],
   templateUrl: './health.component.html',
   styleUrls: ['./health.component.css'],
 })
 export class HealthComponent implements OnInit {
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
+
   products: any[] = [];
+  brainArticles: any[] = [];
+  heartArticles: any[] = [];
+  sleepArticles: any[] = [];
 
   constructor(
     private viewportScroller: ViewportScroller,
@@ -32,6 +37,9 @@ export class HealthComponent implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.loadArticles('brain');
+    this.loadArticles('heart');
+    this.loadArticles('sleep');
   }
 
   scrollTo(sectionId: string): void {
@@ -48,10 +56,25 @@ export class HealthComponent implements OnInit {
     this.fadeElements.forEach((element) => {
       const nativeElement = element.nativeElement;
       const rect = nativeElement.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.8 && rect.bottom >= 0) {
+      if (rect.top < window.innerHeight * 0.85 && rect.bottom >= 0) {
         this.renderer.addClass(nativeElement, 'active');
       }
     });
+  }
+
+  // Load health articles by category
+  loadArticles(category: 'brain' | 'heart' | 'sleep') {
+    this.http
+      .get<any[]>(`http://localhost:3000/api/healthArticles/${category}`)
+      .subscribe({
+        next: (data) => {
+          if (category === 'brain') this.brainArticles = data;
+          else if (category === 'heart') this.heartArticles = data;
+          else if (category === 'sleep') this.sleepArticles = data;
+        },
+        error: (err) =>
+          console.error(`Failed to load ${category} articles`, err),
+      });
   }
 
   // Load products from MongoDB
@@ -62,7 +85,7 @@ export class HealthComponent implements OnInit {
     });
   }
 
-  // Log the view to backend
+  // Log user view of article
   logView(topic: string) {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
@@ -71,10 +94,12 @@ export class HealthComponent implements OnInit {
       .post('http://localhost:3000/api/log-view', {
         email,
         topic,
-        section: 'health',
+        section: 'health', // or 'fitness', or 'nutrition'
       })
       .subscribe();
   }
+
+  // Add product to cart
   addToCart(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
@@ -90,6 +115,7 @@ export class HealthComponent implements OnInit {
       });
   }
 
+  // Add product to cart and navigate to cart
   buyNow(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
