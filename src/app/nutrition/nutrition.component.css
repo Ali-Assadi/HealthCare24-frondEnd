@@ -1,35 +1,48 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #d8f3dc;
+    color: #333;
+}
+
+/* Header Section */
 .head {
     position: relative;
+}
+
+article {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+article:hover {
+    cursor: pointer;
+    transform: scale(1.05);
 }
 
 .head-img {
     height: 45dvh;
     width: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Updated to contain */
 }
 
 .head-text {
-    background: #fff8f0d2;
-    color: black;
+    background: #fff8f0d2; /* Updated background */
+    color: black; /* Updated color */
     margin-left: 3dvh;
     padding: 1dvh 1dvw;
     position: absolute;
-    bottom: calc(10dvh - 13%);
+    bottom: calc(10dvh - 13%); /* Adjusted bottom */
     text-align: center;
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box-shadow */
 }
 
 .head-text-h1 {
     font-weight: bold;
+    font-size: 36px; /* Reverted font-size */
 }
 
-.healthy-meals, .diets, .healthy-recipes {
-    display: flex;
-    align-items: stretch;
-    width: 80%;
-    margin: 0 auto;
-    animation: fadeIn 1.2s ease-in-out;
-}
-
+/* Section Layout */
 .text-container {
     background: #FFF8F0; /* light peach */
     padding: 40px;
@@ -44,6 +57,8 @@
     color: #FF6347;
     font-weight: bold;
     margin: 0;
+    font-size: large; /* Updated font-size */
+    text-align: left; /* Updated text-align */
 }
 
 .underline {
@@ -51,6 +66,9 @@
     height: 3px;
     background: #FF6347; /* tomato red */
     margin-top: 5px;
+    margin-left: auto; /* Updated margin */
+    margin-right: auto; /* Updated margin */
+    border-radius: 2px; /* Added border-radius */
 }
 
 .text-container h2 {
@@ -58,6 +76,7 @@
     font-size: 24px;
     font-weight: bold;
     margin-top: 20px;
+    text-align: left; /* Updated text-align */
 }
 
 .image-container {
@@ -68,23 +87,31 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
 }
 
 .diets {
-    margin-top: 1%;
+    margin-top: 2%; /* Updated margin-top */
     width: 100%;
     background: #EAF2F2;
-    padding: 40px 0;
+    padding: 40px 20px; /* Added horizontal padding */
     text-align: center;
     flex-direction: column;
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
 }
 
 .diet-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
     gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 20px auto; /* Added top/bottom margin */
+    padding: 20px; /* Added padding */
+    background: white; /* Added background */
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
 }
 
 .diet-item {
@@ -93,85 +120,132 @@
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    border: 2px solid #FF6347; /* Added border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added transition */
+}
+
+.diet-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background-color: #FFF0E0; /* Added hover background */
+    border-color: #ffa600; /* Added hover border color */
 }
 
 .diet-item img {
     width: 100%;
     object-fit: contain;
-    height: 25dvh;
+    height: 150px; /* Updated height */
     border-radius: 8px;
+    margin-bottom: 0.5rem; /* Added margin-bottom */
 }
-.diets h3{
+
+.diets h3 {
     font-size: large;
     text-align: left;
+    padding-left: 20px; /* Added padding */
+    margin-bottom: 10px;
 }
-.healthy-meals h3,h2{
+
+.healthy-meals h3,
+.healthy-meals h2 {
     text-align: left;
     font-size: large;
+    padding-left: 20px; /* Added padding */
 }
-.healthy-recipes{
-    width: 100%;
+
+.healthy-meals {
+    margin-top: 2%; /* Updated margin-top */
+    padding: 20px; /* Added padding */
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
 }
-.healthy-recipes h3{
-    text-align: left;
-}
-.healthy-recipes .text-container .image-container img{
-    width: 50px;
-    margin-left: 20px;
-}
-.healthy-recipes .text-container .image-container{
+
+.healthy-meals .image-container {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-content: space-between;
-    flex-grow: 1;
-}
-.recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    align-items: center;
 }
 
-.recipe-item {
-    margin-top: 15%;
-    background: white;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.recipe-item img {
+.healthy-recipes {
     width: 100%;
-    object-fit: contain;
-    height: 25dvh;
-    border-radius: 8px;
+    flex-direction: column; /* Stack text and recipes */
+    background: #FFF8F0; /* Consistent background */
+    padding: 20px; /* Added padding */
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
+    margin-top: 2%; /* Added margin-top */
+}
+
+.healthy-recipes .text-container {
+    text-align: center; /* Center the heading */
+    padding-bottom: 20px;
 }
 
 .healthy-recipes h3 {
     font-size: large;
     text-align: left;
+    padding-left: 20px; /* Added padding */
+    margin-bottom: 10px;
 }
-.healthy-recipes img{
+
+.healthy-recipes .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto; /* Added top/bottom margin */
+    padding: 20px; /* Added padding */
+    background: white; /* Added background */
+    border-radius: 10px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
+}
+
+.healthy-recipes .recipe-item {
+    margin-top: 0; /* Reset margin-top */
+    background: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 2px solid #FF6347; /* Added border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added transition */
+}
+
+.healthy-recipes .recipe-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background-color: #FFF0E0; /* Added hover background */
+    border-color: #ffa600; /* Added hover border color */
+}
+
+.healthy-recipes .recipe-item img {
     object-fit: contain;
     height: 150px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
 }
-.diets, .healthy-recipes {
-    background: #FFF8F0;
+
+.healthy-recipes img {
+    object-fit: contain;
+    height: 150px;
+    border-radius: 8px; /* Added border-radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
 }
 
 /* Card elements */
-.diet-item, .recipe-item {
+.diet-item,
+.recipe-item {
     background: #FFFFFF;
     border: 2px solid #FF6347;
 }
-.diet-item:hover, .recipe-item:hover {
+
+.diet-item:hover,
+.recipe-item:hover {
     background-color: #FFF0E0;
     border-color: #ffa600;
     transition: 0.3s ease;
 }
+
 html {
     scroll-behavior: smooth;
 }
@@ -187,6 +261,7 @@ html {
     opacity: 1;
     transform: translateY(0);
 }
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -198,6 +273,7 @@ html {
         transform: translateY(0);
     }
 }
+
 .btn-custom {
     background-color: #FF6347;
     color: white;
@@ -206,72 +282,76 @@ html {
     border: none;
     border-radius: 10px;
     transition: 0.3s ease;
-  }
-  
-  .btn-custom:hover {
+}
+
+.btn-custom:hover {
     background-color: #e44a2d;
-  }
-  
-  .diet-plan ul {
+}
+
+.diet-plan ul {
     padding-left: 0;
     text-align: left;
     max-width: 600px;
     margin: 0 auto;
-  }
-  
-  .diet-plan li {
+}
+
+.diet-plan li {
     background: #fff8f0;
     border: 1px solid #ffa07a;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 8px;
-  }
-  .diet-plan {
+}
+
+.diet-plan {
     margin-top: 60px;
     padding: 40px 20px;
     background-color: #fff8f0;
     border-top: 4px dashed #ffa07a;
     border-radius: 20px;
-  }
-  
-  .diet-plan h3 {
+}
+
+.diet-plan h3 {
     color: #A63D2E;
     font-weight: 700;
     margin-bottom: 20px;
-  }
-  
-  .diet-plan p {
+    text-align: center; /* Added text-align */
+}
+
+.diet-plan p {
     font-size: 16px;
     color: #333;
     margin-bottom: 40px;
-  }
-  
-  .plan-week {
+    text-align: center; /* Added text-align */
+}
+
+.plan-week {
     background: #ffffff;
     border: 2px solid #FF6347;
     border-radius: 15px;
     padding: 25px;
-    margin: 0 auto;
+    margin: 20px auto; /* Added margin */
     width: 90%;
     max-width: 600px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
-  }
-  
-  .plan-week:hover {
+}
+
+.plan-week:hover {
     transform: translateY(-4px);
     background-color: #fff0e5;
     border-color: #ff7c4d;
-  }
-  
-  .plan-week h5 {
+}
+
+.plan-week h5 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #FF6347;
-  }
-  
-  .plan-day li {
+    text-align: center; /* Added text-align */
+}
+
+.plan-day li {
     text-align: left;
     background-color: #fff5ec;
     border: 1px dashed #ffa07a;
@@ -283,63 +363,166 @@ html {
     display: flex;
     align-items: center;
     gap: 6px;
-  }
-  
-  .plan-day li strong {
+}
+
+.plan-day li strong {
     color: #A63D2E;
-  }
-  /* Section background + spacing */
+}
+
+/* Section background + spacing */
 .plan-actions-section {
     background: #FFF4EC;
-    padding: 40px 0;
+    padding: 40px 20px; /* Added horizontal padding */
     border-radius: 20px;
     margin: 40px auto;
     max-width: 900px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-  }
-  
-  /* Buttons inside action section */
-  .action-buttons .btn {
+}
+
+/* Buttons inside action section */
+.action-buttons .btn {
     padding: 14px 28px;
     font-weight: 600;
     border-radius: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     font-size: 16px;
-  }
-  
-  .btn-generate-plan {
+}
+
+.btn-generate-plan {
     background-color: #FF6347;
     color: white;
     border: none;
-  }
-  
-  .btn-generate-plan:hover {
+}
+
+.btn-generate-plan:hover {
     background-color: #e0523a;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(255, 99, 71, 0.3);
-  }
-  
-  .btn-request-plan {
+}
+
+.btn-request-plan {
     background-color: #FFF;
     border: 2px solid #FFC107;
     color: #d88b00;
-  }
-  
-  .btn-request-plan:hover {
+}
+
+.btn-request-plan:hover {
     background-color: #fff8e1;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
-  }
-  
-  .btn-view-plan {
+}
+
+.btn-view-plan {
     background-color: #e0f7fa;
     border: 2px solid #00acc1;
     color: #007c91;
-  }
-  
-  .btn-view-plan:hover {
+}
+
+.btn-view-plan:hover {
     background-color: #b2ebf2;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 172, 193, 0.3);
-  }
-  
+}
+
+/* Product Section */
+.product-section {
+    padding: 40px 20px;
+    background: #f8f9fa; /* Light gray background */
+}
+
+.product-section .text-container {
+    background: transparent;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.product-section .text-container h3 {
+    color: #28a745; /* Green color */
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.product-section .underline {
+    background: #28a745;
+    margin: 0 auto 20px auto;
+    border-radius: 2px; /* Added border-radius */
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 20px;
+}
+
+.product-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.product-card img {
+    width: 100%;
+    max-height: 150px; /* Fixed max height for consistency */
+    object-fit: contain; /* Or 'cover' if you prefer cropping */
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.product-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #333;
+}
+
+.product-card p {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.7rem;
+    min-height: 50px; /* Ensure consistent height for descriptions */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.product-card strong {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.product-card button {
+    margin: 6px 4px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.product-card button:hover {
+    background-color: #388e3c;
+}
+
+.no-image {
+    background-color: #f0f0f0;
+    color: #777;
+    border-radius: 8px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
