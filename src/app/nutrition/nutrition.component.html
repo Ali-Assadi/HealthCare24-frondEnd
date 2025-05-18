@@ -7,11 +7,14 @@
     <title>Food & Nutrition</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="head" id="header">
-        <img class="head-img" src="assets/nutrition/head-bg.png">
+        <img class="head-img" src="assets/nutrition/head-bg.png" alt="Food & Nutrition Header">
         <div class="head-text">
             <h1 class="head-text-h1">Food & Nutrition</h1>
         </div>
@@ -55,16 +58,19 @@
         </div>
     </section>
 
-    <section id="healthy-meals" class="healthy-meals" *ngFor="let meal of meals">
+    <section id="healthy-meals" class="healthy-meals">
         <div class="text-container">
             <h3>HEALTHY MEALS</h3>
             <div class="underline"></div>
-            <h2 class="fade-in" #fadeElement appFadeIn>{{ meal.title }}</h2>
         </div>
-        <div class="image-container">
-            <img [src]="meal.image" [alt]="meal.title" (click)="logView(meal.route, 'nutrition')"
-                *ngIf="meal.image">
-            <div *ngIf="!meal.image" class="no-image">No Image Available</div>
+        <div class="article-grid">
+            <div class="article-item fade-in" *ngFor="let meal of healthyMeals" routerLink="/healthy-meals" #fadeElement appFadeIn>
+                <img [src]="meal.image" [alt]="meal.title" (click)="logView(meal.route, 'nutrition')"
+                    *ngIf="meal.image">
+                <div *ngIf="!meal.image" class="no-image">No Image Available</div>
+                <h2>{{ meal.title }}</h2>
+                <p>{{ meal.description }}</p>
+            </div>
         </div>
     </section>
 
@@ -89,13 +95,13 @@
             <h3>HEALTHY RECIPES</h3>
             <div class="underline"></div>
             <h2>Our test kitchen-created healthy recipes are sure to hit the spot.</h2>
-            <div class="recipe-grid">
-                <div class="recipe-item fade-in" *ngFor="let recipe of recipes" [routerLink]="[recipe.route]"
-                    (click)="logView(recipe.route, 'nutrition')" #fadeElement appFadeIn>
-                    <img [src]="recipe.image" [alt]="recipe.title" *ngIf="recipe.image" />
-                    <div *ngIf="!recipe.image" class="no-image">No Image Available</div>
-                    <p><strong>{{ recipe.title }}</strong></p>
-                </div>
+        </div>
+        <div class="recipe-grid">
+            <div class="recipe-item fade-in" *ngFor="let recipe of healthyRecipes" [routerLink]="[recipe.route]"
+                (click)="logView(recipe.route, 'nutrition')" #fadeElement appFadeIn>
+                <img [src]="recipe.image" [alt]="recipe.title" *ngIf="recipe.image" />
+                <div *ngIf="!recipe.image" class="no-image">No Image Available</div>
+                <p><strong>{{ recipe.title }}</strong></p>
             </div>
         </div>
     </section>

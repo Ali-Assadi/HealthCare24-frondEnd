@@ -75,11 +75,10 @@ body {
 }
 
 .strength-section {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling if needed */
-    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Force two equal-width columns */
+    gap: 20px; /* Adjust the gap between items */
+    padding: 20px; /* Add some padding around the grid */
     width: 95%;
     max-width: 1200px;
     margin: 0 auto;
@@ -87,14 +86,11 @@ body {
 
 .news-item {
     border: 2px solid #a29bfe;
-    width: 40dvh; /* Keep a fixed width for individual items */
-    min-width: 300px; /* Ensure a minimum width for responsiveness */
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    flex-shrink: 0; /* Prevent items from shrinking */
 }
 
 .news-item:hover {
@@ -124,32 +120,10 @@ body {
 }
 
 @media (max-width: 768px) {
-    .text-container {
-        padding: 40px 20px;
-    }
-
-    .head-text-h1 {
-        font-size: 28px;
-    }
-
-    .news-item h3 {
-        font-size: 16px;
-    }
-
-    .news-item p {
-        font-size: 13px;
-    }
-
     .strength-section {
-        width: 100%; /* Make horizontal scroll section full width on smaller screens */
-    }
-
-    .news-item {
-        width: 80vw; /* Adjust width of individual items on smaller screens */
-        min-width: auto;
+        grid-template-columns: 1fr; /* Display as a single column on smaller screens */
     }
 }
-
 html {
     scroll-behavior: smooth;
 }

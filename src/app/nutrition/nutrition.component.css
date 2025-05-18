@@ -1,260 +1,373 @@
+/* Reset and Basic Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #d8f3dc;
+    font-family: 'Nunito Sans', sans-serif; /* Professional and readable font */
+    background-color: #f4f6f8; /* Light, professional background */
     color: #333;
-}
-
-/* Header Section */
-.head {
-    position: relative;
-}
-
-article {
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-}
-
-article:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-}
-
-.head-img {
-    height: 45dvh;
-    width: 100%;
-    object-fit: contain; /* Updated to contain */
-}
-
-.head-text {
-    background: #fff8f0d2; /* Updated background */
-    color: black; /* Updated color */
-    margin-left: 3dvh;
-    padding: 1dvh 1dvw;
-    position: absolute;
-    bottom: calc(10dvh - 13%); /* Adjusted bottom */
-    text-align: center;
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box-shadow */
-}
-
-.head-text-h1 {
-    font-weight: bold;
-    font-size: 36px; /* Reverted font-size */
-}
-
-/* Section Layout */
-.text-container {
-    background: #FFF8F0; /* light peach */
-    padding: 40px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
-
-.text-container h3 {
-    color: #FF6347;
-    font-weight: bold;
+    line-height: 1.6;
     margin: 0;
-    font-size: large; /* Updated font-size */
-    text-align: left; /* Updated text-align */
-}
-
-.underline {
-    width: 50px;
-    height: 3px;
-    background: #FF6347; /* tomato red */
-    margin-top: 5px;
-    margin-left: auto; /* Updated margin */
-    margin-right: auto; /* Updated margin */
-    border-radius: 2px; /* Added border-radius */
-}
-
-.text-container h2 {
-    color: #333;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: left; /* Updated text-align */
-}
-
-.image-container {
-    flex: 1;
-}
-
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-.diets {
-    margin-top: 2%; /* Updated margin-top */
-    width: 100%;
-    background: #EAF2F2;
-    padding: 40px 20px; /* Added horizontal padding */
-    text-align: center;
-    flex-direction: column;
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-.diet-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    max-width: 1000px;
-    margin: 20px auto; /* Added top/bottom margin */
-    padding: 20px; /* Added padding */
-    background: white; /* Added background */
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-.diet-item {
-    background: white;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: 2px solid #FF6347; /* Added border */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added transition */
-}
-
-.diet-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FFF0E0; /* Added hover background */
-    border-color: #ffa600; /* Added hover border color */
-}
-
-.diet-item img {
-    width: 100%;
-    object-fit: contain;
-    height: 150px; /* Updated height */
-    border-radius: 8px;
-    margin-bottom: 0.5rem; /* Added margin-bottom */
-}
-
-.diets h3 {
-    font-size: large;
-    text-align: left;
-    padding-left: 20px; /* Added padding */
-    margin-bottom: 10px;
-}
-
-.healthy-meals h3,
-.healthy-meals h2 {
-    text-align: left;
-    font-size: large;
-    padding-left: 20px; /* Added padding */
-}
-
-.healthy-meals {
-    margin-top: 2%; /* Updated margin-top */
-    padding: 20px; /* Added padding */
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-.healthy-meals .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.healthy-recipes {
-    width: 100%;
-    flex-direction: column; /* Stack text and recipes */
-    background: #FFF8F0; /* Consistent background */
-    padding: 20px; /* Added padding */
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-    margin-top: 2%; /* Added margin-top */
-}
-
-.healthy-recipes .text-container {
-    text-align: center; /* Center the heading */
-    padding-bottom: 20px;
-}
-
-.healthy-recipes h3 {
-    font-size: large;
-    text-align: left;
-    padding-left: 20px; /* Added padding */
-    margin-bottom: 10px;
-}
-
-.healthy-recipes .recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    max-width: 1000px;
-    margin: 20px auto; /* Added top/bottom margin */
-    padding: 20px; /* Added padding */
-    background: white; /* Added background */
-    border-radius: 10px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-.healthy-recipes .recipe-item {
-    margin-top: 0; /* Reset margin-top */
-    background: white;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: 2px solid #FF6347; /* Added border */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added transition */
-}
-
-.healthy-recipes .recipe-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FFF0E0; /* Added hover background */
-    border-color: #ffa600; /* Added hover border color */
-}
-
-.healthy-recipes .recipe-item img {
-    object-fit: contain;
-    height: 150px;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-}
-
-.healthy-recipes img {
-    object-fit: contain;
-    height: 150px;
-    border-radius: 8px; /* Added border-radius */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
-}
-
-/* Card elements */
-.diet-item,
-.recipe-item {
-    background: #FFFFFF;
-    border: 2px solid #FF6347;
-}
-
-.diet-item:hover,
-.recipe-item:hover {
-    background-color: #FFF0E0;
-    border-color: #ffa600;
-    transition: 0.3s ease;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 html {
     scroll-behavior: smooth;
 }
 
+/* Container for centering content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+.head {
+    position: relative;
+    overflow: hidden; /* To contain the image */
+}
+
+.head-img {
+    height: 45vh; /* Larger, more impactful header */
+    width: 100%;
+    object-fit: cover; /* Cover the area, may crop */
+    filter: brightness(90%); /* Slightly darken for text contrast */
+}
+
+.head-text {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    color: #2c3e50; /* Dark, professional text color */
+    padding: 20px 30px;
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.head-text-h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* Section Titles */
+.text-container {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.text-container h3 {
+    color: #b35340; /* Rooibos Tea color */
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.underline {
+    width: 60px;
+    height: 4px;
+    background-color: #b35340; /* Rooibos Tea color */
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+.text-container h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+/* Product Section */
+.product-section {
+    padding: 60px 20px;
+    background-color: #fff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 30px;
+}
+
+.product-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.product-card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.product-card p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1rem;
+    min-height: 60px; /* Consistent description height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card strong {
+    color: #27ae60; /* Success color (you might want to adjust this) */
+    font-weight: 700;
+}
+
+.product-card button {
+    background-color: #b35340; /* Rooibos Tea color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out;
+    margin: 5px;
+}
+
+.product-card button:hover {
+    background-color: #964131; /* Darker shade of Rooibos Tea */
+}
+
+.no-image {
+    background-color: #eee;
+    color: #777;
+    border-radius: 8px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+/* Article Grid (Healthy Meals) */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.article-item {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.article-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.article-item img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.article-item h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+}
+
+.article-item p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* Diet Grid */
+.diet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+}
+
+.diet-item {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid #ddd;
+}
+
+.diet-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #b35340; /* Rooibos Tea color */
+}
+
+.diet-item img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.diet-item p strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* Recipe Grid */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+}
+
+.recipe-item {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.recipe-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-item img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.recipe-item p strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-top: 0.5rem;
+}
+
+/* Plan Actions Section */
+.plan-actions-section {
+    background-color: #f9f9f9;
+    padding: 60px 20px;
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 900px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.07);
+    text-align: center;
+}
+
+.plan-actions-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.plan-actions-section p {
+    color: #777;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.action-buttons .btn {
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    font-size: 1rem;
+    margin: 5px;
+    border: none;
+}
+
+.btn-generate-plan {
+    background-color: #b35340; /* Rooibos Tea color */
+    color: #fff;
+}
+
+.btn-generate-plan:hover {
+    background-color: #964131; /* Darker shade of Rooibos Tea */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(179, 83, 64, 0.3);
+}
+
+.btn-request-plan {
+    background-color: #f39c12; /* Example secondary color */
+    color: #fff;
+}
+
+.btn-request-plan:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+}
+
+.btn-view-plan {
+    background-color: #3498db; /* Example tertiary color */
+    color: #fff;
+}
+
+.btn-view-plan:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
 /* Fade-In Animation */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .fade-in.active {
@@ -262,267 +375,32 @@ html {
     transform: translateY(0);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+/* Responsive Design */
+@media (max-width: 768px) {
+    .head-text {
+        bottom: 5%;
+        left: 2%;
+        padding: 15px 20px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .head-text-h1 {
+        font-size: 2rem;
     }
-}
 
-.btn-custom {
-    background-color: #FF6347;
-    color: white;
-    padding: 12px 20px;
-    font-weight: 600;
-    border: none;
-    border-radius: 10px;
-    transition: 0.3s ease;
-}
+    .product-grid,
+    .article-grid,
+    .diet-grid,
+    .recipe-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 
-.btn-custom:hover {
-    background-color: #e44a2d;
-}
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
 
-.diet-plan ul {
-    padding-left: 0;
-    text-align: left;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.diet-plan li {
-    background: #fff8f0;
-    border: 1px solid #ffa07a;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-}
-
-.diet-plan {
-    margin-top: 60px;
-    padding: 40px 20px;
-    background-color: #fff8f0;
-    border-top: 4px dashed #ffa07a;
-    border-radius: 20px;
-}
-
-.diet-plan h3 {
-    color: #A63D2E;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-align: center; /* Added text-align */
-}
-
-.diet-plan p {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 40px;
-    text-align: center; /* Added text-align */
-}
-
-.plan-week {
-    background: #ffffff;
-    border: 2px solid #FF6347;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px auto; /* Added margin */
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-}
-
-.plan-week:hover {
-    transform: translateY(-4px);
-    background-color: #fff0e5;
-    border-color: #ff7c4d;
-}
-
-.plan-week h5 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #FF6347;
-    text-align: center; /* Added text-align */
-}
-
-.plan-day li {
-    text-align: left;
-    background-color: #fff5ec;
-    border: 1px dashed #ffa07a;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    font-size: 15px;
-    color: #444;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.plan-day li strong {
-    color: #A63D2E;
-}
-
-/* Section background + spacing */
-.plan-actions-section {
-    background: #FFF4EC;
-    padding: 40px 20px; /* Added horizontal padding */
-    border-radius: 20px;
-    margin: 40px auto;
-    max-width: 900px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-}
-
-/* Buttons inside action section */
-.action-buttons .btn {
-    padding: 14px 28px;
-    font-weight: 600;
-    border-radius: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    font-size: 16px;
-}
-
-.btn-generate-plan {
-    background-color: #FF6347;
-    color: white;
-    border: none;
-}
-
-.btn-generate-plan:hover {
-    background-color: #e0523a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 99, 71, 0.3);
-}
-
-.btn-request-plan {
-    background-color: #FFF;
-    border: 2px solid #FFC107;
-    color: #d88b00;
-}
-
-.btn-request-plan:hover {
-    background-color: #fff8e1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
-}
-
-.btn-view-plan {
-    background-color: #e0f7fa;
-    border: 2px solid #00acc1;
-    color: #007c91;
-}
-
-.btn-view-plan:hover {
-    background-color: #b2ebf2;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 172, 193, 0.3);
-}
-
-/* Product Section */
-.product-section {
-    padding: 40px 20px;
-    background: #f8f9fa; /* Light gray background */
-}
-
-.product-section .text-container {
-    background: transparent;
-    padding: 20px 0;
-    text-align: center;
-}
-
-.product-section .text-container h3 {
-    color: #28a745; /* Green color */
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 24px;
-    text-align: center;
-}
-
-.product-section .underline {
-    background: #28a745;
-    margin: 0 auto 20px auto;
-    border-radius: 2px; /* Added border-radius */
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    padding: 20px;
-}
-
-.product-card {
-    background: white;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0,0.1);
-    text-align: center;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.product-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.product-card img {
-    width: 100%;
-    max-height: 150px; /* Fixed max height for consistency */
-    object-fit: contain; /* Or 'cover' if you prefer cropping */
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-}
-
-.product-card h4 {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-    color: #333;
-}
-
-.product-card p {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-bottom: 0.7rem;
-    min-height: 50px; /* Ensure consistent height for descriptions */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.product-card strong {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.product-card button {
-    margin: 6px 4px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.product-card button:hover {
-    background-color: #388e3c;
-}
-
-.no-image {
-    background-color: #f0f0f0;
-    color: #777;
-    border-radius: 8px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
