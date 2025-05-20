@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { CartService } from '../service/cart.service'; // adjust path
 import jsPDF from 'jspdf';
-import { Cart } from '../models/cart.model'; // adjust path if needed
 
 @Component({
   selector: 'app-cart',
@@ -13,12 +11,11 @@ import { Cart } from '../models/cart.model'; // adjust path if needed
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent implements OnInit {
-  showOrdersPopup = false;
-  cart: Cart | null = null;
+  cart: any;
   orders: any[] = [];
   userId = localStorage.getItem('userId');
 
-  constructor(private http: HttpClient, private cartService: CartService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadCart();
@@ -27,18 +24,10 @@ export class CartComponent implements OnInit {
 
   loadCart() {
     if (!this.userId) return;
-    this.http
-      .get<Cart>(`http://localhost:3000/api/cart/${this.userId}`)
-      .subscribe({
-        next: (data) => {
-          this.cart = data;
-          this.cartService.setCartState(data.items.length > 0);
-        },
-        error: (err) => {
-          console.error('Error loading cart', err);
-          this.cartService.setCartState(false);
-        },
-      });
+    this.http.get(`http://localhost:3000/api/cart/${this.userId}`).subscribe({
+      next: (data) => (this.cart = data),
+      error: (err) => console.error('Error loading cart', err),
+    });
   }
 
   removeItem(productId: string) {
@@ -113,12 +102,5 @@ export class CartComponent implements OnInit {
     doc.text(`Total: $${order.totalPrice}`, 10, y + 10);
 
     doc.save(`receipt_${order._id}.pdf`);
-  }
-  showOrders() {
-    this.showOrdersPopup = true;
-  }
-
-  closeOrders() {
-    this.showOrdersPopup = false;
   }
 }

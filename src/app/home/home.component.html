@@ -16,42 +16,24 @@
     </div>
   </section>
 
-<!-- 🔁 Section: Recently Viewed Topics -->
-<section class="custom-section py-5 text-center" *ngIf="lastTopics.length">
-  <div class="container">
-    <h2 class="section-title">Your Recently Viewed Topics</h2>
-    <p class="section-subtitle">Here are the last topics you visited</p>
-    <div class="row mt-4">
-      <div class="col-md-3" *ngFor="let topic of lastTopics">
-        <a [routerLink]="['/' + topic]" class="recommendation-card">
-          <div class="recent-card">
-            <i class="fas fa-history feature-icon"></i>
-            <h5 class="topic-name">{{ formatTopicName(topic) }}</h5>
-            <p>Revisit this topic</p>
-          </div>
-        </a>
+  <!-- 🔁 Section 1.5: Recommended -->
+  <section class="custom-section py-5 text-center" *ngIf="recommendations.length">
+    <div class="container">
+      <h2 class="section-title">Recommended for You</h2>
+      <p class="section-subtitle">Based on what you've been exploring</p>
+      <div class="row mt-4">
+        <div class="col-md-3" *ngFor="let topic of recommendations">
+          <a [routerLink]="['/' + topic]" class="recommendation-card">
+            <div class="feature-card">
+              <i class="fas fa-star feature-icon"></i>
+              <h5 class="topic-name">{{ formatTopicName(topic) }}</h5>
+              <p>Click to revisit this article</p>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- 🌟 Section: Section-based Recommendations -->
-<section class="custom-section py-5 text-center" *ngIf="sectionRecommendations.length">
-  <div class="container">
-    <h2 class="section-title">You Might Also Like</h2>
-    <div class="row mt-4">
-      <div class="col-md-3" *ngFor="let rec of sectionRecommendations">
-        <a [routerLink]="[rec.route]" class="recommendation-card">
-          <div class="feature-card">
-            <img [src]="rec.image" class="img-fluid rounded mb-3" alt="{{ rec.title }}">
-            <h5 class="topic-name">{{ rec.title }}</h5>
-            <p>{{ rec.description | slice:0:60 }}...</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- Section 2: Featured Area -->
   <section class="custom-section py-5 text-center">
