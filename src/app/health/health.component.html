@@ -5,130 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health & Wellness</title>
-    <link rel="stylesheet" href="health.component.css">
 </head>
 
 <body>
 
-    <div class="head" id="header">
-        <img class="head-img" src="assets/health/wallpaper.png">
-        <div class="head-text">
-            <h1 class="head-text-h1">Health</h1>
-        </div>
+   <!-- Header Section -->
+<div class="head" id="header">
+    <img class="head-img" src="assets/health/wallpaper.png">
+    <div class="head-text">
+      <h1 class="head-text-h1">Health</h1>
     </div>
-<<<<<<< HEAD
-
-    <section id="brain-health" class="brain-health new-section-left">
-        <div class="text-container">
-            <h3>BRAIN HEALTH</h3>
-            <div class="underline"></div>
-            <div class="flex-center">
-                <div class="news-section">
-                    <article class="news-item fade-in" *ngFor="let article of brainArticles"
-                        [routerLink]="[article.route]" (click)="scrollToTop(); logView(article.route)" #fadeElement appFadeIn>
-                        <img [src]="article.image" alt="News Image">
-                        <h3>{{ article.title }}</h3>
-                        <p>{{ article.description }}</p>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="product-section fade-in" *ngIf="brainProducts.length > 0" #fadeElement appFadeIn>
-        <div class="text-container">
-            <h3>Brain Health Products</h3>
-            <div class="underline"></div>
-            <div class="product-grid">
-                <div class="product-card fade-in" *ngFor="let product of brainProducts" #fadeElement appFadeIn>
-                    <img [src]="product.image" [alt]="product.name">
-                    <h4>{{ product.name }}</h4>
-                    <p>{{ product.description }}</p>
-                    <p><strong>${{ product.price }}</strong></p>
-                    <button (click)="addToCart(product)">🛒 Add to Cart</button>
-                    <button (click)="buyNow(product)">💳 Buy Now</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="heart-health" class="heart-health new-section-left fade-in" #fadeElement appFadeIn>
-        <div class="text-container">
-            <h3>HEART HEALTH</h3>
-            <div class="underline"></div>
-            <div class="flex-center">
-                <div class="news-section">
-                    <article class="news-item fade-in" *ngFor="let article of heartArticles"
-                        [routerLink]="[article.route]" (click)="scrollToTop(); logView(article.route)" #fadeElement appFadeIn>
-                        <img [src]="article.image" alt="News Image">
-                        <h3>{{ article.title }}</h3>
-                        <p>{{ article.description }}</p>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
-    <app-footer></app-footer>
-=======
   </div>
   
   <!-- Brain Health Section -->
   <section id="brain-health" class="brain-health new-section-left">
-    <div class="text-container">
-      <h3>BRAIN HEALTH</h3>
-      <div class="underline"></div>
-      <div class="flex-center">
-        <div class="news-section">
-  
-          <article class="news-item" [routerLink]="['/brain-health-1']" (click)="scrollToTop(); logView('brain-health-1')">
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-1.webp" alt="News Image">
-            <h3>Is Alzheimer’s Hereditary?</h3>
-            <p>Alzheimer’s disease has a genetic component, but it’s not purely hereditary...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/brain-health-2']" (click)="scrollToTop(); logView('brain-health-2')">
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-2.jpg" alt="News Image">
-            <h3>Scientists: Why Women Live Longer Than Men</h3>
-            <p>Studies suggest biological and lifestyle factors contribute to women's longer lifespan...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/brain-health-3']" (click)="scrollToTop(); logView('brain-health-3')">
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-3.jpg" alt="News Image">
-            <h3>Cholesterol Changes Linked to Higher Dementia Risk</h3>
-            <p>New research finds that fluctuating cholesterol levels may increase the risk of cognitive decline and dementia over time.</p>
-          </article>
-  
-          <article class="news-item fade-in" [routerLink]="['/brain-health-4']" (click)="scrollToTop(); logView('brain-health-4')" #fadeElement appFadeIn>
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-4.jpg" alt="News Image">
-            <h3>Memory and Memory Loss, Explained</h3>
-            <p>Memory loss can be a normal part of aging, but certain factors like stress, diet, and exercise influence cognitive function.</p>
-          </article>
-  
-          <article class="news-item fade-in" [routerLink]="['/brain-health-5']" (click)="scrollToTop(); logView('brain-health-5')" #fadeElement appFadeIn>
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-5.jpg" alt="News Image">
-            <h3>This Blood Test for Alzheimer’s Is 90% Accurate</h3>
-            <p>Scientists have developed a blood test that detects early Alzheimer’s with high accuracy, offering hope for early diagnosis.</p>
-          </article>
-  
-          <article class="news-item fade-in" [routerLink]="['/brain-health-6']" (click)="scrollToTop(); logView('brain-health-6')" #fadeElement appFadeIn>
-            <img src="assets/health/BRAIN-HEALTH/BRAIN-HEALTH-6.jpg" alt="News Image">
-            <h3>Ozempic May Lower Your Risk of Cognitive Decline</h3>
-            <p>New studies show that diabetes medications like Ozempic might help protect brain health and reduce the risk of dementia.</p>
-          </article>
-        
-        </div>
-        
+  <div class="text-container">
+    <h3>BRAIN HEALTH</h3>
+    <div class="underline"></div>
+    <div class="flex-center">
+      <div class="news-section">
+        <article class="news-item fade-in" *ngFor="let article of brainArticles"
+          [routerLink]="[article.route]" (click)="scrollToTop(); logView(article.route)" #fadeElement appFadeIn>
+          <img [src]="article.image" alt="News Image">
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.description }}</p>
+        </article>
       </div>
     </div>
-  </section>
-<section class="product-section fade-in" #fadeElement appFadeIn>
+  </div>
+</section>
+
+
+  <!-- Heart Health Section -->
+<section id="heart-health" class="heart-health new-section-left fade-in" #fadeElement appFadeIn>
+  <div class="text-container">
+    <h3>HEART HEALTH</h3>
+    <div class="underline"></div>
+    <div class="flex-center">
+      <div class="news-section">
+        <article class="news-item fade-in" *ngFor="let article of heartArticles"
+          [routerLink]="[article.route]" (click)="scrollToTop(); logView(article.route)" #fadeElement appFadeIn>
+          <img [src]="article.image" alt="News Image">
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.description }}</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Here is Product Section-->
+<section class="product-section fade-in" *ngIf="loggedIn" #fadeElement appFadeIn>
   <div class="text-container">
     <h3>Brain Health Products</h3>
     <div class="underline"></div>
     <div class="product-grid">
-      <div class="product-card" *ngFor="let product of products">
+      <div class="product-card fade-in" *ngFor="let product of products" #fadeElement appFadeIn>
         <img [src]="product.image" [alt]="product.name">
-        
         <h4>{{ product.name }}</h4>
         <p>{{ product.description }}</p>
         <p><strong>${{ product.price }}</strong></p>
@@ -138,88 +70,9 @@
     </div>
   </div>
 </section>
-
-  <!-- Heart Health Section -->
-  <section id="heart-health" class="heart-health new-section-left fade-in" #fadeElement appFadeIn>
-    <div class="text-container">
-      <h3>HEART HEALTH</h3>
-      <div class="underline"></div>
-      <div class="flex-center">
-        <div class="news-section">
-  
-          <article class="news-item fade-in" [routerLink]="['/heart-health-1']" (click)="scrollToTop(); logView('heart-health-1')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-1.jpg" alt="News Image">
-            <h3>The Importance of a Healthy Diet for Heart Health</h3>
-            <p>A balanced diet rich in fruits, vegetables, whole grains...</p>
-          </article>
-  
-          <article class="news-item fade-in" [routerLink]="['/heart-health-2']" (click)="scrollToTop(); logView('heart-health-2')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-2.jpg" alt="News Image">
-            <h3>Regular Exercise for a Stronger Heart</h3>
-            <p>A balanced diet rich in fruits, vegetables, whole grains, lean proteins, and healthy fats can help reduce the risk of heart disease...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/heart-health-3']" (click)="scrollToTop(); logView('heart-health-3')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-3.jpg" alt="News Image">
-            <h3>Managing Cholesterol Levels</h3>
-            <p>High cholesterol levels can lead to the buildup of fatty deposits in the arteries, increasing the risk of heart disease...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/heart-health-4']" (click)="scrollToTop(); logView('heart-health-4')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-4.jpg" alt="News Image">
-            <h3>The Role of Stress Management in Heart Health</h3>
-            <p>Chronic stress can negatively affect the heart, raising blood pressure and increasing the risk of heart attacks...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/heart-health-5']" (click)="scrollToTop(); logView('heart-health-5')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-5.jpg" alt="News Image">
-            <h3>The Impact of Smoking on Heart Health</h3>
-            <p>Smoking is a major risk factor for heart disease. It damages blood vessels, raises blood pressure, and reduces oxygen supply to the heart...</p>
-          </article>
-  
-          <article class="news-item" [routerLink]="['/heart-health-6']" (click)="scrollToTop(); logView('heart-health-6')" #fadeElement appFadeIn>
-            <img src="assets/health/HEART-HEALTH/HEART-HEALTH-6.jpg" alt="News Image">
-            <h3>The Importance of Regular Health Screenings</h3>
-            <p>Regular check-ups and screenings, such as blood pressure measurements, cholesterol tests, and blood sugar levels...</p>
-          </article>
-  
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Better Sleep Section -->
-  <section id="better-sleep" class="better-sleep new-section-left fade-in" #fadeElement appFadeIn>
-    <div class="text-container">
-      <h3>BETTER SLEEP</h3>
-      <div class="underline"></div>
-      <div class="grid">
-        <div class="card" [routerLink]="['/better-sleep-1']" (click)="scrollToTop(); logView('better-sleep-1')">
-          <img src="assets/health/BETTER-SLEEP/BETTER-SLEEP-1.jpg"><br>
-          <h2>Could Blue Light Unlock Better Sleep in Adults?</h2>
-        </div>
-  
-        <div class="card" [routerLink]="['/better-sleep-2']" (click)="scrollToTop(); logView('better-sleep-2')">
-          <img src="assets/health/BETTER-SLEEP/BETTER-SLEEP-2.jpg"><br>
-          <h2>Why I Love the Sacriva Matthess for Great Sleep</h2>
-        </div>
-  
-        <div class="card" [routerLink]="['/better-sleep-3']" (click)="scrollToTop(); logView('better-sleep-3')">
-          <img src="assets/health/BETTER-SLEEP/BETTER-SLEEP-3.jpg"><br>
-          <h2>17 Products Our Editors Recommend for Better Sleep</h2>
-        </div>
-  
-        <div class="card" [routerLink]="['/better-sleep-4']" (click)="scrollToTop(); logView('better-sleep-4')">
-          <img src="assets/health/BETTER-SLEEP/BETTER-SLEEP-4.jpg"><br>
-          <h2>Our Bedding Pro's Favorite Blanket Costs Just <span class="price">$18</span></h2>
-        </div>
-      </div>
-    </div>
-  </section>
   
   <app-footer></app-footer>
   
->>>>>>> parent of 4848038 (update cart , track for user update home page)
 </body>
 
 </html>

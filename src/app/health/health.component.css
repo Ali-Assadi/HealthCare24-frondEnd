@@ -11,13 +11,17 @@ body {
 
 article {
     cursor: pointer;
+    /* Changes cursor to pointer */
     transition: transform 0.3s ease-in-out;
 }
 
 article:hover {
     cursor: pointer;
+    /* Changes cursor to crosshair on hover */
     transform: scale(1.05);
+    /* Slightly enlarges the article */
 }
+
 
 .head-img {
     height: 45dvh;
@@ -200,65 +204,101 @@ html {
     animation: fadeIn 1.2s ease-in-out;
 }
 
+/* --- Health Products Section --- */
+.product-section {
+  width: 100%;
+  background-color: #d8f3dc; /* matches body + section bg */
+  padding: 60px 0;
+  text-align: center;
+}
+
+.product-section h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1b4332;
+  margin-bottom: 10px;
+}
+
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .product-card {
-    background: white;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: flex; /* Enable flexbox for layout control */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
+  background: #ffffff;
+  border: 2px solid #52b788;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  background-color: #e6f9ed;
+  border-color: #40916c;
 }
 
 .product-card img {
-    width: 100%;
-    max-height: 150px; /* Set a maximum height for consistency */
-    object-fit: contain; /* Or 'cover' if you want to fill the space */
-    border-radius: 8px;
-    margin-bottom: 0.5rem; /* Add some space below the image */
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
 
 .product-card h4 {
-    font-size: 1rem;
-    margin-bottom: 0.3rem;
-    color: #333;
-    margin-top: 0.5rem; /* Add some space above the title */
+  color: #2d6a4f;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .product-card p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0.7rem;
-    min-height: 40px; /* Ensure a minimum height for the description */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .product-card strong {
-    color: #2d6a4f;
-    font-weight: bold;
+  color: #1b4332;
+  font-size: 16px;
 }
 
+/* Buttons */
 .product-card button {
-    margin: 6px 4px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    font-size: 0.85rem;
+  margin: 6px 4px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.product-card button:hover {
-    background-color: #388e3c;
+/* Add to Cart Button */
+.product-card button:first-of-type {
+  background-color: #52b788;
+  color: white;
+}
+
+.product-card button:first-of-type:hover {
+  background-color: #40916c;
+}
+
+/* Buy Now Button */
+.product-card button:last-of-type {
+  background-color: #d8f3dc;
+  color: #1b4332;
+  border: 1px solid #52b788;
+}
+
+.product-card button:last-of-type:hover {
+  background-color: #b7e4c7;
 }
