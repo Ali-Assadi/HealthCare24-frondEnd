@@ -1,4 +1,3 @@
-// home.component.ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../footer/footer.component';
@@ -13,9 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  lastTopics: string[] = [];
-  lastSection: string = '';
-  sectionRecommendations: any[] = [];
+  recommendations: string[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -26,32 +23,14 @@ export class HomeComponent implements OnInit {
     this.http
       .get<any[]>(`http://localhost:3000/api/user-views/${email}`)
       .subscribe((views) => {
-        const recentViews = [...views].reverse();
-        this.lastTopics = recentViews.slice(0, 4).map((v) => v.topic);
-        this.lastSection = recentViews[0]?.section || '';
-
-        if (this.lastSection) {
-          this.http
-            .get<any[]>(
-              `http://localhost:3000/api/${this.lastSection}Articles/${
-                this.lastSection === 'health'
-                  ? 'brain'
-                  : this.lastSection === 'fitness'
-                  ? 'strength'
-                  : 'meals'
-              }`
-            )
-            .subscribe((data) => {
-              this.sectionRecommendations = data.slice(0, 4);
-            });
-        }
+        const recentTopics = [...new Set(views.map((v) => v.topic))].slice(-4);
+        this.recommendations = recentTopics;
       });
   }
 
   formatTopicName(topic: string): string {
     return topic
-      .replace(/^\//, '') // Remove leading slash
-      .replace(/-/g, ' ') // Replace dashes with spaces
-      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   }
 }
