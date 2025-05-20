@@ -343,3 +343,98 @@ html {
     box-shadow: 0 4px 8px rgba(0, 172, 193, 0.3);
   }
   
+  /* --- Nutrition Products Section --- */
+.product-section {
+  width: 100%;
+  background-color: #FFF8F0; /* same as other sections */
+  padding: 40px 0;
+  text-align: center;
+}
+
+.product-section h3 {
+  text-align: left;
+  color: #FF6347;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.product-card {
+  background: #ffffff;
+  border: 2px solid #FF6347;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.product-card:hover {
+  background-color: #FFF0E0;
+  transform: translateY(-4px);
+  border-color: #ffa600;
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.product-card h4 {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.product-card p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.product-card strong {
+  color: #FF6347;
+  font-size: 16px;
+}
+
+.product-card button {
+  margin: 5px 4px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.product-card button:first-of-type {
+  background-color: #FF6347;
+  color: white;
+}
+
+.product-card button:first-of-type:hover {
+  background-color: #e44a2d;
+}
+
+.product-card button:last-of-type {
+  background-color: #e0f7fa;
+  color: #007c91;
+}
+
+.product-card button:last-of-type:hover {
+  background-color: #b2ebf2;
+}

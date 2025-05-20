@@ -1,4 +1,5 @@
 <div class="home-container">
+
   <!-- Section 1: Hero Section -->
   <section class="hero-section d-flex align-items-center">
     <div class="container">
@@ -9,16 +10,53 @@
           <button class="hero-btn">Shop Now</button>
         </div>
         <div class="col-md-6">
-          <img src="assets/home/home-bg (1).png" style="object-fit: contain;" class="img-fluid hero-image" alt="Hero Image">
+          <img src="assets/home/home-bg (1).png"  style="object-fit: contain;" class="img-fluid hero-image" alt="Hero Image">
         </div>
       </div>
     </div>
   </section>
 
+<!-- 🔁 Section: Recently Viewed Topics -->
+<section class="custom-section py-5 text-center" *ngIf="lastTopics.length">
+  <div class="container">
+    <h2 class="section-title">Your Recently Viewed Topics</h2>
+    <p class="section-subtitle">Here are the last topics you visited</p>
+    <div class="row mt-4">
+      <div class="col-md-3" *ngFor="let topic of lastTopics">
+        <a [routerLink]="['/' + topic]" class="recommendation-card">
+          <div class="recent-card">
+            <i class="fas fa-history feature-icon"></i>
+            <h5 class="topic-name">{{ formatTopicName(topic) }}</h5>
+            <p>Revisit this topic</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🌟 Section: Section-based Recommendations -->
+<section class="custom-section py-5 text-center" *ngIf="sectionRecommendations.length">
+  <div class="container">
+    <h2 class="section-title">You Might Also Like</h2>
+    <div class="row mt-4">
+      <div class="col-md-3" *ngFor="let rec of sectionRecommendations">
+        <a [routerLink]="[rec.route]" class="recommendation-card">
+          <div class="feature-card">
+            <img [src]="rec.image" class="img-fluid rounded mb-3" alt="{{ rec.title }}">
+            <h5 class="topic-name">{{ rec.title }}</h5>
+            <p>{{ rec.description | slice:0:60 }}...</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
   <!-- Section 2: Featured Area -->
   <section class="custom-section py-5 text-center">
     <div class="container">
-      <h2 class="section-title">What We Offer</h2>
+      <h2 class="section-title">What We Offer For VIP Users</h2>
       <p class="section-subtitle">Handpicked collections just for you.</p>
       <div class="row mt-4">
         <div class="col-md-4">

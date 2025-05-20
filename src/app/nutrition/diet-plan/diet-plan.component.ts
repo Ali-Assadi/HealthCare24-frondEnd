@@ -9,6 +9,7 @@ interface DayPlan {
   lunch: string;
   dinner: string;
   snack?: string;
+  finished?: boolean; // ✅ Add finished property
 }
 
 interface WeekPlan {
@@ -29,12 +30,15 @@ export class DietPlanComponent implements OnInit {
   showPlan = false;
   loading = false;
   hideGoalSelector = false;
+  userEmail: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
+
+    this.userEmail = email;
 
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
@@ -56,20 +60,28 @@ export class DietPlanComponent implements OnInit {
 
     this.http.get<any>(`http://localhost:3000/api/diet-plan/${this.userGoal}`).subscribe({
       next: (plan) => {
+        // ✅ ADD "finished: false" to every day
+        const planWithFinished = plan.weeks.map((week: any) => ({
+          days: week.days.map((day: any) => ({
+            ...day,
+            finished: false
+          }))
+        }));
+
         this.http.put(`http://localhost:3000/api/user/${this.userInfo.email}/diet`, {
           goal: this.userGoal,
-          plan: plan.weeks
+          plan: planWithFinished
         }).subscribe({
           next: () => {
             setTimeout(() => {
-              this.generatedPlans = plan.weeks;
+              this.generatedPlans = planWithFinished;
               this.loading = false;
               this.showPlan = true;
               this.hideGoalSelector = true;
               this.router.navigateByUrl('/').then(() => {
                 this.router.navigate(['/nutrition']);
-              });              
-            }, 10000);
+              });
+            }, 1000); // faster generation, not 10 seconds!
           },
           error: () => {
             this.loading = false;

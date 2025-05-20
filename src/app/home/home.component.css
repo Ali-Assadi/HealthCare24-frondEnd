@@ -30,9 +30,11 @@ body {
 
 .text-content .highlight {
   background: linear-gradient(to right, rgb(42, 224, 197), #478748);
-  -webkit-background-clip: text;
+  background-clip: text;               
+  -webkit-background-clip: text;        
   -webkit-text-fill-color: transparent;
 }
+
 
 
 .text-content .lead {
@@ -90,6 +92,17 @@ body {
   font-size: 2rem;
   margin-bottom: 15px;
   color: #31473A;
+}
+
+.recommendation-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.topic-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 10px 0;
 }
 
 /* Animation */
