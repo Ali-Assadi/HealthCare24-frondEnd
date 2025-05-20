@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
+<<<<<<< HEAD
     selector: 'app-health',
     standalone: true,
     imports: [FooterComponent, RouterLink, CommonModule],
@@ -27,6 +28,16 @@ export class HealthComponent implements OnInit {
     brainArticles: any[] = [];
     heartArticles: any[] = [];
     sleepArticles: any[] = [];
+=======
+  selector: 'app-health',
+  imports: [FooterComponent, RouterLink, CommonModule],
+  templateUrl: './health.component.html',
+  styleUrls: ['./health.component.css'],
+})
+export class HealthComponent implements OnInit {
+  @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
+  products: any[] = [];
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
 
     constructor(
         private viewportScroller: ViewportScroller,
@@ -35,12 +46,18 @@ export class HealthComponent implements OnInit {
         private router: Router
     ) {}
 
+<<<<<<< HEAD
     ngOnInit() {
         this.loadBrainProducts(); // Load only brain category products
         this.loadArticles('brain');
         this.loadArticles('heart');
         this.loadArticles('sleep');
     }
+=======
+  ngOnInit() {
+    this.loadProducts();
+  }
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
 
     scrollTo(sectionId: string): void {
         this.viewportScroller.scrollToAnchor(sectionId);
@@ -50,6 +67,7 @@ export class HealthComponent implements OnInit {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+<<<<<<< HEAD
     @HostListener('window:scroll', [])
     onWindowScroll(): void {
         if (!this.fadeElements) return;
@@ -105,6 +123,44 @@ export class HealthComponent implements OnInit {
     addToCart(product: any) {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
+=======
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    if (!this.fadeElements) return;
+    this.fadeElements.forEach((element) => {
+      const nativeElement = element.nativeElement;
+      const rect = nativeElement.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8 && rect.bottom >= 0) {
+        this.renderer.addClass(nativeElement, 'active');
+      }
+    });
+  }
+
+  // Load products from MongoDB
+  loadProducts() {
+    this.http.get<any[]>('http://localhost:3000/api/products').subscribe({
+      next: (data) => (this.products = data),
+      error: (err) => console.error('Failed to load products', err),
+    });
+  }
+
+  // Log the view to backend
+  logView(topic: string) {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http
+      .post('http://localhost:3000/api/log-view', {
+        email,
+        topic,
+        section: 'health',
+      })
+      .subscribe();
+  }
+  addToCart(product: any) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
 
         this.http
             .post(`http://localhost:3000/api/cart/${userId}/add`, {
@@ -117,10 +173,16 @@ export class HealthComponent implements OnInit {
             });
     }
 
+<<<<<<< HEAD
     // Add product to cart and navigate to cart
     buyNow(product: any) {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
+=======
+  buyNow(product: any) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
 
         this.http
             .post(`http://localhost:3000/api/cart/${userId}/add`, {

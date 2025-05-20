@@ -30,8 +30,12 @@ interface NutritionArticle {
   styleUrls: ['./nutrition.component.css'],
 })
 export class NutritionComponent implements OnInit {
-  isLoggedIn: boolean = false;
+  isLoggedIn:boolean = false;
 
+  checkLoginStatus() {
+    const userEmail = localStorage.getItem('userEmail');
+    this.isLoggedIn = !!userEmail;
+  }
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
 
   userInfo: any = {};
@@ -40,12 +44,15 @@ export class NutritionComponent implements OnInit {
   userGoal = '';
   generatedPlans: any[] = [];
 
+<<<<<<< HEAD
   healthyMeals: NutritionArticle[] = [];
   diets: NutritionArticle[] = [];
   healthyRecipes: NutritionArticle[] = [];
   products: any[] = [];
   nutritionProducts: any[] = [];
 
+=======
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
   constructor(
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
@@ -55,18 +62,23 @@ export class NutritionComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLoginStatus();
+<<<<<<< HEAD
     this.loadProducts();
     this.loadNutritionArticlesByCategory('meals', this.healthyMeals);
     this.loadNutritionArticlesByCategory('diets', this.diets);
     this.loadNutritionArticlesByCategory('recipes', this.healthyRecipes);
 
+=======
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
         this.userInfo = user;
+        // ✅ Check if user has dietPlan with at least 1 week
         this.hasPlan = Array.isArray(user.dietPlan) && user.dietPlan.length > 0;
+        // show plan if exists
         this.showPlan = this.hasPlan;
         this.generatedPlans = user.dietPlan || [];
         this.userGoal = user.goal || '';
@@ -75,11 +87,6 @@ export class NutritionComponent implements OnInit {
         console.error('❌ Failed to load user profile.', err);
       },
     });
-  }
-
-  checkLoginStatus() {
-    const userEmail = localStorage.getItem('userEmail');
-    this.isLoggedIn = !!userEmail;
   }
 
   requestNewPlan(): void {
@@ -111,6 +118,7 @@ export class NutritionComponent implements OnInit {
       }
     });
   }
+<<<<<<< HEAD
 
   loadProducts() {
     this.http.get<any[]>('http://localhost:3000/api/Products').subscribe({
@@ -180,3 +188,6 @@ export class NutritionComponent implements OnInit {
       });
   }
 }
+=======
+}
+>>>>>>> parent of 4848038 (update cart , track for user update home page)
