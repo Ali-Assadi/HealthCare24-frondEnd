@@ -438,3 +438,9 @@ html {
 .product-card button:last-of-type:hover {
   background-color: #b2ebf2;
 }
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  margin-left: 8px;
+  font-size: 0.9em;
+}

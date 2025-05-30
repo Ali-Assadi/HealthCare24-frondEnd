@@ -53,7 +53,7 @@
             <!-- Right-Side Buttons & Icons -->
             <div class="d-flex align-items-center">
                 <!-- Always visible -->
-                <button routerLink="/subscribe" routerLinkActive="active" class="btn btn-custom me-2">
+                <button *ngIf="!isSubscribed" routerLink="/subscribe" routerLinkActive="active" class="btn btn-custom me-2">
                     Subscribe
                 </button>
                 <!-- Show logout button if logged in -->

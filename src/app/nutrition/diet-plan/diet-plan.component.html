@@ -1,11 +1,14 @@
 <div class="plan-container-nutrition text-center">
   <h2>🎯 Generate Your Personalized Diet Plan</h2>
 
-  <!-- Goal Selector -->
   <div *ngIf="!hideGoalSelector" class="select-goal mb-4">
     <label for="goal" class="form-label">Choose Your Goal:</label>
+    <div *ngIf="bmiValue" class="mb-3 text-muted">
+      Your BMI is <strong>{{ bmiValue }}</strong><br />
+      Recommended Goal: <strong>{{ userGoal | titlecase }}</strong>
+    </div>
+
     <select [(ngModel)]="userGoal" name="goal" id="goal" class="form-select my-2" required>
-      <option value="" disabled selected>Select your goal</option>
       <option value="loss">Lose Weight</option>
       <option value="gain">Gain Muscle</option>
       <option value="balance">Balanced</option>
@@ -16,13 +19,11 @@
     </button>
   </div>
 
-  <!-- Loading Spinner -->
   <div *ngIf="loading" class="loading-message">
     <div class="spinner"></div>
     <p class="text-muted">Generating your diet plan... Please wait.</p>
   </div>
 
-  <!-- Plan Output -->
   <div *ngIf="showPlan" class="generated-plan">
     <h4 class="goal-title mb-2">Goal: {{ userGoal | titlecase }}</h4>
     <p class="goal-info mb-4">

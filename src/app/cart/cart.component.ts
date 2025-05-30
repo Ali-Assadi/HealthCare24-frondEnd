@@ -13,21 +13,39 @@ import jsPDF from 'jspdf';
 export class CartComponent implements OnInit {
   cart: any;
   orders: any[] = [];
+  subscribed: boolean = false;
+
   userId = localStorage.getItem('userId');
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadCart();
-    this.loadOrders();
+    this.checkSubscriptionStatus();
   }
 
   loadCart() {
     if (!this.userId) return;
-    this.http.get(`http://localhost:3000/api/cart/${this.userId}`).subscribe({
-      next: (data) => (this.cart = data),
-      error: (err) => console.error('Error loading cart', err),
-    });
+
+    this.http
+      .get<any>(`http://localhost:3000/api/cart/${this.userId}`)
+      .subscribe({
+        next: (data) => {
+          if (this.subscribed) {
+            data.items = data.items.map((item: any) => ({
+              ...item,
+              originalPrice: item.price,
+              price: (item.price * 0.9).toFixed(2),
+            }));
+            data.totalPrice = data.items
+              .reduce((sum: number, item: any) => {
+                return sum + item.price * item.quantity;
+              }, 0)
+              .toFixed(2);
+          }
+          this.cart = data;
+        },
+        error: (err) => console.error('Error loading cart', err),
+      });
   }
 
   removeItem(productId: string) {
@@ -40,6 +58,24 @@ export class CartComponent implements OnInit {
         }
       )
       .subscribe(() => this.loadCart());
+  }
+  checkSubscriptionStatus() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
+      next: (user) => {
+        this.subscribed = !!user.isSubscribed;
+        this.loadCart();
+        this.loadOrders();
+      },
+      error: () => {
+        console.warn('Could not fetch subscription status');
+        this.subscribed = false;
+        this.loadCart();
+        this.loadOrders();
+      },
+    });
   }
 
   clearCart() {
@@ -68,10 +104,28 @@ export class CartComponent implements OnInit {
 
   loadOrders() {
     if (!this.userId) return;
+
     this.http
       .get<any[]>(`http://localhost:3000/api/orders/${this.userId}`)
       .subscribe({
-        next: (data) => (this.orders = data),
+        next: (data) => {
+          if (this.subscribed) {
+            data = data.map((order) => {
+              const updatedItems = order.items.map((item: any) => ({
+                ...item,
+                originalPrice: item.price,
+                price: (item.price * 0.9).toFixed(2),
+              }));
+              const newTotal = updatedItems
+                .reduce((sum: number, item: any) => {
+                  return sum + item.price * item.quantity;
+                }, 0)
+                .toFixed(2);
+              return { ...order, items: updatedItems, totalPrice: newTotal };
+            });
+          }
+          this.orders = data;
+        },
         error: (err) => console.error('Failed to load orders', err),
       });
   }

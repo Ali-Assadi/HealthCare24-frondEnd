@@ -27,6 +27,7 @@ export class FitnessComponent implements OnInit {
   products: any[] = [];
   strengthArticles: any[] = [];
   cardioArticles: any[] = [];
+  subscribed: boolean = false;
 
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
 
@@ -41,8 +42,9 @@ export class FitnessComponent implements OnInit {
     this.loadArticles('strength');
     this.loadArticles('cardio');
     if (this.isLoggedIn) {
-      this.loadProducts(); // ✅ load fitness products if logged in
+      this.checkSubscriptionAndLoadProducts();
     }
+
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
@@ -51,6 +53,22 @@ export class FitnessComponent implements OnInit {
         this.hasExercisePlan = user.exercisePlan?.length > 0;
       },
       error: (err) => console.error('❌ Failed to fetch user data.', err),
+    });
+  }
+  checkSubscriptionAndLoadProducts() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
+      next: (user) => {
+        this.subscribed = !!user.isSubscribed;
+        this.loadProducts();
+      },
+      error: (err) => {
+        console.error('❌ Failed to check subscription status.', err);
+        this.subscribed = false;
+        this.loadProducts();
+      },
     });
   }
 
@@ -108,11 +126,22 @@ export class FitnessComponent implements OnInit {
     this.http
       .get<any[]>('http://localhost:3000/api/products/category/fitness')
       .subscribe({
-        next: (data) => (this.products = data),
+        next: (data) => {
+          if (this.subscribed) {
+            this.products = data.map((product) => ({
+              ...product,
+              originalPrice: product.price,
+              price: (product.price * 0.9).toFixed(2),
+            }));
+          } else {
+            this.products = data;
+          }
+        },
         error: (err) =>
           console.error('❌ Failed to load fitness products.', err),
       });
   }
+
   loadArticles(category: 'strength' | 'cardio') {
     this.http
       .get<any[]>(`http://localhost:3000/api/fitnessArticles/${category}`)

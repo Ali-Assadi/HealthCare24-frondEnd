@@ -28,7 +28,7 @@ export class HealthComponent implements OnInit {
   heartArticles: any[] = [];
   sleepArticles: any[] = [];
   loggedIn: boolean = false;
-
+  subscribed: boolean = false;
   constructor(
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
@@ -38,9 +38,11 @@ export class HealthComponent implements OnInit {
 
   ngOnInit() {
     this.loggedIn = !!localStorage.getItem('userId');
+
     if (this.loggedIn) {
-      this.loadProducts();
+      this.checkSub();
     }
+
     this.loadArticles('brain');
     this.loadArticles('heart');
     this.loadArticles('sleep');
@@ -81,10 +83,23 @@ export class HealthComponent implements OnInit {
   }
 
   loadProducts() {
+    console.log('Loading products... Subscribed:', this.subscribed);
+
     this.http
       .get<any[]>('http://localhost:3000/api/products/category/health')
       .subscribe({
-        next: (data) => (this.products = data),
+        next: (data) => {
+          console.log('Loaded products from backend:', data);
+          if (this.subscribed) {
+            this.products = data.map((product) => ({
+              ...product,
+              originalPrice: product.price,
+              price: (product.price * 0.9).toFixed(2),
+            }));
+          } else {
+            this.products = data;
+          }
+        },
         error: (err) => console.error('Failed to load health products', err),
       });
   }
@@ -117,6 +132,29 @@ export class HealthComponent implements OnInit {
         next: () => alert(`${product.name} added to cart.`),
         error: (err) => console.error('Failed to add to cart', err),
       });
+  }
+  checkSub() {
+    console.log('Checking subscription...');
+    const email = localStorage.getItem('userEmail');
+    if (!email) {
+      console.warn('❌ No userEmail found in localStorage');
+      return;
+    }
+
+    console.log('User email for subscription check:', email);
+
+    this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
+      next: (data) => {
+        console.log('User data:', data);
+        this.subscribed = !!data.isSubscribed;
+        this.loadProducts();
+      },
+      error: (err) => {
+        console.error('❌ Failed to check subscription status:', err);
+        this.subscribed = false;
+        this.loadProducts(); // fallback
+      },
+    });
   }
 
   // Add product to cart and navigate to cart

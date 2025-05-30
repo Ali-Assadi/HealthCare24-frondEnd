@@ -30,7 +30,7 @@ export class NutritionComponent implements OnInit {
   showPlan = false;
   userGoal = '';
   generatedPlans: any[] = [];
-
+  subscribed: boolean = false;
   meals: any[] = [];
   diets: any[] = [];
   recipes: any[] = [];
@@ -49,7 +49,7 @@ export class NutritionComponent implements OnInit {
     this.loadArticles('recipes');
 
     if (this.isLoggedIn) {
-      this.loadProducts();
+      this.checkSubscriptionAndLoadProducts();
     }
 
     const email = localStorage.getItem('userEmail');
@@ -68,15 +68,42 @@ export class NutritionComponent implements OnInit {
       },
     });
   }
+  checkSubscriptionAndLoadProducts() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return;
+
+    this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
+      next: (user) => {
+        this.subscribed = !!user.isSubscribed;
+        this.loadProducts();
+      },
+      error: (err) => {
+        console.error('❌ Failed to check subscription status.', err);
+        this.subscribed = false;
+        this.loadProducts();
+      },
+    });
+  }
 
   loadProducts() {
     this.http
       .get<any[]>('http://localhost:3000/api/products/category/nutrition')
       .subscribe({
-        next: (data) => (this.products = data),
+        next: (data) => {
+          if (this.subscribed) {
+            this.products = data.map((product) => ({
+              ...product,
+              originalPrice: product.price,
+              price: (product.price * 0.9).toFixed(2),
+            }));
+          } else {
+            this.products = data;
+          }
+        },
         error: (err) => console.error('Failed to load nutrition products', err),
       });
   }
+
   checkLoginStatus() {
     const userEmail = localStorage.getItem('userEmail');
     this.isLoggedIn = !!userEmail;

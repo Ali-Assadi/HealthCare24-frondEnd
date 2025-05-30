@@ -13,6 +13,7 @@ export class NavBarComponent {
   currentRoute: string = '';
   isLoggedIn: boolean = false;
   hasUnread: boolean = false;
+  isSubscribed: boolean = false;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
@@ -31,7 +32,7 @@ export class NavBarComponent {
         this.checkNotifications();
       }
     });
-
+    this.checkSub();
     this.checkLoginStatus();
     this.checkNotifications();
   }
@@ -44,6 +45,23 @@ export class NavBarComponent {
       .then((res) => res.json())
       .then((data) => (this.hasUnread = data.unreadCount > 0))
       .catch(() => (this.hasUnread = false));
+  }
+  checkSub() {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return;
+
+    const user = JSON.parse(userStr);
+    const email = user.email;
+
+    fetch(`http://localhost:3000/api/user/${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        this.isSubscribed = !!data.isSubscribed;
+      })
+      .catch((err) => {
+        console.error('Failed to check subscription status:', err);
+        this.isSubscribed = false;
+      });
   }
 
   checkLoginStatus() {

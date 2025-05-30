@@ -63,7 +63,17 @@
         <img [src]="product.image" [alt]="product.name">
         <h4>{{ product.name }}</h4>
         <p>{{ product.description }}</p>
-        <p><strong>${{ product.price }}</strong></p>
+<p>
+  <strong *ngIf="subscribed">
+    ${{ product.price }}
+    <span class="original-price">${{ product.originalPrice }}</span>
+  </strong>
+  <strong *ngIf="!subscribed">
+    ${{ product.price }}
+  </strong>
+</p>
+
+
         <button (click)="addToCart(product)">🛒 Add to Cart</button>
         <button (click)="buyNow(product)">💳 Buy Now</button>
       </div>
