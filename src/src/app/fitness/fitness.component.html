@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness & Strength</title>
+
+</head>
+
+<body>
+  <!-- Header Section -->
+  <div class="head" id="header">
+    <img class="head-img" src="assets/fitness/HeaderPic.png">
+    <div class="head-text">
+      <h1 class="head-text-h1">Fitness</h1>
+    </div>
+  </div>
+  <div *ngIf="isLoggedIn" class="exercise-buttons">
+    <h3>🎯 Your Fitness Plan Options</h3>
+
+    <button *ngIf="!hasExercisePlan" class="btn btn-primary" routerLink="/exercise-plan">
+      Generate My Exercise Program 🏋️
+    </button>
+
+    <button *ngIf="hasExercisePlan" class="btn btn-outline-info" routerLink="/my-exercise-plan">
+      View My Exercise Plan 📋
+    </button>
+
+    <button *ngIf="hasExercisePlan" class="btn btn-outline-warning" (click)="requestChange()">
+      Request Plan Change 🔁
+    </button>
+  </div>
+
+
+
+  <!-- Strength Training Section -->
+  <section id="strength-training" class="strength-training new-section-left fade-in" #fadeElement appFadeIn>
+    <div class="text-container">
+      <h3>STRENGTH TRAINING</h3>
+      <div class="underline"></div>
+      <div class="flex-center">
+        <div class="strength-section">
+          <article *ngFor="let item of strengthArticles" class="news-item fade-in" #fadeElement appFadeIn
+            [routerLink]="[item.route]" (click)="logView(item.route)">
+            <img [src]="item.image" [alt]="item.title">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cardio Section -->
+  <section id="cardio" class="cardio new-section-left fade-in" #fadeElement appFadeIn>
+    <div class="text-container">
+      <h3>CARDIO FITNESS</h3>
+      <div class="underline"></div>
+      <div class="flex-center">
+        <div class="news-section">
+          <article *ngFor="let item of cardioArticles" class="news-item fade-in" #fadeElement appFadeIn
+            [routerLink]="[item.route]" (click)="logView(item.route)">
+            <img [src]="item.image" [alt]="item.title">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Fitness Products Section (only for logged-in users) -->
+  <section *ngIf="isLoggedIn" class="product-section fade-in" #fadeElement appFadeIn>
+    <div class="text-container">
+      <h3>Fitness Gear & Supplements</h3>
+      <div class="underline"></div>
+      <div class="product-grid">
+        <div class="product-card fade-in" *ngFor="let product of products" #fadeElement appFadeIn>
+          <img [src]="product.image" [alt]="product.name">
+          <h4>{{ product.name }}</h4>
+          <p>{{ product.description }}</p>
+          <p>
+            <strong *ngIf="subscribed">
+              ${{ product.price }}
+              <span class="original-price">${{ product.originalPrice }}</span>
+            </strong>
+            <strong *ngIf="!subscribed">
+              ${{ product.price }}
+            </strong>
+          </p>
+
+          <button (click)="addToCart(product)">🛒 Add to Cart</button>
+          <button (click)="buyNow(product)">💳 Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+<app-footer></app-footer>
+
+</html>

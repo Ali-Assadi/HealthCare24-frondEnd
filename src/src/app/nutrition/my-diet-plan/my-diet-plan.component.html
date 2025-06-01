@@ -1,0 +1,60 @@
+<body>
+    <div class="container">
+      <h2>📋 Your Monthly Diet Plan</h2>
+  
+      <div *ngIf="showCongratulations" class="congrats-message">
+        🎉 Congratulations! You've completed your entire diet plan! 🎉
+      </div>
+  
+      <div class="progress-container">
+        <p>Progress: {{ completedDays }}/{{ totalDays }} Days Completed ({{ progressPercent }}%) ✅</p>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+      </div>
+  
+      <!-- Action Buttons -->
+      <div class="text-center mt-4 action-buttons">
+        <button class="btn-reset" (click)="resetPlan()">🔄 Restart Plan</button>
+        <button class="btn-download" (click)="downloadExcel()">📥 Download as Excel</button>
+      </div>
+  
+      <div class="week-grid">
+        <div *ngFor="let week of generatedPlans; let wi = index" class="week-card" [ngClass]="{
+          'grid-half': wi < 2,
+          'full-width': wi >= 2 && showAllWeeks,
+          'hidden': wi >= 2 && !showAllWeeks
+        }">
+          <h5>📅 Week {{ wi + 1 }}</h5>
+  
+          <div *ngFor="let day of week.days; let di = index" class="day-block" [ngClass]="{ 'day-finished': day.finished }">
+            <h6>🍽️ Day {{ di + 1 }}</h6>
+  
+            <ul>
+              <li><strong>Breakfast:</strong> {{ day.breakfast }}</li>
+              <li><strong>Lunch:</strong> {{ day.lunch }}</li>
+              <li><strong>Dinner:</strong> {{ day.dinner }}</li>
+              <li *ngIf="day.snack"><strong>Snack:</strong> {{ day.snack }}</li>
+            </ul>
+  
+            <div class="day-actions">
+              <button *ngIf="!day.finished" class="btn-finish" (click)="finishDay(wi, di)">
+                ✅ Mark as Finished
+              </button>
+              <div *ngIf="day.finished" class="finished-label">
+                🎉 Completed!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Toggle Button -->
+      <div class="text-center mt-4">
+        <button class="btn-toggle" (click)="showAllWeeks = !showAllWeeks">
+          {{ showAllWeeks ? '🔽 Show Less' : '🔼 Show All Weeks' }}
+        </button>
+      </div>
+    </div>
+  </body>
+  

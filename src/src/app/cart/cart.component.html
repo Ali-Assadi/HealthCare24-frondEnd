@@ -1,0 +1,86 @@
+<body>
+<!-- Cart View -->
+<div *ngIf="subscribed" class="vip-banner">
+  🌟 You're a VIP! Enjoy 10% off on all your purchases.
+</div>
+
+
+<div *ngIf="cart && cart.items.length > 0; else emptyCart" class="cart-wrapper">
+  <h2>Your Cart</h2>
+  <div *ngFor="let item of cart.items" class="cart-item">
+    <p><strong>{{ item.productId.name }}</strong></p>
+    <p>Quantity: {{ item.quantity }}</p>
+    <p>
+      Price:
+      <strong *ngIf="subscribed">${{ item.price }}</strong>
+      <span *ngIf="subscribed" class="original-price">${{ item.originalPrice }}</span>
+      <strong *ngIf="!subscribed">${{ item.price }}</strong>
+    </p>
+    <button class="remove-btn" (click)="removeItem(item.productId._id)">Remove</button>
+  </div>
+
+  <hr />
+  <div class="cart-summary">
+    <p>
+      <strong>Total: ${{ cart.totalPrice }}</strong>
+      <span *ngIf="subscribed" class="vip-note">10% VIP Discount Applied 🎉</span>
+    </p>
+    <div class="cart-buttons">
+      <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
+      <button class="purchase-btn" (click)="purchase()">Purchase</button>
+    </div>
+  </div>
+</div>
+
+<!-- Empty Cart Template -->
+<ng-template #emptyCart>
+  <p class="empty-msg">🛒 Your cart is empty.</p>
+</ng-template>
+
+<hr />
+
+<!-- Orders Section -->
+<div class="orders-wrapper">
+  <h2>🧾 My Orders</h2>
+  <div *ngIf="orders.length === 0">
+    <p>You have no orders yet.</p>
+  </div>
+
+  <div *ngFor="let order of orders" class="order-box">
+    <div class="order-header">
+      <p><strong>Order ID:</strong> {{ order._id }}</p>
+      <p><strong>Date:</strong> {{ order.createdAt | date: 'medium' }}</p>
+      <p><strong>Status:</strong> {{ order.status }}</p>
+    </div>
+
+    <div class="order-items">
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.productId.name }} -
+          <span *ngIf="subscribed">
+            ${{ item.price }}
+            <span class="original-price">${{ item.originalPrice }}</span>
+          </span>
+          <span *ngIf="!subscribed">
+            ${{ item.price }}
+          </span>
+          × {{ item.quantity }}
+        </li>
+      </ul>
+    </div>
+
+    <p class="order-total">
+      <strong>Total: ${{ order.totalPrice }}</strong>
+      <span *ngIf="subscribed" class="vip-note">10% VIP Discount Applied 🎁</span>
+    </p>
+
+    <div class="order-actions">
+      <button (click)="downloadReceipt(order)">Download Receipt (PDF)</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</body>

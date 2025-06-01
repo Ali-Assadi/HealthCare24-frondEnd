@@ -1,0 +1,34 @@
+<div class="admin-users">
+  <h2 class="text-danger">👥 All Registered Users</h2>
+
+  <div *ngIf="users.length === 0">No users found.</div>
+
+  <table class="table table-striped table-bordered mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Height</th>
+        <th>Weight</th>
+        <th>Has Diet Plan</th>
+        <th>Has Exercise Plan</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.email }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.height }}</td>
+        <td>{{ user.weight }}</td>
+        <td>{{ user.dietPlan?.length > 0 ? '✅' : '❌' }}</td>
+        <td>{{ user.exercisePlan?.length > 0 ? '✅' : '❌' }}</td>
+        <td>
+          <button class="btn btn-sm btn-danger me-1" (click)="deleteUser(user._id)">🗑️ Delete</button>
+          <button class="btn btn-sm btn-warning me-1" (click)="clearDietPlan(user._id)">🥗 Clear Diet Plan</button>
+          <button class="btn btn-sm btn-secondary" (click)="clearExercisePlan(user._id)">🏋️‍♂️ Clear Exercise Plan</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

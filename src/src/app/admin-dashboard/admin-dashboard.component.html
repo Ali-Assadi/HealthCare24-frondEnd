@@ -1,0 +1,22 @@
+<div class="admin-wrapper d-flex">
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <div class="admin-main p-4">
+        <h2 class="dashboard-title">🛠️ Admin Dashboard</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>👥 Total Users</h4>
+                <p>{{ userCount }}</p>
+            </div>
+            <div class="stat-card red">
+                <h4>📦 Diet Plans Generated</h4>
+                <p>{{ plansGenerated }}</p>
+            </div>
+            <div class="stat-card blue">
+                <h4>🏋️‍♂️ Exercise Plans Generated</h4>
+                <p>{{ exercisePlansGenerated }}</p>
+              </div>
+        </div>
+
+    </div>
+</div>

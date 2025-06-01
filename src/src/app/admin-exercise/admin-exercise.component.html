@@ -1,0 +1,65 @@
+<div class="admin-exercise-container">
+    <h2 class="section-title">⚽️ Manage Exercise Plans</h2>
+  
+    <div class="search-box">
+      <input type="text" placeholder="Search by email..." [(ngModel)]="searchEmail" (input)="searchByEmail()" />
+    </div>
+  
+    <div class="admin-exercise-content">
+      <div class="user-list">
+        <h4>Users</h4>
+        <ul>
+          <li *ngFor="let user of filteredUsers; let i = index"
+              [class.selected]="i === selectedIndex"
+              (click)="selectUser(user, i)">
+            {{ user.email }}
+          </li>
+        </ul>
+      </div>
+  
+      <div class="exercise-details" *ngIf="selectedUser">
+        <h4 class="email-label">Editing: {{ selectedUser.email }}</h4>
+  
+        <div *ngFor="let week of selectedUser.exercisePlan; let wi = index" class="week-card">
+          <h5>📅 Week {{ wi + 1 }}</h5>
+  
+          <div *ngFor="let day of week.days; let di = index" class="day-card">
+            <h6>📍 Day {{ di + 1 }}</h6>
+  
+            <div class="form-group">
+              <label>Type</label>
+              <input [(ngModel)]="day.type" (input)="updateDay(wi, di, 'type', day.type)" />
+            </div>
+  
+            <div class="form-group">
+              <label>Workout</label>
+              <textarea [(ngModel)]="day.workout" (input)="updateDay(wi, di, 'workout', day.workout)"></textarea>
+            </div>
+  
+            <button class="btn-sm remove-day" (click)="removeDay(wi, di)">🗑️ Delete Day</button>
+          </div>
+  
+          <div class="day-controls">
+            <button class="btn-sm add-day"
+                    (click)="addDay(wi)"
+                    [disabled]="selectedUser.exercisePlan[wi].days?.length >= 7">
+              ➕ Add Day
+            </button>
+  
+            <button class="btn-sm remove-week" (click)="removeWeek(wi)">🗑️ Remove Week</button>
+          </div>
+        </div>
+  
+        <div class="week-controls">
+          <button class="btn-sm add-week"
+                  (click)="addWeek()"
+                  [disabled]="selectedUser.exercisePlan?.length >= 5">
+            ➕ Add Week
+          </button>
+        </div>
+  
+        <button class="btn-save" (click)="saveChanges()">📁 Save Changes</button>
+      </div>
+    </div>
+  </div>
+  

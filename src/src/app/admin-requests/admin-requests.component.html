@@ -1,0 +1,17 @@
+<div class="requests-container">
+    <h2>📨 User Chat Requests</h2>
+    <ul class="request-list">
+        <li *ngFor="let user of users" class="request-item">
+            <div class="user-info">
+                <span>📧 {{ user.email }}</span>
+                <span>👤 Age: {{ user.age }}, Height: {{ user.height }} cm, Weight: {{ user.weight }} kg</span>
+            </div>
+            <button (click)="startChat(user.email)" class="btn btn-sm"
+                [ngClass]="chatStatusMap[user.email] === 'conversation' ? 'btn-outline-success' : 'btn-outline-primary'">
+                {{ chatStatusMap[user.email] === 'conversation' ? 'Go to Chat 💬' : 'Start Chat ✉️' }}
+            </button>
+
+
+        </li>
+    </ul>
+</div>

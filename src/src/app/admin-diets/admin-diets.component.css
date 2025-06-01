@@ -1,0 +1,182 @@
+.admin-diets-container {
+    margin-left: 12dvw;
+    padding: 30px;
+    background: #f3f4f6;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .search-box {
+    margin-bottom: 20px;
+  }
+  
+  .search-box input {
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .admin-diets-content {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  /* Sidebar user list */
+  .user-list {
+    width: 250px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .user-list h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .user-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .user-list li {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+  }
+  
+  .user-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .user-list li.selected {
+    background-color: #ffdddd;
+    font-weight: bold;
+  }
+  
+  /* Diet editor section */
+  .diet-details {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    max-width: 1000px;
+    overflow-x: auto;
+  }
+  
+  .email-label {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .week-card {
+    border: 1px solid #ccc;
+    border-left: 5px solid #ff4d4d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fafafa;
+  }
+  
+  .day-card {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #fdfdfd;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+  }
+  
+  .day-card h6 {
+    margin-bottom: 10px;
+    color: #444;
+    font-weight: 600;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .btn-save {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-save:hover {
+    background-color: #e03e3e;
+    cursor: pointer;
+  }
+  
+  .week-header,
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.btn-delete-week,
+.btn-delete-day,
+.btn-add-day,
+.btn-add-week {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.btn-delete-day {
+  background-color: #ffa502;
+}
+
+.btn-add-day {
+  background-color: #1dd1a1;
+}
+
+.btn-add-week {
+  background-color: #0984e3;
+  margin-top: 10px;
+}

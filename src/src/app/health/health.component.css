@@ -1,0 +1,311 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #d8f3dc;
+    color: #333;
+}
+
+/* Header Section */
+.head {
+    position: relative;
+}
+
+article {
+    cursor: pointer;
+    /* Changes cursor to pointer */
+    transition: transform 0.3s ease-in-out;
+}
+
+article:hover {
+    cursor: pointer;
+    /* Changes cursor to crosshair on hover */
+    transform: scale(1.05);
+    /* Slightly enlarges the article */
+}
+
+
+.head-img {
+    height: 45dvh;
+    width: 100%;
+    object-fit: cover;
+}
+
+.head-text {
+    background: rgba(255, 255, 255, 0.85);
+    color: #222;
+    margin-left: 3dvh;
+    padding: 1dvh 1dvw;
+    position: absolute;
+    bottom: 2dvh;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.head-text-h1 {
+    font-weight: bold;
+    font-size: 36px;
+}
+
+/* Section Layout */
+.text-container {
+    background: #d8f3dc;
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.text-container h3 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.underline {
+    width: 60px;
+    height: 4px;
+    background: #52b788;
+    margin: 0 auto 30px auto;
+    border-radius: 2px;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+/* News Section Grid */
+.news-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 10px 0;
+}
+
+.news-item {
+    border: 2px solid #52b788;
+    width: 40dvh;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
+}
+
+.news-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.news-item h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 15px;
+}
+
+.news-item p {
+    font-size: 14px;
+    padding: 0 15px 20px;
+    color: #555;
+}
+
+/* Better Sleep Section */
+.grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    height: 350px;
+    border: 2px solid #52b788;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.card h2 {
+    font-size: 16px;
+    padding: 15px;
+}
+
+.price {
+    color: #2d6a4f;
+    font-weight: bold;
+}
+
+/* Optional: Smooth Responsive Transition */
+@media (max-width: 768px) {
+    .text-container {
+        padding: 40px 20px;
+    }
+
+    .head-text-h1 {
+        font-size: 28px;
+    }
+
+    .news-item h3,
+    .card h2 {
+        font-size: 16px;
+    }
+
+    .news-item p {
+        font-size: 13px;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.brain-health {
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* --- Health Products Section --- */
+.product-section {
+  width: 100%;
+  background-color: #d8f3dc; /* matches body + section bg */
+  padding: 60px 0;
+  text-align: center;
+}
+
+.product-section h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1b4332;
+  margin-bottom: 10px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.product-card {
+  background: #ffffff;
+  border: 2px solid #52b788;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  background-color: #e6f9ed;
+  border-color: #40916c;
+}
+
+.product-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.product-card h4 {
+  color: #2d6a4f;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.product-card p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.product-card strong {
+  color: #1b4332;
+  font-size: 16px;
+}
+
+/* Buttons */
+.product-card button {
+  margin: 6px 4px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Add to Cart Button */
+.product-card button:first-of-type {
+  background-color: #52b788;
+  color: white;
+}
+
+.product-card button:first-of-type:hover {
+  background-color: #40916c;
+}
+
+/* Buy Now Button */
+.product-card button:last-of-type {
+  background-color: #d8f3dc;
+  color: #1b4332;
+  border: 1px solid #52b788;
+}
+
+.product-card button:last-of-type:hover {
+  background-color: #b7e4c7;
+}
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 0.9em;
+  margin-left: 8px;
+}
+
