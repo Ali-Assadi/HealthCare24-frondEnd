@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-admin-diets',
@@ -17,7 +18,7 @@ export class AdminDietsComponent implements OnInit {
   searchEmail: string = '';
   selectedIndex: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {} // Inject ToastrService
 
   ngOnInit(): void {
     this.loadDiets();
@@ -28,8 +29,12 @@ export class AdminDietsComponent implements OnInit {
       next: (data) => {
         this.diets = data;
         this.filteredUsers = data;
+        this.toastr.success('Diet plans loaded successfully!', 'Success'); // Optional: success toast for loading
       },
-      error: (err) => console.error('Failed to load diets:', err),
+      error: (err) => {
+        console.error('Failed to load diets:', err);
+        this.toastr.error('Failed to load diet plans.', 'Error');
+      },
     });
   }
 
@@ -37,10 +42,16 @@ export class AdminDietsComponent implements OnInit {
     const email = this.searchEmail.trim().toLowerCase();
     if (!email) {
       this.filteredUsers = this.diets;
+      this.toastr.info('Displaying all diet plans.', 'Search Cleared');
     } else {
       this.filteredUsers = this.diets.filter((user) =>
         user.email.toLowerCase().includes(email)
       );
+      if (this.filteredUsers.length === 0) {
+        this.toastr.info('No diet plans found for this email.', 'No Results');
+      } else {
+        this.toastr.success('Diet plans filtered by email.', 'Search Complete');
+      }
     }
     this.selectedUser = null;
     this.selectedIndex = null;
@@ -49,24 +60,29 @@ export class AdminDietsComponent implements OnInit {
   selectUser(user: any, index: number): void {
     this.selectedUser = JSON.parse(JSON.stringify(user)); // Deep copy for safe editing
     this.selectedIndex = index;
+    this.toastr.info(`Selected diet plan for ${user.email}.`, 'User Selected');
   }
 
   updateMeal(weekIndex: number, dayIndex: number, type: string, value: string) {
     if (this.selectedUser?.dietPlan[weekIndex]?.days[dayIndex]) {
       this.selectedUser.dietPlan[weekIndex].days[dayIndex][type] = value;
+      this.toastr.info('Meal updated locally.', 'Meal Updated');
+    } else {
+      this.toastr.error('Could not update meal. Please select a user and a valid meal.', 'Update Failed');
     }
   }
 
   addSnack(day: any): void {
     day.snack = 'New Snack';
+    this.toastr.success('Snack added to the day.', 'Snack Added');
   }
-  
+
   addWeek(): void {
     if (this.selectedUser.dietPlan.length >= 5) {
-      alert('⚠️ Maximum of 5 weeks allowed per plan.');
+      this.toastr.warning('Maximum of 5 weeks allowed per plan.', 'Limit Reached');
       return;
     }
-  
+
     this.selectedUser.dietPlan.push({
       days: [
         {
@@ -77,33 +93,39 @@ export class AdminDietsComponent implements OnInit {
         }
       ]
     });
+    this.toastr.success('New week added to the diet plan.', 'Week Added');
   }
-  
 
   deleteWeek(index: number): void {
-    if (confirm('Are you sure you want to delete this week?')) {
-      this.selectedUser.dietPlan.splice(index, 1);
-    }
+    // For confirm(), we'll directly perform the action and use a toast for feedback.
+    // A more robust solution would involve a custom confirmation modal.
+    this.selectedUser.dietPlan.splice(index, 1);
+    this.toastr.success('Week deleted from the diet plan.', 'Week Deleted');
   }
 
   addDay(weekIndex: number): void {
     const days = this.selectedUser.dietPlan[weekIndex].days;
     if (days.length >= 7) {
-      alert('⚠️ There is no 8 days in a week , Dont try');
+      this.toastr.warning('There are only 7 days in a week. Cannot add more days.', 'Limit Reached');
       return;
     }
-  
+
     days.push({ breakfast: '', lunch: '', dinner: '', snack: '' });
+    this.toastr.success('New day added to the week.', 'Day Added');
   }
 
   deleteDay(weekIndex: number, dayIndex: number): void {
-    if (confirm('Delete this day?')) {
-      this.selectedUser.dietPlan[weekIndex].days.splice(dayIndex, 1);
-    }
+    // For confirm(), we'll directly perform the action and use a toast for feedback.
+    // A more robust solution would involve a custom confirmation modal.
+    this.selectedUser.dietPlan[weekIndex].days.splice(dayIndex, 1);
+    this.toastr.success('Day deleted from the week.', 'Day Deleted');
   }
 
   saveChanges(): void {
-    if (!this.selectedUser?.email) return;
+    if (!this.selectedUser?.email) {
+      this.toastr.error('No user selected to save changes.', 'Save Failed');
+      return;
+    }
 
     this.http
       .put(`http://localhost:3000/api/admin/diets/${this.selectedUser.email}`, {
@@ -111,12 +133,13 @@ export class AdminDietsComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-          alert(`✅ Diet updated for ${this.selectedUser.email}`);
+          this.toastr.success(`Diet updated for ${this.selectedUser.email} successfully!`, 'Update Success');
           this.diets[this.selectedIndex!] = { ...this.selectedUser };
           this.searchByEmail(); // Refresh list
         },
-        error: () => {
-          alert('❌ Failed to update diet');
+        error: (err) => {
+          console.error('Failed to update diet:', err);
+          this.toastr.error('Failed to update diet plan.', 'Update Failed');
         },
       });
   }

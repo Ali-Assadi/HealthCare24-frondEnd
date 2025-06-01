@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core'; // ✅ import OnInit
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router'; // ✅ import ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-update-password',
@@ -10,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router'; // ✅ import Activate
   templateUrl: './update-password.component.html',
   styleUrl: './update-password.component.css'
 })
-export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
+export class UpdatePasswordComponent implements OnInit {
   email = '';
   newPassword = '';
   confirmPassword = '';
@@ -18,24 +19,30 @@ export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
   constructor(
     private http: HttpClient,
     private router: Router,
-    private route: ActivatedRoute // ✅ inject ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService // Inject ToastrService
   ) {}
 
   ngOnInit(): void {
-    // ✅ Read email from query param like: ?email=user@example.com
+    // Read email from query param like: ?email=user@example.com
     this.route.queryParams.subscribe(params => {
       this.email = params['email'] || '';
 
       if (!this.email) {
-        alert("You're not authorized to be here.");
+        this.toastr.error("You're not authorized to be here. Redirecting to sign-in.", "Unauthorized Access");
         this.router.navigate(['/sign-in']);
       }
     });
   }
 
   updatePassword() {
+    if (!this.newPassword || !this.confirmPassword) {
+      this.toastr.warning('Please fill in both new password and confirm password fields.', 'Input Required');
+      return;
+    }
+
     if (this.newPassword !== this.confirmPassword) {
-      alert('Passwords do not match!');
+      this.toastr.error('Passwords do not match!', 'Password Mismatch');
       return;
     }
 
@@ -44,11 +51,12 @@ export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
       newPassword: this.newPassword
     }).subscribe({
       next: () => {
-        alert('Password updated successfully!');
+        this.toastr.success('Password updated successfully!', 'Success'); // Success toast
         this.router.navigate(['/sign-in']);
       },
-      error: () => {
-        alert('Failed to update password.');
+      error: (err) => {
+        console.error('Failed to update password:', err); // Log the actual error
+        this.toastr.error('Failed to update password. Please try again.', 'Error'); // Error toast
       }
     });
   }

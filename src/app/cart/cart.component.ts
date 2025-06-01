@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import jsPDF from 'jspdf';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-cart',
@@ -17,14 +18,17 @@ export class CartComponent implements OnInit {
 
   userId = localStorage.getItem('userId');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {} // Inject ToastrService
 
   ngOnInit() {
     this.checkSubscriptionStatus();
   }
 
   loadCart() {
-    if (!this.userId) return;
+    if (!this.userId) {
+      this.toastr.warning('User not logged in. Cannot load cart.', 'Login Required');
+      return;
+    }
 
     this.http
       .get<any>(`http://localhost:3000/api/cart/${this.userId}`)
@@ -34,17 +38,21 @@ export class CartComponent implements OnInit {
             data.items = data.items.map((item: any) => ({
               ...item,
               originalPrice: item.price,
-              price: (item.price * 0.9).toFixed(2),
+              price: (item.price * 0.9).toFixed(2), // Apply 10% discount
             }));
             data.totalPrice = data.items
               .reduce((sum: number, item: any) => {
-                return sum + item.price * item.quantity;
+                return sum + parseFloat(item.price) * item.quantity; // Use parseFloat for calculation
               }, 0)
               .toFixed(2);
           }
           this.cart = data;
+          this.toastr.success('Cart loaded successfully!', 'Cart Updated');
         },
-        error: (err) => console.error('Error loading cart', err),
+        error: (err) => {
+          console.error('Error loading cart', err);
+          this.toastr.error('Failed to load cart.', 'Cart Error');
+        },
       });
   }
 
@@ -57,20 +65,38 @@ export class CartComponent implements OnInit {
           body: { productId },
         }
       )
-      .subscribe(() => this.loadCart());
+      .subscribe({
+        next: () => {
+          this.loadCart();
+          this.toastr.success('Item removed from cart.', 'Item Removed');
+        },
+        error: (err) => {
+          console.error('Failed to remove item:', err);
+          this.toastr.error('Failed to remove item from cart.', 'Error');
+        },
+      });
   }
+
   checkSubscriptionStatus() {
     const email = localStorage.getItem('userEmail');
-    if (!email) return;
+    if (!email) {
+      console.warn('No user email found for subscription status check.');
+      this.subscribed = false;
+      this.loadCart();
+      this.loadOrders();
+      return;
+    }
 
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
         this.subscribed = !!user.isSubscribed;
+        this.toastr.info(`Subscription status: ${this.subscribed ? 'Active' : 'Inactive'}`, 'Subscription');
         this.loadCart();
         this.loadOrders();
       },
-      error: () => {
-        console.warn('Could not fetch subscription status');
+      error: (err) => {
+        console.warn('Could not fetch subscription status:', err);
+        this.toastr.error('Could not fetch subscription status.', 'Error');
         this.subscribed = false;
         this.loadCart();
         this.loadOrders();
@@ -81,29 +107,48 @@ export class CartComponent implements OnInit {
   clearCart() {
     this.http
       .delete(`http://localhost:3000/api/cart/${this.userId}/clear`)
-      .subscribe(() => this.loadCart());
+      .subscribe({
+        next: () => {
+          this.loadCart();
+          this.toastr.success('Cart cleared successfully!', 'Cart Cleared');
+        },
+        error: (err) => {
+          console.error('Failed to clear cart:', err);
+          this.toastr.error('Failed to clear cart.', 'Error');
+        },
+      });
   }
 
   purchase() {
-    if (!this.userId) return;
+    if (!this.userId) {
+      this.toastr.warning('User not logged in. Cannot place order.', 'Login Required');
+      return;
+    }
+    if (!this.cart || this.cart.items.length === 0) {
+      this.toastr.warning('Your cart is empty. Add items before purchasing.', 'Empty Cart');
+      return;
+    }
 
     this.http
       .post(`http://localhost:3000/api/orders/${this.userId}`, {})
       .subscribe({
         next: () => {
-          alert('✅ Order placed successfully!');
+          this.toastr.success('Order placed successfully!', 'Order Confirmed'); // Success toast
           this.loadCart();
           this.loadOrders();
         },
         error: (err) => {
           console.error('Order failed', err);
-          alert('❌ Order failed.');
+          this.toastr.error('Order failed. Please try again.', 'Order Failed'); // Error toast
         },
       });
   }
 
   loadOrders() {
-    if (!this.userId) return;
+    if (!this.userId) {
+      this.toastr.warning('User not logged in. Cannot load orders.', 'Login Required');
+      return;
+    }
 
     this.http
       .get<any[]>(`http://localhost:3000/api/orders/${this.userId}`)
@@ -118,15 +163,19 @@ export class CartComponent implements OnInit {
               }));
               const newTotal = updatedItems
                 .reduce((sum: number, item: any) => {
-                  return sum + item.price * item.quantity;
+                  return sum + parseFloat(item.price) * item.quantity;
                 }, 0)
                 .toFixed(2);
               return { ...order, items: updatedItems, totalPrice: newTotal };
             });
           }
           this.orders = data;
+          this.toastr.success('Order history loaded successfully!', 'Orders Loaded');
         },
-        error: (err) => console.error('Failed to load orders', err),
+        error: (err) => {
+          console.error('Failed to load orders', err);
+          this.toastr.error('Failed to load order history.', 'Orders Error');
+        },
       });
   }
 
@@ -144,7 +193,7 @@ export class CartComponent implements OnInit {
     order.items.forEach((item: any, index: number) => {
       doc.text(
         `${index + 1}. ${item.productId.name} x${item.quantity} = $${
-          item.price * item.quantity
+          (item.price * item.quantity).toFixed(2) // Ensure price is formatted
         }`,
         10,
         y
@@ -156,5 +205,6 @@ export class CartComponent implements OnInit {
     doc.text(`Total: $${order.totalPrice}`, 10, y + 10);
 
     doc.save(`receipt_${order._id}.pdf`);
+    this.toastr.info('Downloading receipt...', 'Receipt Download');
   }
 }

@@ -12,6 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-health',
@@ -29,11 +30,13 @@ export class HealthComponent implements OnInit {
   sleepArticles: any[] = [];
   loggedIn: boolean = false;
   subscribed: boolean = false;
+
   constructor(
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService // Inject ToastrService
   ) {}
 
   ngOnInit() {
@@ -41,6 +44,8 @@ export class HealthComponent implements OnInit {
 
     if (this.loggedIn) {
       this.checkSub();
+    } else {
+      this.toastr.info('Log in to unlock subscription benefits.', 'Not Logged In');
     }
 
     this.loadArticles('brain');
@@ -76,9 +81,12 @@ export class HealthComponent implements OnInit {
           if (category === 'brain') this.brainArticles = data;
           else if (category === 'heart') this.heartArticles = data;
           else if (category === 'sleep') this.sleepArticles = data;
+          this.toastr.success(`${category.charAt(0).toUpperCase() + category.slice(1)} articles loaded.`, 'Articles Loaded');
         },
-        error: (err) =>
-          console.error(`Failed to load ${category} articles`, err),
+        error: (err) => {
+          console.error(`Failed to load ${category} articles`, err);
+          this.toastr.error(`Failed to load ${category} articles.`, 'Error');
+        },
       });
   }
 
@@ -99,15 +107,22 @@ export class HealthComponent implements OnInit {
           } else {
             this.products = data;
           }
+          this.toastr.success('Health products loaded successfully!', 'Products Loaded');
         },
-        error: (err) => console.error('Failed to load health products', err),
+        error: (err) => {
+          console.error('Failed to load health products', err);
+          this.toastr.error('Failed to load health products.', 'Error');
+        },
       });
   }
 
   // Log user view of article
   logView(topic: string) {
     const email = localStorage.getItem('userEmail');
-    if (!email) return;
+    if (!email) {
+      this.toastr.warning('User not logged in. Cannot log view.', 'Login Required');
+      return;
+    }
 
     this.http
       .post('http://localhost:3000/api/log-view', {
@@ -115,13 +130,18 @@ export class HealthComponent implements OnInit {
         topic,
         section: 'health', // or 'fitness', or 'nutrition'
       })
-      .subscribe();
+      .subscribe({
+        error: (err) => console.error('Failed to log view:', err) // No toast for background logging errors
+      });
   }
 
   // Add product to cart
   addToCart(product: any) {
     const userId = localStorage.getItem('userId');
-    if (!userId) return;
+    if (!userId) {
+      this.toastr.warning('You must be signed in to add items to cart.', 'Login Required');
+      return;
+    }
 
     this.http
       .post(`http://localhost:3000/api/cart/${userId}/add`, {
@@ -129,15 +149,20 @@ export class HealthComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => alert(`${product.name} added to cart.`),
-        error: (err) => console.error('Failed to add to cart', err),
+        next: () => this.toastr.success(`${product.name} added to cart.`, 'Item Added'),
+        error: (err) => {
+          console.error('Failed to add to cart', err);
+          this.toastr.error(`Failed to add ${product.name} to cart.`, 'Error');
+        },
       });
   }
+
   checkSub() {
     console.log('Checking subscription...');
     const email = localStorage.getItem('userEmail');
     if (!email) {
       console.warn('❌ No userEmail found in localStorage');
+      this.toastr.warning('No user email found to check subscription.', 'Missing Email');
       return;
     }
 
@@ -147,10 +172,12 @@ export class HealthComponent implements OnInit {
       next: (data) => {
         console.log('User data:', data);
         this.subscribed = !!data.isSubscribed;
+        this.toastr.info(`Subscription status: ${this.subscribed ? 'Active' : 'Inactive'}`, 'Subscription');
         this.loadProducts();
       },
       error: (err) => {
         console.error('❌ Failed to check subscription status:', err);
+        this.toastr.error('Failed to check subscription status.', 'Error');
         this.subscribed = false;
         this.loadProducts(); // fallback
       },
@@ -160,7 +187,10 @@ export class HealthComponent implements OnInit {
   // Add product to cart and navigate to cart
   buyNow(product: any) {
     const userId = localStorage.getItem('userId');
-    if (!userId) return;
+    if (!userId) {
+      this.toastr.warning('You must be signed in to buy now.', 'Login Required');
+      return;
+    }
 
     this.http
       .post(`http://localhost:3000/api/cart/${userId}/add`, {
@@ -168,8 +198,14 @@ export class HealthComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => this.router.navigate(['/cart']),
-        error: (err) => console.error('Failed to buy now', err),
+        next: () => {
+          this.toastr.success(`${product.name} added to cart. Redirecting...`, 'Added to Cart');
+          this.router.navigate(['/cart']); // Use Angular Router for navigation
+        },
+        error: (err) => {
+          console.error('Failed to buy now', err);
+          this.toastr.error(`Failed to add ${product.name} to cart for purchase.`, 'Error');
+        },
       });
   }
 }

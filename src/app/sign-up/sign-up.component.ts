@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink ,Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-sign-up',
@@ -20,11 +21,16 @@ export class SignUpComponent {
   weight: number | null = null;
   details = '';
 
-  constructor(private http: HttpClient , private router : Router) {}
+  constructor(private http: HttpClient , private router : Router, private toastr: ToastrService) {} // Inject ToastrService
 
   signUp() {
+    if (!this.email || !this.password || !this.confirmPassword) {
+      this.toastr.warning('Please fill in all required fields (Email, Password, Confirm Password).', 'Input Required');
+      return;
+    }
+
     if (this.password !== this.confirmPassword) {
-      alert('Passwords do not match!');
+      this.toastr.error('Passwords do not match!', 'Password Mismatch');
       return;
     }
 
@@ -37,16 +43,17 @@ export class SignUpComponent {
       details: this.details
     };
 
-    this.http.post('http://localhost:3000/api/signup', userData).subscribe(
-      (response) => {
+    this.http.post('http://localhost:3000/api/signup', userData).subscribe({
+      next: (response) => { // Use next and error properties for HttpClient subscribe
         console.log(response);
-        alert('Signup success!');
+        this.toastr.success('Signup success!', 'Welcome!'); // Success toast
         this.router.navigate(['/sign-in']);
       },
-      (error) => {
+      error: (error) => { // Use next and error properties for HttpClient subscribe
         console.error(error);
-        alert('Signup failed!');
+        const errorMessage = error.error?.message || 'Something went wrong during signup.';
+        this.toastr.error(`Signup failed! ${errorMessage}`, 'Error'); // Error toast
       }
-    );
+    });
   }
 }

@@ -1,1 +1,136 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.css */
+
+/* 1. Import the base ngx-toastr stylesheet */
+/* This line is CRUCIAL for 'position: fixed' behavior. */
+/* It must be at the very top of your toastr-related styles. */
+@import 'ngx-toastr/toastr.css';
+
+/* 2. Your Refined Custom Styles for ngx-toastr */
+/* These styles will override and enhance the base styles from toastr.css */
+
+/* General Toast Container Styling */
+/* The 'position: fixed' is primarily handled by toastr.css itself, */
+/* but these styles ensure it looks good and is responsive. */
+.ngx-toastr {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Dark gradient background */
+  color: #ecf0f1; /* Light text color */
+  border-radius: 12px; /* More rounded corners */
+  padding: 18px 25px; /* Generous padding */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Deeper shadow */
+  font-family: 'Inter', sans-serif; /* Ensure Inter font is used */
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.98 !important; /* Slightly more opaque */
+  transition: all 0.3s ease-in-out; /* Smooth transitions for all properties */
+  backdrop-filter: blur(5px); /* Subtle blur effect (glassmorphism-like) */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically align content */
+  gap: 15px; /* Space between icon and text */
+  min-width: 280px; /* Ensure a minimum width */
+  max-width: 400px; /* Limit maximum width */
+}
+
+/* Specific styling for different toast types */
+.toast-success {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%); /* Green gradient */
+  border-color: rgba(40, 167, 69, 0.2);
+}
+
+.toast-error {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); /* Red gradient */
+  border-color: rgba(220, 53, 69, 0.2);
+}
+
+.toast-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); /* Blue gradient */
+  border-color: rgba(23, 162, 184, 0.2);
+}
+
+.toast-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); /* Orange gradient */
+  color: #333; /* Darker text for warning */
+  border-color: rgba(255, 193, 7, 0.2);
+}
+
+/* Style for the close button */
+.toast-close-button {
+  color: #ecf0f1;
+  font-size: 24px; /* Larger close button */
+  text-shadow: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  cursor: pointer;
+  margin-left: auto; /* Push close button to the right */
+}
+
+.toast-close-button:hover {
+  opacity: 1;
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Style for the progress bar */
+.toast-progress {
+  background-color: rgba(255, 255, 255, 0.4); /* Lighter, subtle progress bar */
+  height: 5px; /* Slightly thicker */
+  border-radius: 5px; /* Rounded progress bar */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Icon styling (assuming ngx-toastr uses a default icon or you provide one) */
+/* If ngx-toastr uses specific elements for icons, you might need to target them */
+/* For example, if it's an <i> tag inside a .toast-icon element */
+.ngx-toastr .toast-icon {
+  font-size: 24px; /* Adjust icon size */
+  line-height: 1;
+}
+
+/* Animations for entry/exit */
+.ngx-toastr.ng-animating {
+  opacity: 0;
+}
+
+.ngx-toastr.ng-animating.ng-enter {
+  animation: slideInRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ngx-toastr.ng-animating.ng-leave {
+  animation: fadeOutRight 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 0.98; transform: translateX(0); }
+}
+
+@keyframes fadeOutRight {
+  from { opacity: 0.98; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .ngx-toastr {
+    font-size: 14px;
+    padding: 12px 18px;
+    min-width: unset;
+    max-width: 90%; /* Adjust max-width for smaller screens */
+    margin: 10px auto; /* Center on mobile */
+    left: 0;
+    right: 0;
+  }
+  /* Ensure positioning remains fixed correctly on small screens */
+  .toast-top-right, .toast-top-left, .toast-bottom-right, .toast-bottom-left {
+    top: 10px !important; /* Adjust top/bottom positioning for mobile */
+    left: auto !important; /* Reset left/right for auto centering if needed */
+    right: 10px !important; /* Keep it anchored to a corner if preferred */
+    bottom: 10px !important; /* For bottom positions */
+    transform: none !important; /* Remove transforms that might interfere */
+  }
+}
+
+/* Add any other global styles for your application below this */

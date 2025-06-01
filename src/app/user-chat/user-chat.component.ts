@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-user-chat',
@@ -24,12 +25,13 @@ export class UserChatComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {} // Inject ToastrService
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
     if (!email) {
-      alert('You must be signed in');
+      this.toastr.warning('You must be signed in to access chat.', 'Login Required'); // Replaced alert
+      // Optionally redirect to login page here if not signed in
       return;
     }
 
@@ -46,13 +48,20 @@ export class UserChatComponent implements OnInit, AfterViewChecked {
       next: (data) => {
         this.messages = data;
         setTimeout(() => this.scrollToBottom(), 100);
+        this.toastr.success('Chat messages loaded.', 'Chat Loaded'); // Success toast
       },
-      error: () => alert('Failed to load messages')
+      error: (err) => {
+        console.error('Failed to load messages:', err);
+        this.toastr.error('Failed to load messages.', 'Chat Error'); // Replaced alert
+      }
     });
   }
 
   sendMessage(): void {
-    if (!this.newMessage.trim()) return;
+    if (!this.newMessage.trim()) {
+      this.toastr.warning('Message cannot be empty.', 'Input Required'); // Warning toast
+      return;
+    }
 
     const msg = { from: this.userEmail, to: 'admin', content: this.newMessage };
 
@@ -61,15 +70,21 @@ export class UserChatComponent implements OnInit, AfterViewChecked {
         this.messages.push(msg);
         this.newMessage = '';
         setTimeout(() => this.scrollToBottom(), 100);
+        this.toastr.success('Message sent successfully!', 'Message Sent'); // Success toast
       },
-      error: () => alert('Failed to send message')
+      error: (err) => {
+        console.error('Failed to send message:', err);
+        this.toastr.error('Failed to send message.', 'Error'); // Replaced alert
+      }
     });
   }
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
+      if (this.scrollContainer) { // Added check for scrollContainer to prevent error if not yet available
+        this.scrollContainer.nativeElement.scrollTop =
+          this.scrollContainer.nativeElement.scrollHeight;
+      }
     } catch (err) {
       console.warn('Auto-scroll failed:', err);
     }
