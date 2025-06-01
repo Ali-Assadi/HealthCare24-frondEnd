@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   currentRoute: string = '';
   isLoggedIn: boolean = false;
   hasUnread: boolean = false;
@@ -20,21 +20,21 @@ export class NavBarComponent {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
         this.checkLoginStatus();
+        this.checkNotifications();
+        this.checkSubscriptionStatus();
       }
     });
   }
 
   ngOnInit() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.url;
-        this.checkLoginStatus();
-        this.checkNotifications();
-      }
-    });
-    this.checkSub();
     this.checkLoginStatus();
     this.checkNotifications();
+    this.checkSubscriptionStatus();
+  }
+
+  checkLoginStatus() {
+    const userEmail = localStorage.getItem('userEmail');
+    this.isLoggedIn = !!userEmail;
   }
 
   checkNotifications() {
@@ -46,12 +46,13 @@ export class NavBarComponent {
       .then((data) => (this.hasUnread = data.unreadCount > 0))
       .catch(() => (this.hasUnread = false));
   }
-  checkSub() {
-    const userStr = localStorage.getItem('user');
-    if (!userStr) return;
 
-    const user = JSON.parse(userStr);
-    const email = user.email;
+  checkSubscriptionStatus() {
+    const email = localStorage.getItem('userEmail');
+    if (!email) {
+      this.isSubscribed = false;
+      return;
+    }
 
     fetch(`http://localhost:3000/api/user/${email}`)
       .then((res) => res.json())
@@ -62,11 +63,6 @@ export class NavBarComponent {
         console.error('Failed to check subscription status:', err);
         this.isSubscribed = false;
       });
-  }
-
-  checkLoginStatus() {
-    const userEmail = localStorage.getItem('userEmail');
-    this.isLoggedIn = !!userEmail;
   }
 
   getNavbarColor(): string {
