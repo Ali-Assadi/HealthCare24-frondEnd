@@ -11,7 +11,6 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../footer/footer.component';
 import { RouterLink, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-nutrition',
@@ -40,8 +39,7 @@ export class NutritionComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
     private http: HttpClient,
-    private router: Router,
-    private toastr: ToastrService // Inject ToastrService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -52,15 +50,10 @@ export class NutritionComponent implements OnInit {
 
     if (this.isLoggedIn) {
       this.checkSubscriptionAndLoadProducts();
-    } else {
-      this.toastr.info('Log in to unlock subscription benefits and personalized plans.', 'Not Logged In');
     }
 
     const email = localStorage.getItem('userEmail');
-    if (!email) {
-      this.toastr.warning('Please log in to view your nutrition plan.', 'Login Required');
-      return;
-    }
+    if (!email) return;
 
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
@@ -69,37 +62,25 @@ export class NutritionComponent implements OnInit {
         this.showPlan = this.hasPlan;
         this.generatedPlans = user.dietPlan || [];
         this.userGoal = user.goal || '';
-        if (this.hasPlan) {
-          this.toastr.success('Your nutrition plan loaded successfully!', 'Plan Loaded');
-        } else {
-          this.toastr.info('No nutrition plan found. Generate one to get started!', 'No Plan');
-        }
       },
       error: (err) => {
         console.error('❌ Failed to load user profile.', err);
-        this.toastr.error('Failed to load user profile.', 'Error');
       },
     });
   }
-
   checkSubscriptionAndLoadProducts() {
     const email = localStorage.getItem('userEmail');
-    if (!email) {
-      this.toastr.warning('User not logged in. Cannot check subscription or load products.', 'Login Required');
-      return;
-    }
+    if (!email) return;
 
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
       next: (user) => {
         this.subscribed = !!user.isSubscribed;
-        this.toastr.info(`Subscription status: ${this.subscribed ? 'Active' : 'Inactive'}`, 'Subscription');
         this.loadProducts();
       },
       error: (err) => {
         console.error('❌ Failed to check subscription status.', err);
-        this.toastr.error('Failed to check subscription status.', 'Error');
         this.subscribed = false;
-        this.loadProducts(); // fallback
+        this.loadProducts();
       },
     });
   }
@@ -118,12 +99,8 @@ export class NutritionComponent implements OnInit {
           } else {
             this.products = data;
           }
-          this.toastr.success('Nutrition products loaded successfully!', 'Products Loaded');
         },
-        error: (err) => {
-          console.error('Failed to load nutrition products', err);
-          this.toastr.error('Failed to load nutrition products.', 'Error');
-        },
+        error: (err) => console.error('Failed to load nutrition products', err),
       });
   }
 
@@ -134,10 +111,7 @@ export class NutritionComponent implements OnInit {
 
   requestNewPlan(): void {
     const email = localStorage.getItem('userEmail');
-    if (!email) {
-      this.toastr.warning('You must be signed in to request a new plan.', 'Login Required');
-      return;
-    }
+    if (!email) return alert('You must be signed in.');
 
     this.http
       .post('http://localhost:3000/api/request-new-plan', {
@@ -145,11 +119,8 @@ export class NutritionComponent implements OnInit {
         message: `User ${email} is requesting a new diet plan.`,
       })
       .subscribe({
-        next: () => this.toastr.success('Request sent to admin!', 'Request Sent'),
-        error: (err) => {
-          console.error('❌ Failed to send request to admin.', err);
-          this.toastr.error('Failed to send request to admin.', 'Error');
-        },
+        next: () => alert('📩 Request sent to admin!'),
+        error: () => alert('❌ Failed to send request to admin.'),
       });
   }
 
@@ -176,21 +147,14 @@ export class NutritionComponent implements OnInit {
           if (category === 'meals') this.meals = data;
           else if (category === 'diets') this.diets = data;
           else if (category === 'recipes') this.recipes = data;
-          this.toastr.success(`${category.charAt(0).toUpperCase() + category.slice(1)} articles loaded.`, 'Articles Loaded');
         },
-        error: (err) => {
-          console.error(`Failed to load ${category} articles`, err);
-          this.toastr.error(`Failed to load ${category} articles.`, 'Error');
-        },
+        error: (err) =>
+          console.error(`Failed to load ${category} articles`, err),
       });
   }
-
   logView(topic: string, section: string) {
     const email = localStorage.getItem('userEmail');
-    if (!email) {
-      this.toastr.warning('User not logged in. Cannot log view.', 'Login Required');
-      return;
-    }
+    if (!email) return;
 
     this.http
       .post('http://localhost:3000/api/log-view', {
@@ -198,17 +162,11 @@ export class NutritionComponent implements OnInit {
         topic,
         section,
       })
-      .subscribe({
-        error: (err) => console.error('Failed to log view:', err) // No toast for background logging errors
-      });
+      .subscribe();
   }
-
   addToCart(product: any) {
     const userId = localStorage.getItem('userId');
-    if (!userId) {
-      this.toastr.warning('You must be signed in to add items to cart.', 'Login Required');
-      return;
-    }
+    if (!userId) return;
 
     this.http
       .post(`http://localhost:3000/api/cart/${userId}/add`, {
@@ -216,20 +174,14 @@ export class NutritionComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => this.toastr.success(`${product.name} added to cart.`, 'Item Added'),
-        error: (err) => {
-          console.error('Failed to add to cart', err);
-          this.toastr.error(`Failed to add ${product.name} to cart.`, 'Error');
-        },
+        next: () => alert(`${product.name} added to cart.`),
+        error: (err) => console.error('Failed to add to cart', err),
       });
   }
 
   buyNow(product: any) {
     const userId = localStorage.getItem('userId');
-    if (!userId) {
-      this.toastr.warning('You must be signed in to buy now.', 'Login Required');
-      return;
-    }
+    if (!userId) return;
 
     this.http
       .post(`http://localhost:3000/api/cart/${userId}/add`, {
@@ -237,14 +189,8 @@ export class NutritionComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => {
-          this.toastr.success(`${product.name} added to cart. Redirecting...`, 'Added to Cart');
-          location.href = '/cart'; // Redirect to cart page
-        },
-        error: (err) => {
-          console.error('Failed to buy now', err);
-          this.toastr.error(`Failed to add ${product.name} to cart for purchase.`, 'Error');
-        },
+        next: () => (location.href = '/cart'),
+        error: (err) => console.error('Failed to buy now', err),
       });
   }
 }

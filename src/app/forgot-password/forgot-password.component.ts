@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
+import { Router } from '@angular/router'; // ✅ import Router
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,27 +13,15 @@ import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 export class ForgotPasswordComponent {
   email = '';
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private toastr: ToastrService // Inject ToastrService
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {} // ✅ inject Router
 
   submit() {
-    if (!this.email) {
-      this.toastr.warning('Please enter your email address.', 'Email Required');
-      return;
-    }
-
     this.http.post('http://localhost:3000/api/forgot-password', { email: this.email }).subscribe({
       next: () => {
-        this.toastr.success('Temporary password sent to your email!', 'Password Sent'); // Success toast
-        this.router.navigate(['/sign-in']); // Redirect after successful password reset request
+        alert('Temporary password sent to your email!');
+        this.router.navigate(['/sign-in']); // ✅ redirect
       },
-      error: (err) => {
-        console.error('Failed to send password:', err); // Log the actual error
-        this.toastr.error('Failed to send password. Please try again.', 'Error'); // Error toast
-      }
+      error: () => alert('Failed to send password. Try again.')
     });
   }
 }

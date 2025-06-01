@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-my-diet-plan',
@@ -24,14 +23,11 @@ export class MyDietPlanComponent implements OnInit {
   showAllWeeks: boolean = false;
   userEmail: string = '';
 
-  constructor(private http: HttpClient, private toastr: ToastrService) {} // Inject ToastrService
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
-    if (!email) {
-      this.toastr.warning('Please log in to view your diet plan.', 'Login Required');
-      return;
-    }
+    if (!email) return;
 
     this.userEmail = email;
     this.http.get<any>(`http://localhost:3000/api/user/${email}`).subscribe({
@@ -40,47 +36,33 @@ export class MyDietPlanComponent implements OnInit {
         this.userGoal = user.goal || '';
         this.generatedPlans = user.dietPlan || [];
         this.calculateProgress();
-        this.toastr.success('Diet plan loaded successfully!', 'Plan Loaded');
       },
-      error: (err) => {
-        console.error('❌ Failed to fetch user plan:', err);
-        this.toastr.error('Failed to load your diet plan.', 'Error');
-      }
+      error: () => console.error('❌ Failed to fetch user plan.')
     });
   }
 
   finishDay(weekIndex: number, dayIndex: number): void {
-    // Only mark if not already finished
-    if (!this.generatedPlans[weekIndex].days[dayIndex].finished) {
-      this.generatedPlans[weekIndex].days[dayIndex].finished = true;
+    this.generatedPlans[weekIndex].days[dayIndex].finished = true;
 
-      this.http.patch('http://localhost:3000/api/update-finished-day', {
-        email: this.userEmail,
-        weekIndex,
-        dayIndex
-      }).subscribe({
-        next: () => {
-          console.log('✅ Day marked as finished!');
-          this.calculateProgress();
-          this.toastr.success('Day marked as finished!', 'Progress Updated');
-        },
-        error: (err) => {
-          console.error('❌ Failed to update finished day', err);
-          this.toastr.error('Failed to mark day as finished in database.', 'Update Failed');
-          // Revert local change if DB update fails
-          this.generatedPlans[weekIndex].days[dayIndex].finished = false;
-          this.calculateProgress();
-        }
-      });
-    } else {
-      this.toastr.info('This day is already marked as finished.', 'Already Finished');
-    }
+    this.http.patch('http://localhost:3000/api/update-finished-day', {
+      email: this.userEmail,
+      weekIndex,
+      dayIndex
+    }).subscribe({
+      next: () => {
+        console.log('✅ Day marked as finished!');
+        this.calculateProgress();
+      },
+      error: (err) => {
+        console.error('❌ Failed to update finished day', err);
+      }
+    });
   }
 
   resetPlan(): void {
-    // Replaced confirm() with direct action and toast feedback.
-    // For critical operations, consider a custom confirmation modal.
-    this.toastr.info('Resetting your diet plan...', 'Restarting Plan');
+    if (!confirm('Are you sure you want to restart your diet plan? This will reset all progress.')) {
+      return;
+    }
 
     for (let week of this.generatedPlans) {
       for (let day of week.days) {
@@ -92,13 +74,8 @@ export class MyDietPlanComponent implements OnInit {
     this.http.patch('http://localhost:3000/api/reset-finished-diet', {
       email: this.userEmail
     }).subscribe({
-      next: () => {
-        this.toastr.success('Diet Plan has been restarted!', 'Plan Reset');
-      },
-      error: (err) => {
-        console.error('❌ Failed to restart diet plan:', err);
-        this.toastr.error('Failed to restart diet plan.', 'Error');
-      }
+      next: () => alert('✅ Diet Plan has been restarted!'),
+      error: () => alert('❌ Failed to restart diet plan.')
     });
   }
 
@@ -118,11 +95,6 @@ export class MyDietPlanComponent implements OnInit {
     this.completedDays = completed;
     this.totalDays = total;
     this.progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-    // Show congratulations only if progress becomes 100% and it wasn't already
-    if (this.progressPercent === 100 && !this.showCongratulations) {
-      this.toastr.success('Congratulations! You have completed your diet plan!', 'Plan Completed!');
-    }
     this.showCongratulations = this.progressPercent === 100;
   }
 
@@ -189,10 +161,6 @@ export class MyDietPlanComponent implements OnInit {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
       saveAs(blob, 'diet-plan-styled.xlsx');
-      this.toastr.success('Diet plan downloaded as Excel!', 'Download Complete');
-    }).catch(err => {
-      console.error('Failed to download Excel:', err);
-      this.toastr.error('Failed to download diet plan as Excel.', 'Download Failed');
     });
   }
 }

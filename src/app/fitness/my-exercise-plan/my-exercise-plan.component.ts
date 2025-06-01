@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 
 @Component({
   selector: 'app-my-exercise-plan',
@@ -23,15 +22,9 @@ export class MyExercisePlanComponent implements OnInit {
   progressPercent = 0;
   showCongratulations = false;
 
-  constructor(private http: HttpClient, private toastr: ToastrService) {} // Inject ToastrService
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    if (!this.userEmail) {
-      this.toastr.warning('Please log in to view your exercise plan.', 'Login Required');
-      this.loading = false;
-      return;
-    }
-
     this.http.get<any>(`http://localhost:3000/api/exercise/plan/${this.userEmail}`).subscribe({
       next: (data) => {
         this.exercisePlan = data.exercisePlan || [];
@@ -39,11 +32,9 @@ export class MyExercisePlanComponent implements OnInit {
         this.addFinishedFieldIfMissing();
         this.calculateProgress();
         this.loading = false;
-        this.toastr.success('Exercise plan loaded successfully!', 'Plan Loaded');
       },
-      error: (err) => {
-        console.error('Failed to load exercise plan:', err);
-        this.toastr.error('Failed to load exercise plan.', 'Error');
+      error: () => {
+        alert('Failed to load exercise plan');
         this.loading = false;
       },
     });
@@ -60,37 +51,27 @@ export class MyExercisePlanComponent implements OnInit {
   }
 
   markDayFinished(weekIndex: number, dayIndex: number): void {
-    // Only mark if not already finished
-    if (!this.exercisePlan[weekIndex].days[dayIndex].finished) {
-      this.exercisePlan[weekIndex].days[dayIndex].finished = true;
-      this.calculateProgress();
+    this.exercisePlan[weekIndex].days[dayIndex].finished = true;
+    this.calculateProgress();
 
-      this.http.patch('http://localhost:3000/api/exercise/update-finished-exercise-day', {
-        email: this.userEmail,
-        weekIndex,
-        dayIndex
-      }).subscribe({
-        next: () => {
-          console.log('✅ Exercise day marked as finished in DB!');
-          this.toastr.success('Day marked as finished!', 'Progress Updated');
-        },
-        error: (err) => {
-          console.error('❌ Failed to update exercise day in DB', err);
-          this.toastr.error('Failed to mark day as finished in database.', 'Update Failed');
-          // Revert local change if DB update fails
-          this.exercisePlan[weekIndex].days[dayIndex].finished = false;
-          this.calculateProgress();
-        }
-      });
-    } else {
-      this.toastr.info('This day is already marked as finished.', 'Already Finished');
-    }
+    this.http.patch('http://localhost:3000/api/exercise/update-finished-exercise-day', {
+      email: this.userEmail,
+      weekIndex,
+      dayIndex
+    }).subscribe({
+      next: () => {
+        console.log('✅ Exercise day marked as finished in DB!');
+      },
+      error: (err) => {
+        console.error('❌ Failed to update exercise day in DB', err);
+      }
+    });
   }
 
   restartPlan(): void {
-    // Replaced confirm() with direct action and toast feedback.
-    // For critical operations, consider a custom confirmation modal.
-    this.toastr.info('Resetting your exercise plan...', 'Restarting Plan');
+    if (!confirm('Are you sure you want to restart the plan? This will reset all progress!')) {
+      return;
+    }
 
     for (let week of this.exercisePlan) {
       for (let day of week.days) {
@@ -103,11 +84,10 @@ export class MyExercisePlanComponent implements OnInit {
       email: this.userEmail
     }).subscribe({
       next: () => {
-        this.toastr.success('Exercise plan has been reset!', 'Plan Reset');
+        alert('✅ Exercise plan has been reset!');
       },
-      error: (err) => {
-        console.error('❌ Failed to reset exercise plan:', err);
-        this.toastr.error('Failed to reset exercise plan.', 'Error');
+      error: () => {
+        alert('❌ Failed to reset exercise plan');
       }
     });
   }
@@ -129,20 +109,16 @@ export class MyExercisePlanComponent implements OnInit {
     this.totalDays = total;
     this.progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    // Show congratulations only if progress becomes 100% and it wasn't already
-    if (this.progressPercent === 100 && !this.showCongratulations) {
-      this.toastr.success('Congratulations! You have completed your exercise plan!', 'Plan Completed!');
-    }
     this.showCongratulations = this.progressPercent === 100;
   }
 
   downloadExcel(): void {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Exercise Plan');
-
+  
     // Add Header Row
     const headerRow = worksheet.addRow(['Week', 'Day', 'Type', 'Workout', 'Finished']);
-
+  
     // Style Header Row
     headerRow.eachCell((cell) => {
       cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
@@ -153,7 +129,7 @@ export class MyExercisePlanComponent implements OnInit {
       };
       cell.alignment = { horizontal: 'center' };
     });
-
+  
     // Add Data Rows
     for (let week of this.exercisePlan) {
       for (let day of week.days) {
@@ -164,7 +140,7 @@ export class MyExercisePlanComponent implements OnInit {
           day.workout,
           day.finished ? 'Yes' : 'No'
         ]);
-
+  
         // Style Finished Cell
         const finishedCell = row.getCell(5);
         finishedCell.font = {
@@ -173,7 +149,7 @@ export class MyExercisePlanComponent implements OnInit {
         finishedCell.alignment = { horizontal: 'center' };
       }
     }
-
+  
     // ✅ Correct Auto Width - FIX for TypeScript error
     worksheet.columns?.forEach((column) => {
       if (!column) return;
@@ -188,17 +164,13 @@ export class MyExercisePlanComponent implements OnInit {
       });
       column.width = maxLength + 5;
     });
-
+  
     // Save file
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
       saveAs(blob, 'exercise-plan-styled.xlsx');
-      this.toastr.success('Exercise plan downloaded as Excel!', 'Download Complete');
-    }).catch(err => {
-      console.error('Failed to download Excel:', err);
-      this.toastr.error('Failed to download exercise plan as Excel.', 'Download Failed');
     });
   }
 }

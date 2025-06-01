@@ -9,12 +9,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
+
 
 @Component({
   selector: 'app-admin-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink], // No need to import ToastrModule here if configured via provideToastr
+  imports: [CommonModule, FormsModule,RouterLink],
   templateUrl: './admin-chat.component.html',
   styleUrls: ['./admin-chat.component.css'],
 })
@@ -25,12 +25,7 @@ export class AdminChatComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('scrollBottom') scrollContainer!: ElementRef;
 
-  // Inject ToastrService into the constructor
-  constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient,
-    private toastr: ToastrService // Inject ToastrService
-  ) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.userEmail = decodeURIComponent(this.route.snapshot.paramMap.get('email')!);
@@ -50,17 +45,12 @@ export class AdminChatComponent implements OnInit, AfterViewChecked {
       error: () => {
         console.warn('[Chat] Could not load messages');
         this.messages = [];
-        // Optionally show a toast for loading failure
-        this.toastr.error('Could not load chat messages.', 'Chat Error');
       },
     });
   }
 
   sendMessage() {
-    if (!this.newMessage.trim()) {
-      this.toastr.warning('Message cannot be empty.', 'Input Required');
-      return;
-    }
+    if (!this.newMessage.trim()) return;
 
     const msg = { to: this.userEmail, from: 'admin', content: this.newMessage };
     this.http.post('http://localhost:3000/api/chat/send', msg).subscribe({
@@ -68,12 +58,8 @@ export class AdminChatComponent implements OnInit, AfterViewChecked {
         this.messages.push(msg);
         this.newMessage = '';
         this.scrollToBottom();
-        this.toastr.success('Message sent successfully!', 'Success'); // Success toast
       },
-      error: (err) => {
-        console.error('Failed to send message:', err); // Log the actual error
-        this.toastr.error('Failed to send message.', 'Error'); // Error toast
-      },
+      error: () => alert('Failed to send message'),
     });
   }
 
