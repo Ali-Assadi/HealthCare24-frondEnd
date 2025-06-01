@@ -1,7 +1,7 @@
 body {
-  margin-top: 6dvh;
+  margin-top: 6.5dvh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
+  background-color:#fff;
   color: #2e2e2e;
 }
 
@@ -102,6 +102,7 @@ h2 {
 
 .orders-wrapper {
   margin-top: 40px;
+  
 }
 
 .order-box {

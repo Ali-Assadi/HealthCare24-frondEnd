@@ -80,7 +80,6 @@ body {
   }
   
   .btn-custom.ms-2 {
-    margin-left: 0;
     margin-top: 10px;
   }
   
@@ -112,4 +111,23 @@ body {
       transform: translateY(0);
     }
   }
-  
+  .reviews-btn-container {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}
+
+.reviews-btn {
+  background-color: #f1f1f1;
+  color: #444;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.reviews-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #999;
+}

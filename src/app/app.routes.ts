@@ -28,6 +28,8 @@ import { BetterSleep3Component } from './health/better-sleep-3/better-sleep-3.co
 import { BetterSleep4Component } from './health/better-sleep-4/better-sleep-4.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MyReviewsComponent } from './my-reviews/my-reviews.component';
+
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DietPlanComponent } from './nutrition/diet-plan/diet-plan.component';
@@ -96,12 +98,12 @@ export const routes: Routes = [
   { path: 'healthy-recips3', component: HEALTHYRECIPES3Component },
   { path: 'healthy-recips4', component: HEALTHYRECIPES4Component },
 
-
   { path: 'sign-in', component: SignInComponent },
   { path: 'subscribe', component: SubscribeComponent },
   { path: 'cart', component: CartComponent },
   { path: 'sign-up', component: SignUpComponent },
-  //Health Sections Details ..
+
+  //Health Sections Details
   // Brain Health Routes
   { path: 'brain-health-1', component: BrainHealth1Component },
   { path: 'brain-health-2', component: BrainHealth2Component },
@@ -136,6 +138,7 @@ export const routes: Routes = [
   { path: 'user-chat', component: UserChatComponent },
   { path: 'contact', component: ContactUsComponent },
   { path: 'notifications', component: NotificationsComponent },
+  { path: 'my-reviews', component: MyReviewsComponent },
 
   { path: '**', component: NotFoundComponent },
 ];

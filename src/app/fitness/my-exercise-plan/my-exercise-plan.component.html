@@ -5,6 +5,27 @@
   <div *ngIf="showCongratulations" class="congrats-message">
     🎉 Congratulations! You've completed your entire exercise plan! 🎉
   </div>
+  <div *ngIf="showCongratulations && !reviewSubmitted" class="review-section">
+  <h4>💬 We'd love your feedback!</h4>
+
+  <div class="form-group">
+    <label>Update Weight (kg):</label>
+    <input type="number" [(ngModel)]="updatedWeight" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Update Details:</label>
+    <textarea [(ngModel)]="updatedDetails" class="form-control" rows="3"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Leave a Review:</label>
+    <textarea [(ngModel)]="review" class="form-control" rows="4" placeholder="How was your experience?"></textarea>
+  </div>
+
+  <button class="btn btn-success mt-3" (click)="submitReview()">Submit Feedback ✅</button>
+</div>
+
   <div class="restart-container text-center" >
     <button class="btn-restart" (click)="restartPlan()">
       🔄 Restart Exercise Plan

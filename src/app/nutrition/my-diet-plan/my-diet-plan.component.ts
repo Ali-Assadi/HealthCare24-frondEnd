@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-my-diet-plan',
@@ -23,7 +24,7 @@ export class MyDietPlanComponent implements OnInit {
   showAllWeeks: boolean = false;
   userEmail: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
@@ -37,30 +38,36 @@ export class MyDietPlanComponent implements OnInit {
         this.generatedPlans = user.dietPlan || [];
         this.calculateProgress();
       },
-      error: () => console.error('❌ Failed to fetch user plan.')
+      error: () => console.error('❌ Failed to fetch user plan.'),
     });
   }
 
   finishDay(weekIndex: number, dayIndex: number): void {
     this.generatedPlans[weekIndex].days[dayIndex].finished = true;
 
-    this.http.patch('http://localhost:3000/api/update-finished-day', {
-      email: this.userEmail,
-      weekIndex,
-      dayIndex
-    }).subscribe({
-      next: () => {
-        console.log('✅ Day marked as finished!');
-        this.calculateProgress();
-      },
-      error: (err) => {
-        console.error('❌ Failed to update finished day', err);
-      }
-    });
+    this.http
+      .patch('http://localhost:3000/api/update-finished-day', {
+        email: this.userEmail,
+        weekIndex,
+        dayIndex,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('Day marked as completed!', '✅ Nice work!');
+          this.calculateProgress();
+        },
+        error: (err) => {
+          console.error('❌ Failed to update finished day', err);
+        },
+      });
   }
 
   resetPlan(): void {
-    if (!confirm('Are you sure you want to restart your diet plan? This will reset all progress.')) {
+    const confirmed = window.confirm(
+      'Are you sure you want to restart your diet plan? This will reset all progress.'
+    );
+    if (!confirmed) {
+      this.toastr.info('Reset cancelled.', '✋ Cancelled');
       return;
     }
 
@@ -71,12 +78,18 @@ export class MyDietPlanComponent implements OnInit {
     }
     this.calculateProgress();
 
-    this.http.patch('http://localhost:3000/api/reset-finished-diet', {
-      email: this.userEmail
-    }).subscribe({
-      next: () => alert('✅ Diet Plan has been restarted!'),
-      error: () => alert('❌ Failed to restart diet plan.')
-    });
+    this.http
+      .patch('http://localhost:3000/api/reset-finished-diet', {
+        email: this.userEmail,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('✅ Diet Plan has been restarted!', 'Plan Reset');
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to restart diet plan.', 'Error');
+        },
+      });
   }
 
   calculateProgress(): void {
@@ -94,7 +107,8 @@ export class MyDietPlanComponent implements OnInit {
 
     this.completedDays = completed;
     this.totalDays = total;
-    this.progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+    this.progressPercent =
+      total > 0 ? Math.round((completed / total) * 100) : 0;
     this.showCongratulations = this.progressPercent === 100;
   }
 
@@ -103,7 +117,15 @@ export class MyDietPlanComponent implements OnInit {
     const worksheet = workbook.addWorksheet('Diet Plan');
 
     // Add Header Row
-    const headerRow = worksheet.addRow(['Week', 'Day', 'Breakfast', 'Lunch', 'Dinner', 'Snack', 'Finished']);
+    const headerRow = worksheet.addRow([
+      'Week',
+      'Day',
+      'Breakfast',
+      'Lunch',
+      'Dinner',
+      'Snack',
+      'Finished',
+    ]);
 
     // Style Header
     headerRow.eachCell((cell) => {
@@ -117,7 +139,11 @@ export class MyDietPlanComponent implements OnInit {
     });
 
     // Add Data Rows
-    for (let weekIndex = 0; weekIndex < this.generatedPlans.length; weekIndex++) {
+    for (
+      let weekIndex = 0;
+      weekIndex < this.generatedPlans.length;
+      weekIndex++
+    ) {
       const week = this.generatedPlans[weekIndex];
       for (let dayIndex = 0; dayIndex < week.days.length; dayIndex++) {
         const day = week.days[dayIndex];
@@ -128,13 +154,13 @@ export class MyDietPlanComponent implements OnInit {
           day.lunch,
           day.dinner,
           day.snack || '',
-          day.finished ? 'Yes' : 'No'
+          day.finished ? 'Yes' : 'No',
         ]);
 
         // Style Finished cell color
         const finishedCell = row.getCell(7);
         finishedCell.font = {
-          color: { argb: day.finished ? '00C853' : 'D50000' } // Green for Yes, Red for No
+          color: { argb: day.finished ? '00C853' : 'D50000' }, // Green for Yes, Red for No
         };
         finishedCell.alignment = { horizontal: 'center' };
       }

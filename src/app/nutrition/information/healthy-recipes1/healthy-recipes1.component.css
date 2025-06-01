@@ -1,13 +1,13 @@
 /* General Body Style */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #d8f3dc;
+    background-color: #FFF8F0;
     margin: 0;
     padding: 0;
     color: #2d3436;
 }
 
-/* Container for the section */
+/* Container */
 .health-container {
     width: 100%;
 }
@@ -19,53 +19,55 @@ body {
 
 .health-img {
     width: 100%;
-    height: 45dvh;  /* Make it dynamic depending on the viewport height */
+    height: 45dvh;
     object-fit: cover;
-    border-bottom: 4px solid #52b788;  /* Green border for separation */
+    border-bottom: 4px solid #FF6347;
 }
 
 .health-title-box {
     position: absolute;
     bottom: 20px;
     left: 30px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 14px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .health-title {
     font-size: 36px;
     font-weight: bold;
-    color: #2d6a4f;
+    color: #A63D2E;
     margin: 0;
 }
 
-/* Content Section */
+/* Main Content */
 .health-content {
     background-color: #ffffff;
     margin: 40px auto;
     padding: 40px;
-    max-width: 900px;  /* Restrict the max width for readability */
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    max-width: 900px;
+    border-radius: 15px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Headings and Paragraph Styling */
+/* Headings */
 .health-content h2 {
-    color: #40916c;
+    color: #FF6347;
     margin-top: 30px;
     font-size: 24px;
-    border-left: 4px solid #74c69d;
+    border-left: 4px solid #ffa07a;
     padding-left: 10px;
+    font-weight: 700;
 }
 
 .health-content h3 {
-    color: #2d6a4f;
+    color: #A63D2E;
     font-size: 20px;
     margin-top: 25px;
 }
 
+/* Paragraphs */
 .health-content p {
     line-height: 1.7;
     font-size: 16px;
@@ -73,42 +75,51 @@ body {
     margin: 15px 0;
 }
 
+/* Lists */
 .health-content ul {
     padding-left: 20px;
     margin-top: 20px;
     list-style: none;
 }
 
+.health-content ul li::before {
+    content: "🍅";
+    margin-right: 8px;
+}
+
 .health-content ul li {
     margin-bottom: 10px;
     font-size: 16px;
+    color: #444;
 }
 
+/* Blockquote */
 blockquote {
     font-style: italic;
-    color: #2d6a4f;
+    color: #A63D2E;
     margin-top: 30px;
     padding: 15px 20px;
-    background: #e9f5ef;
-    border-left: 4px solid #40916c;
-    border-radius: 6px;
+    background: #FFF0E0;
+    border-left: 4px solid #FF6347;
+    border-radius: 8px;
 }
 
-/* Back Link */
+/* Back Button */
 .health-back {
     text-align: center;
     margin-top: 40px;
 }
 
 .btn {
-    background-color: #52b788;
+    background-color: #FF6347;
     color: white;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
     transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #40916c;
+    background-color: #e44a2d;
 }

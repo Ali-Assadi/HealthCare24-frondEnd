@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../service/auth.service'; // Adjust path
+import { AuthService } from '../service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-in',
@@ -19,7 +20,8 @@ export class SignInComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   signIn() {
@@ -31,7 +33,10 @@ export class SignInComponent {
       .subscribe({
         next: (response) => {
           if (!response || !response.email) {
-            alert('Signin failed! Invalid response from server.');
+            this.toastr.error(
+              'Invalid response from server.',
+              '❌ Signin Failed'
+            );
             return;
           }
 
@@ -40,8 +45,8 @@ export class SignInComponent {
 
           this.authService.setAdminStatus(response.isAdmin || false);
 
-          alert('Signin success!');
-          console.log(response);
+          this.toastr.success('Login successful! 🎉', 'Welcome!');
+
           if (response.mustUpdate) {
             this.router.navigate(['/update-password']);
           } else if (response.isAdmin) {
@@ -52,7 +57,7 @@ export class SignInComponent {
         },
         error: (error) => {
           console.error('[ERROR] Signin failed:', error);
-          alert('Signin failed! Invalid email or password.');
+          this.toastr.error('Invalid email or password.', '❌ Signin Failed');
         },
       });
   }

@@ -11,6 +11,7 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../footer/footer.component';
 import { RouterLink, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nutrition',
@@ -39,7 +40,8 @@ export class NutritionComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +113,10 @@ export class NutritionComponent implements OnInit {
 
   requestNewPlan(): void {
     const email = localStorage.getItem('userEmail');
-    if (!email) return alert('You must be signed in.');
+    if (!email) {
+      this.toastr.error('You must be signed in.', '❌ Not Signed In');
+      return;
+    }
 
     this.http
       .post('http://localhost:3000/api/request-new-plan', {
@@ -119,8 +124,9 @@ export class NutritionComponent implements OnInit {
         message: `User ${email} is requesting a new diet plan.`,
       })
       .subscribe({
-        next: () => alert('📩 Request sent to admin!'),
-        error: () => alert('❌ Failed to send request to admin.'),
+        next: () => this.toastr.success('Request sent to admin!', '📩 Sent'),
+        error: () =>
+          this.toastr.error('Failed to send request to admin.', '❌ Error'),
       });
   }
 
@@ -152,7 +158,7 @@ export class NutritionComponent implements OnInit {
           console.error(`Failed to load ${category} articles`, err),
       });
   }
-  logView(topic: string, section: string) {
+  logView(topic: string, subType: 'meals' | 'diets' | 'recipes') {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
@@ -160,7 +166,8 @@ export class NutritionComponent implements OnInit {
       .post('http://localhost:3000/api/log-view', {
         email,
         topic,
-        section,
+        section: 'nutrition',
+        subType,
       })
       .subscribe();
   }
@@ -174,7 +181,8 @@ export class NutritionComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => alert(`${product.name} added to cart.`),
+        next: () =>
+          this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
         error: (err) => console.error('Failed to add to cart', err),
       });
   }

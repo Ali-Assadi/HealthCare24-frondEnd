@@ -12,6 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-fitness',
@@ -34,7 +35,8 @@ export class FitnessComponent implements OnInit {
   constructor(
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -95,7 +97,10 @@ export class FitnessComponent implements OnInit {
 
   generatePlan() {
     const email = localStorage.getItem('userEmail');
-    if (!email) return alert('You must be signed in.');
+    if (!email) {
+      this.toastr.error('❌ You must be signed in.');
+      return;
+    }
 
     this.http
       .post('http://localhost:3000/api/generate-exercise-plan', {
@@ -103,14 +108,17 @@ export class FitnessComponent implements OnInit {
         goal: this.selectedGoal,
       })
       .subscribe({
-        next: () => alert('Your workout plan has been saved!'),
-        error: () => alert('Failed to generate workout plan.'),
+        next: () => this.toastr.success('🏋️ Your workout plan has been saved!'),
+        error: () => this.toastr.error('❌ Failed to generate workout plan.'),
       });
   }
 
   requestChange() {
     const email = localStorage.getItem('userEmail');
-    if (!email) return alert('You must be signed in.');
+    if (!email) {
+      this.toastr.error('❌ You must be signed in.');
+      return;
+    }
 
     this.http
       .post('http://localhost:3000/api/request-new-plan', {
@@ -118,8 +126,8 @@ export class FitnessComponent implements OnInit {
         message: `User ${email} is requesting a new Exercise plan.`,
       })
       .subscribe({
-        next: () => alert('📩 Request sent to admin!'),
-        error: () => alert('❌ Failed to send request to admin.'),
+        next: () => this.toastr.success('📩 Request sent to admin!'),
+        error: () => this.toastr.error('❌ Failed to send request to admin.'),
       });
   }
   loadProducts() {
@@ -154,7 +162,7 @@ export class FitnessComponent implements OnInit {
           console.error(`Failed to load ${category} articles`, err),
       });
   }
-  logView(topic: string) {
+  logView(topic: string, subType: 'strength' | 'cardio') {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
@@ -162,10 +170,12 @@ export class FitnessComponent implements OnInit {
       .post('http://localhost:3000/api/log-view', {
         email,
         topic,
-        section: 'health', // or 'fitness', or 'nutrition'
+        section: 'fitness',
+        subType,
       })
       .subscribe();
   }
+
   addToCart(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
@@ -176,7 +186,7 @@ export class FitnessComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => alert(`${product.name} added to cart.`),
+        next: () => this.toastr.success(`${product.name} added to cart.`),
         error: (err) => console.error('Failed to add to cart', err),
       });
   }

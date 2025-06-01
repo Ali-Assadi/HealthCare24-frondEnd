@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import jsPDF from 'jspdf';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +18,7 @@ export class CartComponent implements OnInit {
 
   userId = localStorage.getItem('userId');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.checkSubscriptionStatus();
@@ -91,13 +92,13 @@ export class CartComponent implements OnInit {
       .post(`http://localhost:3000/api/orders/${this.userId}`, {})
       .subscribe({
         next: () => {
-          alert('✅ Order placed successfully!');
+          this.toastr.success('✅ Order placed successfully!');
           this.loadCart();
           this.loadOrders();
         },
         error: (err) => {
           console.error('Order failed', err);
-          alert('❌ Order failed.');
+          this.toastr.error('❌ Order failed.');
         },
       });
   }

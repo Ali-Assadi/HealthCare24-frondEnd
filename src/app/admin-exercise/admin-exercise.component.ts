@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-exercise',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './admin-exercise.component.html',
-  styleUrls: ['./admin-exercise.component.css']
+  styleUrls: ['./admin-exercise.component.css'],
 })
 export class AdminExerciseComponent implements OnInit {
   exercises: any[] = [];
@@ -17,26 +18,30 @@ export class AdminExerciseComponent implements OnInit {
   selectedIndex: number | null = null;
   searchEmail: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadExercisePlans();
   }
 
   loadExercisePlans(): void {
-    this.http.get<any[]>('http://localhost:3000/api/admin/exercises').subscribe({
-      next: (data) => {
-        this.exercises = data;
-        this.filteredUsers = data;
-      },
-      error: (err) => console.error('Failed to load exercise plans:', err),
-    });
+    this.http
+      .get<any[]>('http://localhost:3000/api/admin/exercises')
+      .subscribe({
+        next: (data) => {
+          this.exercises = data;
+          this.filteredUsers = data;
+        },
+        error: (err) => console.error('Failed to load exercise plans:', err),
+      });
   }
 
   searchByEmail(): void {
     const email = this.searchEmail.trim().toLowerCase();
     this.filteredUsers = email
-      ? this.exercises.filter(user => user.email.toLowerCase().includes(email))
+      ? this.exercises.filter((user) =>
+          user.email.toLowerCase().includes(email)
+        )
       : this.exercises;
     this.selectedUser = null;
     this.selectedIndex = null;
@@ -51,7 +56,12 @@ export class AdminExerciseComponent implements OnInit {
     this.selectedIndex = index;
   }
 
-  updateDay(weekIndex: number, dayIndex: number, field: string, value: string): void {
+  updateDay(
+    weekIndex: number,
+    dayIndex: number,
+    field: string,
+    value: string
+  ): void {
     if (this.selectedUser?.exercisePlan[weekIndex]?.days[dayIndex]) {
       this.selectedUser.exercisePlan[weekIndex].days[dayIndex][field] = value;
     }
@@ -62,7 +72,7 @@ export class AdminExerciseComponent implements OnInit {
     if (!week.days) week.days = [];
 
     if (week.days.length >= 7) {
-      alert("⚠️ A week cannot have more than 7 days.");
+      this.toastr.warning('A week cannot have more than 7 days.');
       return;
     }
 
@@ -71,40 +81,65 @@ export class AdminExerciseComponent implements OnInit {
   }
 
   removeDay(weekIndex: number, dayIndex: number): void {
-    this.selectedUser.exercisePlan[weekIndex].days.splice(dayIndex, 1);
-    this.selectedUser = { ...this.selectedUser };
+    if (confirm('Delete this day?')) {
+      this.selectedUser.exercisePlan[weekIndex].days.splice(dayIndex, 1);
+      this.selectedUser = { ...this.selectedUser };
+      this.toastr.info('🗑️ Day removed');
+    }
   }
 
   addWeek(): void {
     if (this.selectedUser.exercisePlan.length >= 5) {
-      alert("⚠️ Cannot add more than 5 weeks.");
+      this.toastr.warning('Cannot add more than 5 weeks.');
       return;
     }
 
     this.selectedUser.exercisePlan.push({
       week: this.selectedUser.exercisePlan.length + 1,
-      days: []
+      days: [],
     });
 
     this.selectedUser = { ...this.selectedUser };
   }
 
   removeWeek(weekIndex: number): void {
-    this.selectedUser.exercisePlan.splice(weekIndex, 1);
-    this.selectedUser = { ...this.selectedUser };
+    if (confirm('Are you sure you want to delete this week?')) {
+      this.selectedUser.exercisePlan.splice(weekIndex, 1);
+      this.selectedUser = { ...this.selectedUser };
+      this.toastr.info('🗑️ Week removed');
+    }
   }
 
   saveChanges(): void {
     if (!this.selectedUser?.email) return;
-    this.http.put(`http://localhost:3000/api/admin/exercises/${this.selectedUser.email}`, {
-      exercisePlan: this.selectedUser.exercisePlan,
-    }).subscribe({
-      next: () => {
-        alert(`✅ Exercise plan updated for ${this.selectedUser.email}`);
-        this.exercises[this.selectedIndex!] = { ...this.selectedUser };
-        this.searchByEmail();
-      },
-      error: () => alert('Failed to update exercise plan'),
+    this.http
+      .put(
+        `http://localhost:3000/api/admin/exercises/${this.selectedUser.email}`,
+        {
+          exercisePlan: this.selectedUser.exercisePlan,
+        }
+      )
+      .subscribe({
+        next: () => {
+          this.toastr.success(
+            `✅ Exercise plan updated for ${this.selectedUser.email}`
+          );
+          this.exercises[this.selectedIndex!] = { ...this.selectedUser };
+          this.searchByEmail();
+        },
+        error: () => this.toastr.error('❌ Failed to update exercise plan'),
+      });
+  }
+  scrollToBottom(): void {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
     });
   }
 }

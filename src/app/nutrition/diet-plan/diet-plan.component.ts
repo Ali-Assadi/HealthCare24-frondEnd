@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 interface DayPlan {
   breakfast: string;
@@ -32,7 +33,11 @@ export class DietPlanComponent implements OnInit {
   hideGoalSelector = false;
   userEmail: string = '';
   bmiValue: number = 0;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
@@ -74,7 +79,6 @@ export class DietPlanComponent implements OnInit {
       .get<any>(`http://localhost:3000/api/diet-plan/${this.userGoal}`)
       .subscribe({
         next: (plan) => {
-          // ✅ ADD "finished: false" to every day
           const planWithFinished = plan.weeks.map((week: any) => ({
             days: week.days.map((day: any) => ({
               ...day,
@@ -94,6 +98,7 @@ export class DietPlanComponent implements OnInit {
                   this.loading = false;
                   this.showPlan = true;
                   this.hideGoalSelector = true;
+                  this.toastr.success('✅ Diet plan generated!', 'Success');
                   this.router.navigateByUrl('/').then(() => {
                     this.router.navigate(['/nutrition']);
                   });
@@ -101,13 +106,19 @@ export class DietPlanComponent implements OnInit {
               },
               error: () => {
                 this.loading = false;
-                alert('❌ Failed to save diet plan to user.');
+                this.toastr.error(
+                  '❌ Failed to save diet plan to user.',
+                  'Error'
+                );
               },
             });
         },
         error: () => {
           this.loading = false;
-          alert('❌ Failed to fetch diet plan from server.');
+          this.toastr.error(
+            '❌ Failed to fetch diet plan from server.',
+            'Error'
+          );
         },
       });
   }

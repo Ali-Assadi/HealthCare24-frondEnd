@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-diets',
@@ -17,7 +18,7 @@ export class AdminDietsComponent implements OnInit {
   searchEmail: string = '';
   selectedIndex: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toast: ToastrService) {}
 
   ngOnInit(): void {
     this.loadDiets();
@@ -60,45 +61,46 @@ export class AdminDietsComponent implements OnInit {
   addSnack(day: any): void {
     day.snack = 'New Snack';
   }
-  
+
   addWeek(): void {
     if (this.selectedUser.dietPlan.length >= 5) {
-      alert('⚠️ Maximum of 5 weeks allowed per plan.');
+      this.toast.warning('⚠️ Maximum of 5 weeks allowed per plan.');
       return;
     }
-  
+
     this.selectedUser.dietPlan.push({
       days: [
         {
           breakfast: '',
           lunch: '',
           dinner: '',
-          snack: ''
-        }
-      ]
+          snack: '',
+        },
+      ],
     });
   }
-  
 
   deleteWeek(index: number): void {
     if (confirm('Are you sure you want to delete this week?')) {
       this.selectedUser.dietPlan.splice(index, 1);
+      this.toast.info('🗑️ Week deleted.');
     }
   }
 
   addDay(weekIndex: number): void {
     const days = this.selectedUser.dietPlan[weekIndex].days;
     if (days.length >= 7) {
-      alert('⚠️ There is no 8 days in a week , Dont try');
+      this.toast.warning('⚠️ There is no 8 days in a week, Don’t try.');
       return;
     }
-  
+
     days.push({ breakfast: '', lunch: '', dinner: '', snack: '' });
   }
 
   deleteDay(weekIndex: number, dayIndex: number): void {
     if (confirm('Delete this day?')) {
       this.selectedUser.dietPlan[weekIndex].days.splice(dayIndex, 1);
+      this.toast.info('🗑️ Day deleted.');
     }
   }
 
@@ -111,13 +113,26 @@ export class AdminDietsComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-          alert(`✅ Diet updated for ${this.selectedUser.email}`);
+          this.toast.success(`✅ Diet updated for ${this.selectedUser.email}`);
           this.diets[this.selectedIndex!] = { ...this.selectedUser };
-          this.searchByEmail(); // Refresh list
+          this.searchByEmail();
         },
         error: () => {
-          alert('❌ Failed to update diet');
+          this.toast.error('❌ Failed to update diet');
         },
       });
+  }
+
+  scrollToBottom(): void {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }

@@ -76,11 +76,15 @@ body {
 }
 
 .feature-card {
+  height: 100%;
   padding: 30px;
   border-radius: 15px;
   background-color: #f7f9f8;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .feature-card:hover {
@@ -94,11 +98,18 @@ body {
   color: #31473A;
 }
 
+.feature-card img {
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
 .recommendation-card {
   text-decoration: none;
   color: inherit;
+  display: block;
+  height: 100%;
 }
-
 .topic-name {
   font-size: 1.1rem;
   font-weight: 600;

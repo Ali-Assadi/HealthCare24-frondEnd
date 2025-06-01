@@ -3,7 +3,12 @@
 
   <!-- Search Box -->
   <div class="search-box">
-    <input type="text" placeholder="Search by email..." [(ngModel)]="searchEmail" (input)="searchByEmail()" />
+    <input
+      type="text"
+      placeholder="Search by email..."
+      [(ngModel)]="searchEmail"
+      (input)="searchByEmail()"
+    />
   </div>
 
   <div class="admin-diets-content">
@@ -11,8 +16,11 @@
     <div class="user-list">
       <h4>Users</h4>
       <ul>
-        <li *ngFor="let user of filteredUsers; let i = index" [class.selected]="i === selectedIndex"
-          (click)="selectUser(user, i)">
+        <li
+          *ngFor="let user of filteredUsers; let i = index"
+          [class.selected]="i === selectedIndex"
+          (click)="selectUser(user, i)"
+        >
           {{ user.email }}
         </li>
       </ul>
@@ -21,16 +29,23 @@
     <div class="diet-details" *ngIf="selectedUser">
       <h4 class="email-label">Editing: {{ selectedUser.email }}</h4>
 
-      <div *ngFor="let week of selectedUser.dietPlan; let wi = index" class="week-card">
+      <div
+        *ngFor="let week of selectedUser.dietPlan; let wi = index"
+        class="week-card"
+      >
         <div class="week-header">
           <h5>📅 Week {{ wi + 1 }}</h5>
-          <button class="btn-delete-week" (click)="deleteWeek(wi)">🗑️ Delete Week</button>
+          <button class="btn-delete-week" (click)="deleteWeek(wi)">
+            🗑️ Delete Week
+          </button>
         </div>
 
         <div *ngFor="let day of week.days; let di = index" class="day-card">
           <div class="day-header">
             <h6>🍽️ Day {{ di + 1 }}</h6>
-            <button class="btn-delete-day" (click)="deleteDay(wi, di)">❌ Delete Day</button>
+            <button class="btn-delete-day" (click)="deleteDay(wi, di)">
+              ❌ Delete Day
+            </button>
           </div>
           <div class="form-group">
             <label>Breakfast</label>
@@ -53,8 +68,19 @@
         <button class="btn-add-day" (click)="addDay(wi)">➕ Add Day</button>
       </div>
 
-      <button class="btn-add-week" (click)="addWeek()">➕ Add Week</button><br>
+      <button class="btn-add-week" (click)="addWeek()">➕ Add Week</button
+      ><br />
       <button class="btn-save" (click)="saveChanges()">💾 Save Changes</button>
     </div>
   </div>
+  <button class="scroll-up-btn" (click)="scrollToTop()" title="Scroll to top">
+    ↑
+  </button>
+  <button
+    class="scroll-down-btn"
+    (click)="scrollToBottom()"
+    title="Scroll to bottom"
+  >
+    ↓
+  </button>
 </div>

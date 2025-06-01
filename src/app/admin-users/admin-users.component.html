@@ -21,12 +21,27 @@
         <td>{{ user.age }}</td>
         <td>{{ user.height }}</td>
         <td>{{ user.weight }}</td>
-        <td>{{ user.dietPlan?.length > 0 ? '✅' : '❌' }}</td>
-        <td>{{ user.exercisePlan?.length > 0 ? '✅' : '❌' }}</td>
+        <td>{{ user.dietPlan?.length > 0 ? "✅" : "❌" }}</td>
+        <td>{{ user.exercisePlan?.length > 0 ? "✅" : "❌" }}</td>
         <td>
-          <button class="btn btn-sm btn-danger me-1" (click)="deleteUser(user._id)">🗑️ Delete</button>
-          <button class="btn btn-sm btn-warning me-1" (click)="clearDietPlan(user._id)">🥗 Clear Diet Plan</button>
-          <button class="btn btn-sm btn-secondary" (click)="clearExercisePlan(user._id)">🏋️‍♂️ Clear Exercise Plan</button>
+          <button
+            class="btn btn-sm btn-danger me-1"
+            (click)="deleteUser(user._id)"
+          >
+            🗑️ Delete
+          </button>
+          <button
+            class="btn btn-sm btn-warning me-1"
+            (click)="clearDietPlan(user._id)"
+          >
+            🥗 Clear Diet Plan
+          </button>
+          <button
+            class="btn btn-sm btn-secondary"
+            (click)="clearExercisePlan(user._id)"
+          >
+            🏋️‍♂️ Clear Exercise Plan
+          </button>
         </td>
       </tr>
     </tbody>

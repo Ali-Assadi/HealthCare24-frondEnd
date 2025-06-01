@@ -105,7 +105,7 @@ export class HealthComponent implements OnInit {
   }
 
   // Log user view of article
-  logView(topic: string) {
+  logView(topic: string, subType: 'brain' | 'heart' | 'sleep') {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
@@ -113,7 +113,8 @@ export class HealthComponent implements OnInit {
       .post('http://localhost:3000/api/log-view', {
         email,
         topic,
-        section: 'health', // or 'fitness', or 'nutrition'
+        section: 'health',
+        subType,
       })
       .subscribe();
   }

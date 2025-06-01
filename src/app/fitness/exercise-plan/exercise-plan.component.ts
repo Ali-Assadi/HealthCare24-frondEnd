@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-exercise-plan',
@@ -18,7 +19,11 @@ export class ExercisePlanComponent {
   userInfo: any = {};
   bmiValue: number = 0;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     if (!this.userEmail) return;
@@ -34,7 +39,6 @@ export class ExercisePlanComponent {
             const bmi = user.weight / (heightM * heightM);
             this.bmiValue = +bmi.toFixed(1);
 
-            // Recommend based on BMI
             if (bmi < 18.5) this.goal = 'mass';
             else if (bmi >= 18.5 && bmi < 25) this.goal = 'balance';
             else this.goal = 'loss';
@@ -46,6 +50,7 @@ export class ExercisePlanComponent {
 
   generatePlan() {
     if (!this.goal) return;
+
     this.generating = true;
 
     this.http
@@ -56,12 +61,13 @@ export class ExercisePlanComponent {
       .subscribe({
         next: () => {
           setTimeout(() => {
+            this.toastr.success('Exercise plan generated ✅');
             window.location.href = '/fitness';
           }, 3000);
         },
         error: () => {
           this.generating = false;
-          alert('❌ Failed to generate plan');
+          this.toastr.error('❌ Failed to generate plan', 'Error');
         },
       });
   }

@@ -7,11 +7,11 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './contact-us.component.html',
-  styleUrls: ['./contact-us.component.css']
+  styleUrls: ['./contact-us.component.css'],
 })
 export class ContactUsComponent {
   constructor(private router: Router) {}
-
+  mail = 'appservicehealthcare24@gmail.com';
   openChat() {
     this.router.navigate(['/user-chat']);
   }

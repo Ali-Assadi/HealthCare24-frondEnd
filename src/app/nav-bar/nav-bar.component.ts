@@ -67,16 +67,48 @@ export class NavBarComponent implements OnInit {
 
   getNavbarColor(): string {
     switch (this.currentRoute) {
+      // 🔶 Nutrition Routes
       case '/nutrition':
-      case '/my-dietPlan':
       case '/diet-plan':
+      case '/my-dietPlan':
+      case '/healthy-meals':
+      case '/diets1':
+      case '/diets2':
+      case '/diets3':
+      case '/diets4':
+      case '/healthy-recips1':
+      case '/healthy-recips2':
+      case '/healthy-recips3':
+      case '/healthy-recips4':
         return '#A63D2E';
-      case '/life':
-        return '#223182';
+      // 🔵 Health Routes
       case '/health':
+      case '/brain-health-1':
+      case '/brain-health-2':
+      case '/brain-health-3':
+      case '/brain-health-4':
+      case '/brain-health-5':
+      case '/brain-health-6':
+      case '/heart-health-1':
+      case '/heart-health-2':
+      case '/heart-health-3':
+      case '/heart-health-4':
+      case '/heart-health-5':
+      case '/heart-health-6':
+      case '/better-sleep-1':
+      case '/better-sleep-2':
+      case '/better-sleep-3':
+      case '/better-sleep-4':
         return '#4A8F63';
       case '/fitness':
       case '/exercise-plan':
+      case '/my-exercise-plan':
+      case '/strength-training1':
+      case '/strength-training2':
+      case '/strength-training3':
+      case '/cardio-training1':
+      case '/cardio-training2':
+      case '/cardio-training3':
         return 'hsl(247, 49%, 38%)';
       default:
         return '#2c3e50';
