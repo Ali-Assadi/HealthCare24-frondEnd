@@ -64,6 +64,7 @@ import { CARDIOFITNESS3Component } from './fitness/fitnessComponents/cardio-fitn
 import { CARDIOFITNESS4Component } from './fitness/fitnessComponents/cardio-fitness4/cardio-fitness4.component';
 import { CARDIOFITNESS5Component } from './fitness/fitnessComponents/cardio-fitness5/cardio-fitness5.component';
 import { CARDIOFITNESS6Component } from './fitness/fitnessComponents/cardio-fitness6/cardio-fitness6.component';
+import { CardInfoComponent } from './card-info/card-info.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -100,6 +101,7 @@ export const routes: Routes = [
 
   { path: 'sign-in', component: SignInComponent },
   { path: 'subscribe', component: SubscribeComponent },
+  { path: 'join', component: CardInfoComponent},
   { path: 'cart', component: CartComponent },
   { path: 'sign-up', component: SignUpComponent },
 
