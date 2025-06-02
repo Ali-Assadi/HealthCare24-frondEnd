@@ -1,14 +1,14 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-card-info',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule],
   templateUrl: './card-info.component.html',
-  styleUrls: ['./card-info.component.css']
+  styleUrls: ['./card-info.component.css'],
 })
 export class CardInfoComponent {
   cardNumber: string = '';
@@ -34,7 +34,8 @@ export class CardInfoComponent {
 
   updateCardDisplay() {
     const name = this.cardName.trim() || 'JOHN DOE';
-    if (this.svgName) this.svgName.nativeElement.textContent = name.toUpperCase();
+    if (this.svgName)
+      this.svgName.nativeElement.textContent = name.toUpperCase();
     if (this.svgNameBack) this.svgNameBack.nativeElement.textContent = name;
   }
 
@@ -43,7 +44,8 @@ export class CardInfoComponent {
     const groups = raw.match(/.{1,4}/g);
     const formatted = groups ? groups.join(' ') : '';
     this.cardNumber = formatted;
-    if (this.svgNumber) this.svgNumber.nativeElement.textContent = formatted.padEnd(19, '•');
+    if (this.svgNumber)
+      this.svgNumber.nativeElement.textContent = formatted.padEnd(19, '•');
   }
 
   formatExpirationDate(event: any) {
@@ -54,7 +56,10 @@ export class CardInfoComponent {
       this.expirationDate = raw;
     }
     if (this.svgExpire) {
-      this.svgExpire.nativeElement.textContent = this.expirationDate.padEnd(5, '•');
+      this.svgExpire.nativeElement.textContent = this.expirationDate.padEnd(
+        5,
+        '•'
+      );
     }
   }
 
@@ -64,16 +69,6 @@ export class CardInfoComponent {
     if (this.svgSecurity) {
       this.svgSecurity.nativeElement.textContent = raw.padEnd(3, '•');
     }
-  }
-
-  generateRandomCard() {
-    let digits = '';
-    for (let i = 0; i < 16; i++) {
-      digits += Math.floor(Math.random() * 10);
-    }
-    const formatted = digits.match(/.{1,4}/g)?.join(' ') ?? '';
-    this.cardNumber = formatted;
-    if (this.svgNumber) this.svgNumber.nativeElement.textContent = formatted;
   }
 
   flipCard(flip: boolean) {
@@ -117,19 +112,23 @@ export class CardInfoComponent {
       cardNumber: this.cardNumber,
       cardName: this.cardName,
       expirationDate: this.expirationDate,
-      securityCode: this.securityCode
+      securityCode: this.securityCode,
     };
 
-    this.http.post('http://localhost:3000/api/subscribe', subscriptionData).subscribe({
-      next: (response) => {
-        alert('✅ Payment submitted successfully and subscription activated!');
-        this.isSubscribed = true;
-        this.router.navigate(['/']); // Navigate to index page
-      },
-      error: (error) => {
-        console.error('Subscription failed:', error);
-        alert('❌ Subscription failed. Please try again.');
-      }
-    });
+    this.http
+      .post('http://localhost:3000/api/subscribe', subscriptionData)
+      .subscribe({
+        next: (response) => {
+          alert(
+            '✅ Payment submitted successfully and subscription activated!'
+          );
+          this.isSubscribed = true;
+          this.router.navigate(['/']); // Navigate to index page
+        },
+        error: (error) => {
+          console.error('Subscription failed:', error);
+          alert('❌ Subscription failed. Please try again.');
+        },
+      });
   }
 }

@@ -1,57 +1,112 @@
 <body>
-    <div class="container">
-  <div class="creditcard" [class.flipped]="isFlipped">
-    <div class="front">
-      <svg width="430" height="270">
-        <rect width="100%" height="100%" rx="15" ry="15" fill="#2e86de" />
-        <text x="40" y="60" fill="#fff" font-size="20">Credit Card</text>
-        <text x="40" y="120" #svgnumber fill="#fff" font-size="18">•••• •••• •••• ••••</text>
-        <text x="40" y="160" fill="#fff" font-size="14">Card Holder</text>
-        <text x="40" y="185" #svgname fill="#fff" font-size="16">JOHN DOE</text>
-        <text x="300" y="160" fill="#fff" font-size="14">Expires</text>
-        <text x="300" y="185" #svgexpire fill="#fff" font-size="16">••/••</text>
-      </svg>
+  <div class="container">
+    <div class="creditcard" [class.flipped]="isFlipped">
+      <div class="front">
+        <svg width="430" height="270">
+          <defs>
+            <linearGradient id="goldGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f9d976" />
+              <stop offset="100%" stop-color="#f39910" />
+            </linearGradient>
+          </defs>
+          <rect
+            width="100%"
+            height="100%"
+            rx="15"
+            ry="15"
+            fill="url(#goldGradient)"
+          />
+          <text x="40" y="60" fill="#fff" font-size="20">GOLD CARD</text>
+          <text x="40" y="120" #svgnumber fill="#ffffffcc" font-size="18">
+            •••• •••• •••• ••••
+          </text>
+          <text x="40" y="160" fill="#ffffffaa" font-size="14">
+            Card Holder
+          </text>
+          <text x="40" y="185" #svgname fill="#ffffff" font-size="16">
+            JOHN DOE
+          </text>
+          <text x="300" y="160" fill="#ffffffaa" font-size="14">Expires</text>
+          <text x="300" y="185" #svgexpire fill="#ffffff" font-size="16">
+            ••/••
+          </text>
+        </svg>
+      </div>
+
+      <div class="back">
+        <svg width="430" height="270">
+          <defs>
+            <linearGradient id="backGold" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f4c10f" />
+              <stop offset="100%" stop-color="#c49e02" />
+            </linearGradient>
+          </defs>
+          <rect
+            width="100%"
+            height="100%"
+            rx="15"
+            ry="15"
+            fill="url(#backGold)"
+          />
+          <rect x="0" y="50" width="430" height="50" fill="#2c2c2c" />
+          <text x="40" y="130" fill="#ffffff" font-size="14">CVV</text>
+          <rect x="100" y="115" width="70" height="30" fill="#ffffff" />
+          <text x="110" y="135" #svgsecurity fill="#000000" font-size="16">
+            •••
+          </text>
+          <text x="40" y="200" #svgnameback fill="#ffffff" font-size="16">
+            JOHN DOE
+          </text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div class="field-container">
+      <label for="card-number">Card Number</label>
+      <input
+        id="card-number"
+        [(ngModel)]="cardNumber"
+        (input)="formatCardNumber($event)"
+        maxlength="19"
+      />
     </div>
 
-    <div class="back">
-      <svg width="430" height="270">
-        <rect width="100%" height="100%" rx="15" ry="15" fill="#2e86de" />
-        <rect x="0" y="50" width="430" height="50" fill="#000" />
-        <text x="40" y="130" fill="#fff" font-size="14">CVV</text>
-        <rect x="100" y="115" width="70" height="30" fill="#fff" />
-        <text x="110" y="135" #svgsecurity fill="#000" font-size="16">•••</text>
-        <text x="40" y="200" #svgnameback fill="#fff" font-size="16">JOHN DOE</text>
-      </svg>
+    <div class="field-container">
+      <label for="card-name">Cardholder Name</label>
+      <input
+        id="card-name"
+        [(ngModel)]="cardName"
+        (input)="updateCardDisplay()"
+      />
+    </div>
+
+    <div class="field-container">
+      <label for="expiration-date">Expiration Date</label>
+      <input
+        id="expiration-date"
+        [(ngModel)]="expirationDate"
+        (input)="formatExpirationDate($event)"
+        placeholder="MM/YY"
+        maxlength="5"
+      />
+    </div>
+
+    <div class="field-container">
+      <label for="security-code">Security Code</label>
+      <input
+        id="security-code"
+        [(ngModel)]="securityCode"
+        (input)="formatSecurityCode($event)"
+        (focus)="flipCard(true)"
+        (blur)="flipCard(false)"
+        maxlength="3"
+      />
+    </div>
+
+    <div class="field-container">
+      <button (click)="onPay()" class="pay-button">Pay</button>
     </div>
   </div>
-</div>
-
-<div class="form-container">
-  <div class="field-container">
-    <label for="card-number">Card Number</label>
-    <input id="card-number" [(ngModel)]="cardNumber" (input)="formatCardNumber($event)" maxlength="19" />
-    <div id="generatecard" (click)="generateRandomCard()">Generate card number</div>
-  </div>
-
-  <div class="field-container">
-    <label for="card-name">Cardholder Name</label>
-    <input id="card-name" [(ngModel)]="cardName" (input)="updateCardDisplay()" />
-  </div>
-
-  <div class="field-container">
-    <label for="expiration-date">Expiration Date</label>
-    <input id="expiration-date" [(ngModel)]="expirationDate" (input)="formatExpirationDate($event)" placeholder="MM/YY" maxlength="5" />
-  </div>
-
-  <div class="field-container">
-    <label for="security-code">Security Code</label>
-    <input id="security-code" [(ngModel)]="securityCode" (input)="formatSecurityCode($event)"
-           (focus)="flipCard(true)" (blur)="flipCard(false)" maxlength="3" />
-  </div>
-  <!-- ...existing form fields... -->
-
-<div class="field-container">
-  <button (click)="onPay()" class="pay-button">Pay</button>
-</div>
-</div>
 </body>

@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Become a VIP Member</title>
-</head>
-<body>
-  <div class="vip-container">
-    <div class="vip-card">
-      <h1>Become a VIP Member</h1>
-      <p>Unlock exclusive access to personalized nutrition plans, exercise programs, and direct communication with our expert manager.</p>
-      
-      <form (ngSubmit)="subscribe()" #form="ngForm" class="vip-form">
-        <button type="submit" routerLink="/join">Join Now</button>
-      </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Become a VIP Member</title>
+  </head>
+  <body>
+    <div class="vip-container">
+      <div class="vip-card">
+        <h1>Become a VIP Member</h1>
+        <p>
+          Unlock exclusive access to personalized nutrition plans, exercise
+          programs, and direct communication with our expert manager.
+        </p>
 
-      <ul class="benefits-list">
-        <li><i class="fas fa-check-circle"></i> ✅ Personal Nutrition Program!</li>
-        <li><i class="fas fa-check-circle"></i> 🏋️‍♂️ Personal Fitness Exercises!</li>
-        <li><i class="fas fa-check-circle"></i> 🩺 Personal Health Program!</li>
-        <li><i class="fas fa-check-circle"></i> 🤸‍♀️ Personal Trainer :)</li>
-        <li><i class="fas fa-check-circle"></i> 🔥 Sale 10% On Our Products!</li>
-      </ul>
-      <small>By joining, you agree to our <a href="#">Terms & Conditions</a>.</small>
+        <form (ngSubmit)="subscribe()" #form="ngForm" class="vip-form">
+          <button type="submit" routerLink="/subscribe-pay">Join Now</button>
+        </form>
+
+        <ul class="benefits-list">
+          <li>
+            <i class="fas fa-check-circle"></i> ✅ Personal Nutrition Program!
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i> 🏋️‍♂️ Personal Fitness Exercises!
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i> 🩺 Personal Health Program!
+          </li>
+          <li><i class="fas fa-check-circle"></i> 🤸‍♀️ Personal Trainer :)</li>
+          <li>
+            <i class="fas fa-check-circle"></i> 🔥 Sale 10% On Our Products!
+          </li>
+        </ul>
+        <small
+          >By joining, you agree to our
+          <a href="#">Terms & Conditions</a>.</small
+        >
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

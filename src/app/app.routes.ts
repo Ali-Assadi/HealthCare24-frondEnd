@@ -101,7 +101,7 @@ export const routes: Routes = [
 
   { path: 'sign-in', component: SignInComponent },
   { path: 'subscribe', component: SubscribeComponent },
-  { path: 'join', component: CardInfoComponent},
+  { path: 'subscribe-pay', component: CardInfoComponent },
   { path: 'cart', component: CartComponent },
   { path: 'sign-up', component: SignUpComponent },
 
