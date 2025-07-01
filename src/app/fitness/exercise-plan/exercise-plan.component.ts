@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -12,12 +12,15 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './exercise-plan.component.html',
   styleUrls: ['./exercise-plan.component.css'],
 })
-export class ExercisePlanComponent {
-  goal = '';
-  generating = false;
-  userEmail = localStorage.getItem('userEmail') || '';
+export class ExercisePlanComponent implements OnInit {
+  userEmail: string = localStorage.getItem('userEmail') || '';
   userInfo: any = {};
   bmiValue: number = 0;
+  userGoal: string = '';
+  generating = false;
+
+  restrictionOptions = ['noLegs', 'noPush', 'noPull', 'noWeights', 'noBack'];
+  selectedRestrictions: string[] = [];
 
   constructor(
     private http: HttpClient,
@@ -25,7 +28,7 @@ export class ExercisePlanComponent {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.userEmail) return;
 
     this.http
@@ -33,37 +36,65 @@ export class ExercisePlanComponent {
       .subscribe({
         next: (user) => {
           this.userInfo = user;
-
-          if (user.height && user.weight) {
-            const heightM = user.height / 100;
-            const bmi = user.weight / (heightM * heightM);
-            this.bmiValue = +bmi.toFixed(1);
-
-            if (bmi < 18.5) this.goal = 'mass';
-            else if (bmi >= 18.5 && bmi < 25) this.goal = 'balance';
-            else this.goal = 'loss';
-          }
+          this.userGoal = this.recommendGoal(
+            user.weight,
+            user.height,
+            user.age
+          );
         },
         error: () => console.warn('⚠️ Failed to load user info for BMI.'),
       });
   }
 
-  generatePlan() {
-    if (!this.goal) return;
+  recommendGoal(weight: number, heightCm: number, age: number): string {
+    const heightM = heightCm / 100;
+    const bmi = weight / (heightM * heightM);
+    this.bmiValue = +bmi.toFixed(1);
+
+    if (age < 18) {
+      if (bmi < 18.5) return 'gain';
+      if (bmi < 25) return 'balance';
+      return 'loss';
+    }
+    if (age >= 65) {
+      if (bmi < 22) return 'gain';
+      if (bmi < 27) return 'balance';
+      return 'loss';
+    }
+    if (bmi < 18.5) return 'gain';
+    if (bmi < 25) return 'balance';
+    return 'loss';
+  }
+
+  toggleRestriction(restriction: string): void {
+    const index = this.selectedRestrictions.indexOf(restriction);
+    if (index > -1) this.selectedRestrictions.splice(index, 1);
+    else this.selectedRestrictions.push(restriction);
+  }
+
+  isSelected(restriction: string): boolean {
+    return this.selectedRestrictions.includes(restriction);
+  }
+
+  generatePlan(): void {
+    if (!this.userGoal || !this.userEmail) return;
 
     this.generating = true;
 
+    const payload = {
+      email: this.userEmail,
+      goal: this.userGoal,
+      restrictions: this.selectedRestrictions,
+    };
+
     this.http
-      .post(`http://localhost:3000/api/exercise/generate`, {
-        email: this.userEmail,
-        goal: this.goal,
-      })
+      .post(`http://localhost:3000/api/exercise/generate`, payload)
       .subscribe({
         next: () => {
           setTimeout(() => {
-            this.toastr.success('Exercise plan generated ✅');
-            window.location.href = '/fitness';
-          }, 3000);
+            this.toastr.success('✅ Exercise plan generated!');
+            this.router.navigate(['/fitness']);
+          }, 2000);
         },
         error: () => {
           this.generating = false;
