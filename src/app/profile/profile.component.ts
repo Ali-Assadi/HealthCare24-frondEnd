@@ -20,7 +20,7 @@ export class ProfileComponent {
   height: number | null = null;
   weight: number | null = null;
   details: string = '';
-
+  visaCard: any = null;
   private confirmedDelete = false;
 
   constructor(
@@ -33,21 +33,57 @@ export class ProfileComponent {
     this.email = localStorage.getItem('userEmail') || '';
 
     if (this.email) {
-      this.http
-        .get<any>(`http://localhost:3000/api/user/${this.email}`)
-        .subscribe({
-          next: (user) => {
-            this.age = user.age;
-            this.height = user.height;
-            this.weight = user.weight;
-            this.details = user.details;
-          },
-          error: (err) => {
-            console.error('Failed to load user', err);
-            this.toastr.error('Failed to load user data.', '❌ Error');
-          },
-        });
+      this.fetchUserDetails();
+      this.fetchVisaCard();
     }
+  }
+
+  fetchUserDetails() {
+    this.http
+      .get<any>(`http://localhost:3000/api/user/${this.email}`)
+      .subscribe({
+        next: (user) => {
+          this.age = user.age;
+          this.height = user.height;
+          this.weight = user.weight;
+          this.details = user.details;
+        },
+        error: (err) => {
+          console.error('Failed to load user', err);
+          this.toastr.error('Failed to load user data.', '❌ Error');
+        },
+      });
+  }
+
+  fetchVisaCard() {
+    this.http
+      .get<any>(`http://localhost:3000/api/user/${this.email}/visa`)
+      .subscribe({
+        next: (res) => {
+          if (res?.visaCard) {
+            this.visaCard = res.visaCard;
+          }
+        },
+        error: () => {
+          this.visaCard = null;
+        },
+      });
+  }
+
+  deleteVisaCard() {
+    if (!confirm('Are you sure you want to remove your Visa card?')) return;
+
+    this.http
+      .delete(`http://localhost:3000/api/user/${this.email}/visa`)
+      .subscribe({
+        next: () => {
+          this.toastr.success('Visa card removed.', '✅ Removed');
+          this.visaCard = null;
+        },
+        error: () => {
+          this.toastr.error('Failed to remove Visa card.', '❌ Error');
+        },
+      });
   }
 
   submitUpdate() {

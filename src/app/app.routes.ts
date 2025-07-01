@@ -8,6 +8,7 @@ import { NutritionComponent } from './nutrition/nutrition.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { MyReviewComponent } from './my-review/my-review.component';
 
 //Health Sections Details
 import { BrainHealth1Component } from './health/brain-health-1/brain-health-1.component';
@@ -29,7 +30,6 @@ import { BetterSleep4Component } from './health/better-sleep-4/better-sleep-4.co
 import { UserHomeComponent } from './user-home/user-home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyReviewsComponent } from './my-reviews/my-reviews.component';
-
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DietPlanComponent } from './nutrition/diet-plan/diet-plan.component';
@@ -64,13 +64,13 @@ import { CARDIOFITNESS3Component } from './fitness/fitnessComponents/cardio-fitn
 import { CARDIOFITNESS4Component } from './fitness/fitnessComponents/cardio-fitness4/cardio-fitness4.component';
 import { CARDIOFITNESS5Component } from './fitness/fitnessComponents/cardio-fitness5/cardio-fitness5.component';
 import { CARDIOFITNESS6Component } from './fitness/fitnessComponents/cardio-fitness6/cardio-fitness6.component';
-import { CardInfoComponent } from './card-info/card-info.component';
+import { vipSubComponent } from './vip-sub/vip-sub.component';
+import { CardAddComponent } from './card-add/card-add.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'health', component: HealthComponent },
-  //Fitness
   { path: 'fitness', component: FitnessComponent },
   { path: 'exercise-plan', component: ExercisePlanComponent },
   { path: 'my-exercise-plan', component: MyExercisePlanComponent },
@@ -84,11 +84,10 @@ export const routes: Routes = [
   { path: 'CARDIO-FITNESS4', component: CARDIOFITNESS4Component },
   { path: 'CARDIO-FITNESS5', component: CARDIOFITNESS5Component },
   { path: 'CARDIO-FITNESS6', component: CARDIOFITNESS6Component },
-
-  //Nutrition
   { path: 'nutrition', component: NutritionComponent },
   { path: 'diet-plan', component: DietPlanComponent },
   { path: 'my-dietPlan', component: MyDietPlanComponent },
+  { path: 'my-review', component: MyReviewComponent },
   { path: 'healthy-meals', component: HEALTHYMEALSComponent },
   { path: 'diets1', component: DIETS1Component },
   { path: 'diets2', component: DIETS2Component },
@@ -98,41 +97,34 @@ export const routes: Routes = [
   { path: 'healthy-recips2', component: HEALTHYRECIPES2Component },
   { path: 'healthy-recips3', component: HEALTHYRECIPES3Component },
   { path: 'healthy-recips4', component: HEALTHYRECIPES4Component },
-
   { path: 'sign-in', component: SignInComponent },
   { path: 'subscribe', component: SubscribeComponent },
-  { path: 'subscribe-pay', component: CardInfoComponent },
+  { path: 'subscribe-pay', component: vipSubComponent },
+  { path: 'card-add', component: CardAddComponent },
   { path: 'cart', component: CartComponent },
   { path: 'sign-up', component: SignUpComponent },
-
-  //Health Sections Details
-  // Brain Health Routes
   { path: 'brain-health-1', component: BrainHealth1Component },
   { path: 'brain-health-2', component: BrainHealth2Component },
   { path: 'brain-health-3', component: BrainHealth3Component },
   { path: 'brain-health-4', component: BrainHealth4Component },
   { path: 'brain-health-5', component: BrainHealth5Component },
   { path: 'brain-health-6', component: BrainHealth6Component },
-  // Heart Health Routes
   { path: 'heart-health-1', component: HeartHealth1Component },
   { path: 'heart-health-2', component: HeartHealth2Component },
   { path: 'heart-health-3', component: HeartHealth3Component },
   { path: 'heart-health-4', component: HeartHealth4Component },
   { path: 'heart-health-5', component: HeartHealth5Component },
   { path: 'heart-health-6', component: HeartHealth6Component },
-  // Better Sleep Routes
   { path: 'better-sleep-1', component: BetterSleep1Component },
   { path: 'better-sleep-2', component: BetterSleep2Component },
   { path: 'better-sleep-3', component: BetterSleep3Component },
   { path: 'better-sleep-4', component: BetterSleep4Component },
-  //Admin-Side
   { path: 'admin-dashboard', component: AdminComponent },
   { path: 'admin-users', component: AdminUsersComponent },
   { path: 'admin-diets', component: AdminDietsComponent },
   { path: 'admin-exercise', component: AdminExerciseComponent },
   { path: 'admin-requests', component: AdminRequestsComponent },
   { path: 'admin-chat/:email', component: AdminChatComponent },
-  //User-Side
   { path: 'user-home', component: UserHomeComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'update-password', component: UpdatePasswordComponent },
@@ -141,6 +133,5 @@ export const routes: Routes = [
   { path: 'contact', component: ContactUsComponent },
   { path: 'notifications', component: NotificationsComponent },
   { path: 'my-reviews', component: MyReviewsComponent },
-
   { path: '**', component: NotFoundComponent },
 ];

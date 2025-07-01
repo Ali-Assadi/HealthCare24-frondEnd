@@ -1,43 +1,80 @@
 body {
-  margin-top: 5.8dvh;
-  background: #fff0e5;
-  min-height: 94.2dvh;
-  display: flex;
-  justify-content: center;
+  background-color: #fff8f0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .plan-container-nutrition {
-  max-width: 700px;
+  max-width: 760px;
   margin: 60px auto;
-  padding: 40px 30px;
+  padding: 40px;
   background: #ffffff;
-  border: 2px solid #ff7f50;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(255, 127, 80, 0.2);
-  animation: fadeIn 1s ease-in-out;
-  font-family: 'Poppins', sans-serif;
+  border: 2px solid #ffa07a;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(255, 160, 122, 0.2);
+  animation: fadeIn 0.8s ease-in-out;
 }
 
 .plan-container-nutrition h2 {
   font-size: 30px;
   color: #ff6347;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   font-weight: bold;
+}
+
+.user-info {
+  font-size: 16px;
+  color: #444;
+}
+
+.select-goal label {
+  font-weight: 600;
 }
 
 .form-select {
   width: 100%;
   padding: 12px 16px;
   font-size: 16px;
-  border: 2px solid #ff6347;
+  border: 2px solid #ffa07a;
   border-radius: 8px;
   background-color: #fff6f2;
   transition: border-color 0.3s ease;
 }
 
 .form-select:focus {
-  border-color: #e44a2d;
+  border-color: #ff4500;
   outline: none;
+}
+
+.restrictions-section {
+  margin-top: 20px;
+}
+
+.restriction-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.checkbox-label {
+  background-color: #fff0e5;
+  border: 1px dashed #ffa07a;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.checkbox-label:hover {
+  background-color: #ffe5d0;
+}
+
+.checkbox-label input {
+  margin-right: 6px;
 }
 
 .btn-generate-nutrition {
@@ -45,24 +82,27 @@ body {
   border: none;
   color: white;
   padding: 12px 28px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-generate-nutrition:hover {
-  background-color: #e44a2d;
-  transform: translateY(-1px);
+  background-color: #e5533d;
+  transform: scale(1.03);
 }
 
 .loading-message {
   text-align: center;
-  padding: 30px;
-  font-size: 18px;
+  margin-top: 25px;
+  font-size: 17px;
   color: #ff6347;
   font-weight: 500;
 }
 
+/* Spinner Animation */
 .spinner {
   border: 6px solid #f3f3f3;
   border-top: 6px solid #ff6347;
@@ -70,59 +110,37 @@ body {
   width: 60px;
   height: 60px;
   margin: 0 auto 15px;
-  animation: spin 1s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Generated Plan */
 .generated-plan {
   margin-top: 40px;
 }
 
-.goal-title {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.goal-info {
-  text-align: center;
-  font-size: 15px;
-  color: #555;
-  margin-bottom: 30px;
-}
-
 .week-card-nutrition {
   background: #fff5f0;
-  border: 2px dashed #ff7f50;
+  border: 2px dashed #ffa07a;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 16px;
-  box-shadow: 0 5px 15px rgba(255, 127, 80, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.15);
 }
 
 .week-card-nutrition h5 {
   color: #ff6347;
-  margin-bottom: 10px;
-  font-weight: 600;
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 
 .day-block-nutrition {
   background: #fff8f4;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 15px;
   box-shadow: 0 2px 6px rgba(255, 127, 80, 0.08);
 }
@@ -136,10 +154,70 @@ body {
 .day-block-nutrition ul {
   list-style: none;
   padding-left: 0;
+  text-align: left;
 }
 
 .day-block-nutrition li {
-  font-size: 14px;
+  font-size: 15px;
   padding: 6px 0;
   border-bottom: 1px dashed #ffcbb7;
+}
+.restriction-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.checkbox-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 50px;
+  background: #fff;
+  border: 2px dashed #ffa07a;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(255, 127, 80, 0.1);
+}
+
+.checkbox-label:hover {
+  background-color: #fff0e8;
+}
+
+.checkbox-label input[type='checkbox'] {
+  display: none;
+}
+
+/* Checked style */
+.checkbox-label input[type='checkbox']:checked + span {
+  background: #ff6347;
+  color: white;
+  font-weight: bold;
+  border-color: #ff6347;
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.25);
+}
+
+.checkbox-label span {
+  padding: 6px 12px;
+  border-radius: 40px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  background: transparent;
+}
+
+/* Entrance Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

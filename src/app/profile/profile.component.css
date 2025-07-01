@@ -131,3 +131,38 @@ body {
   background-color: #e0e0e0;
   border-color: #999;
 }
+
+.visa-card-info {
+  margin-top: 20px;
+  padding: 15px 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fdfdfd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.visa-card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visa-card-details p {
+  margin: 0;
+  color: #333;
+}
+
+.remove-visa {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #d9534f;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.remove-visa:hover {
+  transform: scale(1.2);
+  color: #c9302c;
+}

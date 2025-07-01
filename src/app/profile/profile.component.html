@@ -7,6 +7,20 @@
     <p><strong>Height:</strong> {{ height }} cm</p>
     <p><strong>Weight:</strong> {{ weight }} kg</p>
     <p><strong>Details:</strong> {{ details || "N/A" }}</p>
+    <div *ngIf="visaCard" class="visa-card-info">
+      <div class="visa-card-details">
+        <div>
+          <p>
+            <strong>Visa:</strong> **** **** **** {{ visaCard.last4Digits }}
+          </p>
+          <p>
+            <strong>Expiry:</strong> {{ visaCard.expiryMonth }}/{{
+              visaCard.expiryYear
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
 
     <button class="btn btn-custom mt-3" (click)="showForm = true">
       Update Details
@@ -68,6 +82,21 @@
         rows="3"
         placeholder="Tell us more about yourself..."
       ></textarea>
+    </div>
+    <div *ngIf="visaCard" class="visa-card-info">
+      <div class="visa-card-details">
+        <div>
+          <p>
+            <strong>Visa:</strong> **** **** **** {{ visaCard.last4Digits }}
+          </p>
+          <p>
+            <strong>Expiry:</strong> {{ visaCard.expiryMonth }}/{{
+              visaCard.expiryYear
+            }}
+          </p>
+        </div>
+        <button class="remove-visa" (click)="deleteVisaCard()">❌</button>
+      </div>
     </div>
 
     <button type="submit" class="btn btn-custom mt-2">Save</button>

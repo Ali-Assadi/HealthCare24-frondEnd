@@ -1,48 +1,50 @@
 <div class="plan-container-nutrition text-center">
-  <h2>🎯 Generate Your Personalized Diet Plan</h2>
+  <h2>🍽️ Personalized Diet Plan Generator</h2>
 
-  <div *ngIf="!hideGoalSelector" class="select-goal mb-4">
-    <label for="goal" class="form-label">Choose Your Goal:</label>
-    <div *ngIf="bmiValue" class="mb-3 text-muted">
-      Your BMI is <strong>{{ bmiValue }}</strong><br />
-      Recommended Goal: <strong>{{ userGoal | titlecase }}</strong>
-    </div>
+  <!-- 👤 User Info -->
+  <div class="user-info mb-3" *ngIf="bmiValue">
+    <p>
+      <strong>BMI:</strong> {{ bmiValue }} | <strong>Recommended Goal:</strong>
+      {{ userGoal | titlecase }}
+    </p>
+  </div>
 
-    <select [(ngModel)]="userGoal" name="goal" id="goal" class="form-select my-2" required>
-      <option value="loss">Lose Weight</option>
+  <!-- 🎯 Goal Selection -->
+  <div class="select-goal mb-4">
+    <label for="goal">Choose Your Goal:</label>
+    <select id="goal" [(ngModel)]="userGoal" class="form-select mt-2" required>
       <option value="gain">Gain Muscle</option>
       <option value="balance">Balanced</option>
+      <option value="loss">Lose Weight</option>
     </select>
-
-    <button class="btn-generate-nutrition mt-3" (click)="generatePlan()" [disabled]="!userGoal">
-      {{ loading ? 'Generating...' : 'Generate Plan 🚀' }}
-    </button>
   </div>
 
-  <div *ngIf="loading" class="loading-message">
-    <div class="spinner"></div>
-    <p class="text-muted">Generating your diet plan... Please wait.</p>
-  </div>
-
-  <div *ngIf="showPlan" class="generated-plan">
-    <h4 class="goal-title mb-2">Goal: {{ userGoal | titlecase }}</h4>
-    <p class="goal-info mb-4">
-      <strong>Height:</strong> {{ userInfo.height }} cm &nbsp;|&nbsp;
-      <strong>Weight:</strong> {{ userInfo.weight }} kg
-    </p>
-
-    <div *ngFor="let week of generatedPlans; let wi = index" class="week-card-nutrition">
-      <h5>📅 Week {{ wi + 1 }}</h5>
-
-      <div *ngFor="let day of week.days; let di = index" class="day-block-nutrition">
-        <h6>🍽️ Day {{ di + 1 }}</h6>
-        <ul>
-          <li><strong>Breakfast:</strong> {{ day.breakfast }}</li>
-          <li><strong>Lunch:</strong> {{ day.lunch }}</li>
-          <li><strong>Dinner:</strong> {{ day.dinner }}</li>
-          <li *ngIf="day.snack"><strong>Snack:</strong> {{ day.snack }}</li>
-        </ul>
-      </div>
+  <!-- 🚫 Restrictions -->
+  <div class="restrictions-section mb-4">
+    <p><strong>Any Restrictions?</strong> (Check all that apply)</p>
+    <div class="restriction-checkboxes">
+      <label
+        *ngFor="let entry of restrictions | keyvalue"
+        class="checkbox-label"
+      >
+        <input type="checkbox" [(ngModel)]="restrictions[entry.key]" />
+        <span>No {{ entry.key | titlecase }}</span>
+      </label>
     </div>
+  </div>
+
+  <!-- 🔘 Generate Button -->
+  <button
+    class="btn-generate-nutrition mt-2"
+    (click)="generatePlan()"
+    [disabled]="!userGoal || loading"
+  >
+    {{ loading ? "Generating..." : "Generate Plan 🚀" }}
+  </button>
+
+  <!-- ⏳ Loading -->
+  <div *ngIf="loading" class="loading-message mt-3">
+    <div class="spinner"></div>
+    <p>Please wait... Preparing your personalized meal plan.</p>
   </div>
 </div>

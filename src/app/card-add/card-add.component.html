@@ -1,4 +1,13 @@
-<body>
+<!-- card-add.component.html -->
+<body
+  style="
+    background-color: #fdfdfd;
+    color: #222;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 70px;
+    overflow-x: hidden;
+  "
+>
   <div class="container">
     <div class="creditcard" [class.flipped]="isFlipped">
       <div class="front">
@@ -16,18 +25,18 @@
             ry="15"
             fill="url(#goldGradient)"
           />
-          <text x="40" y="60" fill="#fff" font-size="20">GOLD CARD</text>
-          <text x="40" y="120" #svgnumber fill="#ffffffcc" font-size="18">
+          <text x="40" y="60" fill="#1a1a1a" font-size="20" font-weight="bold">
+            GOLD CARD
+          </text>
+          <text x="40" y="120" #svgnumber fill="#333" font-size="18">
             •••• •••• •••• ••••
           </text>
-          <text x="40" y="160" fill="#ffffffaa" font-size="14">
-            Card Holder
-          </text>
-          <text x="40" y="185" #svgname fill="#ffffff" font-size="16">
+          <text x="40" y="160" fill="#444" font-size="14">Card Holder</text>
+          <text x="40" y="185" #svgname fill="#1a1a1a" font-size="16">
             JOHN DOE
           </text>
-          <text x="300" y="160" fill="#ffffffaa" font-size="14">Expires</text>
-          <text x="300" y="185" #svgexpire fill="#ffffff" font-size="16">
+          <text x="300" y="160" fill="#444" font-size="14">Expires</text>
+          <text x="300" y="185" #svgexpire fill="#1a1a1a" font-size="16">
             ••/••
           </text>
         </svg>
@@ -49,12 +58,12 @@
             fill="url(#backGold)"
           />
           <rect x="0" y="50" width="430" height="50" fill="#2c2c2c" />
-          <text x="40" y="130" fill="#ffffff" font-size="14">CVV</text>
+          <text x="40" y="130" fill="#000" font-size="14">CVV</text>
           <rect x="100" y="115" width="70" height="30" fill="#ffffff" />
           <text x="110" y="135" #svgsecurity fill="#000000" font-size="16">
             •••
           </text>
-          <text x="40" y="200" #svgnameback fill="#ffffff" font-size="16">
+          <text x="40" y="200" #svgnameback fill="#1a1a1a" font-size="16">
             JOHN DOE
           </text>
         </svg>
@@ -68,7 +77,7 @@
       <input
         id="card-number"
         [(ngModel)]="cardNumber"
-        (input)="formatCardNumber($event)"
+        (input)="formatCardNumber()"
         maxlength="19"
       />
     </div>
@@ -87,7 +96,7 @@
       <input
         id="expiration-date"
         [(ngModel)]="expirationDate"
-        (input)="formatExpirationDate($event)"
+        (input)="formatExpirationDate()"
         placeholder="MM/YY"
         maxlength="5"
       />
@@ -98,7 +107,7 @@
       <input
         id="security-code"
         [(ngModel)]="securityCode"
-        (input)="formatSecurityCode($event)"
+        (input)="formatSecurityCode()"
         (focus)="flipCard(true)"
         (blur)="flipCard(false)"
         maxlength="3"
