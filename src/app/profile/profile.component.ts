@@ -134,8 +134,6 @@ export class ProfileComponent {
   }
 
   goToReviews() {
-    this.router.navigate(['/my-reviews'], {
-      queryParams: { email: this.email },
-    });
+    this.router.navigate(['/my-reviews']);
   }
 }

@@ -8,8 +8,7 @@ import { NutritionComponent } from './nutrition/nutrition.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { MyReviewComponent } from './my-review/my-review.component';
-
+import { MyReviewsComponent } from './my-reviews/my-reviews.component';
 //Health Sections Details
 import { BrainHealth1Component } from './health/brain-health-1/brain-health-1.component';
 import { BrainHealth2Component } from './health/brain-health-2/brain-health-2.component';
@@ -29,7 +28,6 @@ import { BetterSleep3Component } from './health/better-sleep-3/better-sleep-3.co
 import { BetterSleep4Component } from './health/better-sleep-4/better-sleep-4.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { MyReviewsComponent } from './my-reviews/my-reviews.component';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DietPlanComponent } from './nutrition/diet-plan/diet-plan.component';
@@ -87,7 +85,6 @@ export const routes: Routes = [
   { path: 'nutrition', component: NutritionComponent },
   { path: 'diet-plan', component: DietPlanComponent },
   { path: 'my-dietPlan', component: MyDietPlanComponent },
-  { path: 'my-review', component: MyReviewComponent },
   { path: 'healthy-meals', component: HEALTHYMEALSComponent },
   { path: 'diets1', component: DIETS1Component },
   { path: 'diets2', component: DIETS2Component },
@@ -127,11 +124,11 @@ export const routes: Routes = [
   { path: 'admin-chat/:email', component: AdminChatComponent },
   { path: 'user-home', component: UserHomeComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'my-reviews', component: MyReviewsComponent },
   { path: 'update-password', component: UpdatePasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'user-chat', component: UserChatComponent },
   { path: 'contact', component: ContactUsComponent },
   { path: 'notifications', component: NotificationsComponent },
-  { path: 'my-reviews', component: MyReviewsComponent },
   { path: '**', component: NotFoundComponent },
 ];

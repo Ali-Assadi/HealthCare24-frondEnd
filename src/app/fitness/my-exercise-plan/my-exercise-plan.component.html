@@ -1,46 +1,77 @@
 <div class="exercise-container" *ngIf="!loading">
-  <h2 class="goal-title">🏋️ Your Exercise Plan - Goal: {{ goal | titlecase }}</h2>
+  <h2 class="goal-title">
+    🏋️ Your Exercise Plan - Goal: {{ goal | titlecase }}
+  </h2>
 
   <!-- Congratulations Message -->
   <div *ngIf="showCongratulations" class="congrats-message">
     🎉 Congratulations! You've completed your entire exercise plan! 🎉
   </div>
-  <div *ngIf="showCongratulations && !reviewSubmitted" class="review-section">
-  <h4>💬 We'd love your feedback!</h4>
 
-  <div class="form-group">
-    <label>Update Weight (kg):</label>
-    <input type="number" [(ngModel)]="updatedWeight" class="form-control" />
+  <!-- Feedback Section -->
+  <div
+    *ngIf="showCongratulations && !reviewSubmitted && !hasReviewedExercise"
+    class="review-section"
+  >
+    <h4>💬 We'd love your feedback!</h4>
+
+    <div class="form-group">
+      <label>Update Weight (kg):</label>
+      <input type="number" [(ngModel)]="updatedWeight" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label>Update Details:</label>
+      <textarea
+        [(ngModel)]="updatedDetails"
+        class="form-control"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Leave a Review:</label>
+      <textarea
+        [(ngModel)]="review"
+        class="form-control"
+        rows="4"
+        placeholder="How was your experience?"
+      ></textarea>
+    </div>
+
+    <button class="btn btn-success mt-3" (click)="submitReview()">
+      Submit Feedback ✅
+    </button>
   </div>
 
-  <div class="form-group">
-    <label>Update Details:</label>
-    <textarea [(ngModel)]="updatedDetails" class="form-control" rows="3"></textarea>
-  </div>
+  <div
+    *ngIf="reviewSubmitted || hasReviewedExercise"
+    class="review-thank-you text-center mt-4"
+  >
+    <h4>🙏 Thank you for your feedback!</h4>
+    <p>You can now generate a brand new exercise plan:</p>
 
-  <div class="form-group">
-    <label>Leave a Review:</label>
-    <textarea [(ngModel)]="review" class="form-control" rows="4" placeholder="How was your experience?"></textarea>
-  </div>
-
-  <button class="btn btn-success mt-3" (click)="submitReview()">Submit Feedback ✅</button>
-</div>
-
-  <div class="restart-container text-center" >
+    <button class="btn btn-primary" (click)="generateNewPlan()">
+      ♻️ Generate New Exercise Plan
+    </button>
     <button class="btn-restart" (click)="restartPlan()">
       🔄 Restart Exercise Plan
     </button>
   </div>
-  
+
   <div class="download-container text-center mt-4">
     <button class="btn-download" (click)="downloadExcel()">
       📥 Download Exercise Plan as Excel
     </button>
   </div>
-  
+
   <!-- Progress Bar -->
   <div class="progress-container">
-    <p>Progress: {{ completedDays }}/{{ totalDays }} Days Completed ({{ progressPercent }}%) ✅</p>
+    <p>
+      Progress: {{ completedDays }}/{{ totalDays }} Days Completed ({{
+        progressPercent
+      }}%) ✅
+    </p>
     <div class="progress-bar">
       <div class="progress-fill" [style.width.%]="progressPercent"></div>
     </div>
@@ -49,18 +80,26 @@
   <div *ngFor="let week of exercisePlan; let w = index" class="week-box">
     <h4>Week {{ w + 1 }}</h4>
 
-    <div *ngFor="let day of week.days; let d = index" class="day-box" [ngClass]="{ 'day-finished': day.finished }">
+    <div
+      *ngFor="let day of week.days; let d = index"
+      class="day-box"
+      [ngClass]="{ 'day-finished': day.finished }"
+    >
       <strong>Day {{ day.day }}:</strong>
       <span class="type-label">{{ day.type }}</span>
-      <p>{{ day.workout }}</p>
+      <ol>
+        <li *ngFor="let ex of day.workout">{{ ex }}</li>
+      </ol>
 
       <div class="day-actions">
-        <button *ngIf="!day.finished" class="btn-finish" (click)="markDayFinished(w, d)">
+        <button
+          *ngIf="!day.finished"
+          class="btn-finish"
+          (click)="markDayFinished(w, d)"
+        >
           ✅ Mark as Finished
         </button>
-        <div *ngIf="day.finished" class="finished-label">
-          🎉 Completed!
-        </div>
+        <div *ngIf="day.finished" class="finished-label">🎉 Completed!</div>
       </div>
     </div>
   </div>

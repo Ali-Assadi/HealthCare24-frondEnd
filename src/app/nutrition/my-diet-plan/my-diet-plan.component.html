@@ -2,8 +2,57 @@
   <div class="container">
     <h2>📋 Your Monthly Diet Plan</h2>
 
+    <!-- 🎉 Message -->
     <div *ngIf="showCongratulations" class="congrats-message">
       🎉 Congratulations! You've completed your entire diet plan! 🎉
+    </div>
+
+    <!-- ✅ Show regenerate button if user has already reviewed -->
+    <div
+      *ngIf="showCongratulations && userInfo.hasReviewedDiet"
+      class="text-center mt-3"
+    >
+      <button class="btn-download" (click)="regeneratePlan()">
+        ♻️ Generate New Diet Plan
+      </button>
+      <button class="btn-reset" (click)="resetPlan()">🔄 Restart Plan</button>
+    </div>
+
+    <!-- ✍️ Show review box if user hasn't reviewed -->
+    <div
+      *ngIf="showCongratulations && !userInfo.hasReviewedDiet"
+      class="review-box"
+    >
+      <h4>📝 Share Your Feedback</h4>
+
+      <label for="weight">⚖️ Updated Weight (kg):</label>
+      <input
+        id="weight"
+        type="number"
+        [(ngModel)]="feedbackWeight"
+        class="form-input"
+      />
+
+      <label for="details">🗒️ Progress / Notes:</label>
+      <textarea
+        id="details"
+        [(ngModel)]="feedbackDetails"
+        rows="4"
+        class="form-textarea"
+      ></textarea>
+
+      <label for="review">⭐ Short Review:</label>
+      <textarea
+        id="review"
+        [(ngModel)]="feedbackText"
+        rows="3"
+        class="form-textarea"
+        placeholder="How was your experience with the plan?"
+      ></textarea>
+
+      <button class="btn-submit-review" (click)="submitDietReview()">
+        ✅ Submit Review
+      </button>
     </div>
 
     <div class="progress-container">
@@ -19,7 +68,6 @@
 
     <!-- Action Buttons -->
     <div class="text-center mt-4 action-buttons">
-      <button class="btn-reset" (click)="resetPlan()">🔄 Restart Plan</button>
       <button class="btn-download" (click)="downloadExcel()">
         📥 Download as Excel
       </button>

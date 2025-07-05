@@ -139,3 +139,51 @@
 .btn-restart:hover, .btn-download:hover {
   background-color: #4834d4;
 }
+.review-thank-you {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #f0f9ff;
+  border: 2px dashed #6c5ce7;
+  border-radius: 14px;
+  margin-top: 30px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.review-thank-you h4 {
+  color: #2d3436;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.review-thank-you p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.review-thank-you .btn-primary {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.review-thank-you .btn-primary:hover {
+  background-color: #4834d4;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -5,11 +5,12 @@ import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-diet-plan',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './my-diet-plan.component.html',
   styleUrls: ['./my-diet-plan.component.css'],
 })
@@ -25,6 +26,9 @@ export class MyDietPlanComponent implements OnInit {
   generatedPlans: any[] = [];
   showAllWeeks: boolean = false;
   userEmail: string = '';
+  feedbackText: string = '';
+  feedbackWeight: number | null = null;
+  feedbackDetails: string = '';
 
   constructor(
     private http: HttpClient,
@@ -52,20 +56,20 @@ export class MyDietPlanComponent implements OnInit {
 
   finishDay(weekIndex: number, dayIndex: number): void {
     this.generatedPlans[weekIndex].days[dayIndex].finished = true;
+    this.calculateProgress();
 
     this.http
-      .patch('http://localhost:3000/api/update-finished-day', {
+      .patch('http://localhost:3000/api/dietplan/mark-finished-day', {
         email: this.userEmail,
         weekIndex,
         dayIndex,
       })
       .subscribe({
         next: () => {
-          this.toastr.success('Day marked as completed!', '✅ Nice work!');
-          this.calculateProgress();
+          console.log('✅ Day marked as finished');
         },
-        error: (err) => {
-          console.error('❌ Failed to update finished day', err);
+        error: () => {
+          this.toastr.error('❌ Failed to update finished day');
         },
       });
   }
@@ -130,30 +134,10 @@ export class MyDietPlanComponent implements OnInit {
     let completed = 0;
     let total = 0;
 
-    console.log('📊 Starting progress calculation...');
-    console.log('📦 Raw diet plan data:', this.generatedPlans);
-
-    for (
-      let weekIndex = 0;
-      weekIndex < this.generatedPlans.length;
-      weekIndex++
-    ) {
-      const week = this.generatedPlans[weekIndex];
-      console.log(`📅 Week ${weekIndex + 1}:`);
-
-      for (let dayIndex = 0; dayIndex < week.days.length; dayIndex++) {
-        const day = week.days[dayIndex];
+    for (let week of this.generatedPlans) {
+      for (let day of week.days) {
         total++;
-        if (day.finished) {
-          completed++;
-          console.log(
-            `✅ Day ${dayIndex + 1} - finished: YES | (${completed}/${total})`
-          );
-        } else {
-          console.log(
-            `❌ Day ${dayIndex + 1} - finished: NO | (${completed}/${total})`
-          );
-        }
+        if (day.finished) completed++;
       }
     }
 
@@ -162,20 +146,7 @@ export class MyDietPlanComponent implements OnInit {
     this.progressPercent =
       total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    console.log('📈 Final Progress:', {
-      completedDays: this.completedDays,
-      totalDays: this.totalDays,
-      progressPercent: this.progressPercent + '%',
-    });
-
     this.showCongratulations = this.progressPercent === 100;
-
-    if (this.showCongratulations && !this.userInfo.hasReviewedDiet) {
-      console.log('🎉 100% completed. Redirecting to review page...');
-      this.router.navigate(['/my-review'], {
-        queryParams: { email: this.userEmail },
-      });
-    }
   }
 
   promptForReview(): void {
@@ -215,6 +186,60 @@ export class MyDietPlanComponent implements OnInit {
           ),
         error: () =>
           this.toastr.error('❌ Failed to update your progress.', 'Error'),
+      });
+  }
+
+  submitDietReview(): void {
+    if (!this.feedbackText || this.feedbackText.trim().length < 5) {
+      this.toastr.warning('✋ Please write a meaningful review.');
+      return;
+    }
+
+    const payload: any = {
+      email: this.userEmail,
+      text: this.feedbackText.trim(),
+      type: 'diet',
+    };
+
+    if (this.feedbackWeight && this.feedbackWeight > 0) {
+      payload.weight = this.feedbackWeight;
+    }
+
+    if (this.feedbackDetails && this.feedbackDetails.trim().length > 0) {
+      payload.details = this.feedbackDetails.trim();
+    }
+
+    this.http
+      .patch(`http://localhost:3000/api/dietplan/update-after-diet`, payload)
+      .subscribe({
+        next: () => {
+          this.toastr.success('✅ Thank you for your review!');
+          this.userInfo.hasReviewedDiet = true;
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to submit your review.');
+        },
+      });
+  }
+
+  regeneratePlan(): void {
+    const confirmed = window.confirm(
+      'Are you sure you want to generate a new diet plan? This will overwrite your current plan.'
+    );
+    if (!confirmed) return;
+
+    this.http
+      .patch('http://localhost:3000/api/dietplan/clear', {
+        email: this.userEmail,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('🗑️ Old plan cleared. Redirecting...');
+          this.router.navigate(['/diet-plan']);
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to clear existing plan.');
+        },
       });
   }
 

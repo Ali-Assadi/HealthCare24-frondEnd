@@ -22,6 +22,8 @@ export class MyExercisePlanComponent implements OnInit {
   updatedDetails: string = '';
   review: string = '';
   reviewSubmitted = false;
+  hasReviewedExercise = false;
+
   completedDays = 0;
   totalDays = 0;
   progressPercent = 0;
@@ -30,6 +32,22 @@ export class MyExercisePlanComponent implements OnInit {
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    // First, load user profile to check hasReviewedExercise
+    this.http
+      .get<any>(`http://localhost:3000/api/user/${this.userEmail}`)
+      .subscribe({
+        next: (userData) => {
+          this.hasReviewedExercise = userData.hasReviewedExercise || false;
+          this.loadExercisePlan(); // Then load the actual exercise plan
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to load user profile.');
+          this.loading = false;
+        },
+      });
+  }
+
+  loadExercisePlan(): void {
     this.http
       .get<any>(`http://localhost:3000/api/exercise/plan/${this.userEmail}`)
       .subscribe({
@@ -52,15 +70,18 @@ export class MyExercisePlanComponent implements OnInit {
       email: this.userEmail,
       weight: this.updatedWeight,
       details: this.updatedDetails,
-      review: this.review,
+      text: this.review,
+      type: 'exercise',
     };
 
     this.http
-      .post('http://localhost:3000/api/exercise/submit-review', payload)
+      .post(`http://localhost:3000/api/user/${this.userEmail}/review`, payload)
       .subscribe({
         next: () => {
           this.toastr.success('✅ Thank you for your feedback!');
           this.reviewSubmitted = true;
+          this.hasReviewedExercise = true;
+          this.showCongratulations = false;
         },
         error: () => {
           this.toastr.error('❌ Failed to submit feedback');
@@ -150,6 +171,22 @@ export class MyExercisePlanComponent implements OnInit {
       total > 0 ? Math.round((completed / total) * 100) : 0;
 
     this.showCongratulations = this.progressPercent === 100;
+  }
+
+  generateNewPlan(): void {
+    this.http
+      .patch('http://localhost:3000/api/exercise/reset-plan-after-review', {
+        email: this.userEmail,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('✅ Cleared current plan');
+          window.location.href = '/exercise-plan';
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to reset exercise plan');
+        },
+      });
   }
 
   downloadExcel(): void {
