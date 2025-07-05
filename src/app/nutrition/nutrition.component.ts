@@ -201,4 +201,7 @@ export class NutritionComponent implements OnInit {
         error: (err) => console.error('Failed to buy now', err),
       });
   }
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

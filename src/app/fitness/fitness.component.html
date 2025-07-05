@@ -61,6 +61,7 @@
               appFadeIn
               [routerLink]="[item.route]"
               (click)="logView(item.route, 'strength')"
+              (click)="scrollToTop()"
             >
               <img [src]="item.image" [alt]="item.title" />
               <h3>{{ item.title }}</h3>
@@ -90,6 +91,8 @@
               appFadeIn
               [routerLink]="[item.route]"
               (click)="logView(item.route, 'cardio')"
+              (click)="scrollToTop()"
+
             >
               <img [src]="item.image" [alt]="item.title" />
               <h3>{{ item.title }}</h3>

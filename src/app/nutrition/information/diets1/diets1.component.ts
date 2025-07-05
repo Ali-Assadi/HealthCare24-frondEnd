@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './diets1.component.css'
 })
 export class DIETS1Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

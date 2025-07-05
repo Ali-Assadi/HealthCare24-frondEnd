@@ -63,6 +63,7 @@
       class="healthy-meals"
       *ngFor="let meal of meals"
       [routerLink]="[meal.route]"
+       (click)="scrollToTop()"
     >
       <div class="text-container">
         <h3>HEALTHY MEALS</h3>
@@ -94,6 +95,7 @@
           *ngFor="let diet of diets"
           [routerLink]="[diet.route]"
           (click)="logView(diet.route, 'diets')"
+           (click)="scrollToTop()"
           #fadeElement
           appFadeIn
         >
@@ -168,6 +170,7 @@
             *ngFor="let recipe of recipes"
             [routerLink]="[recipe.route]"
             (click)="logView(recipe.route, 'recipes')"
+             (click)="scrollToTop()"
             #fadeElement
             appFadeIn
           >

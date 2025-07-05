@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './healthy-recipes1.component.css'
 })
 export class HEALTHYRECIPES1Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

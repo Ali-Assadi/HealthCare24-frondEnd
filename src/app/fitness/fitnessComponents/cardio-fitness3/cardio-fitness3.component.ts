@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './cardio-fitness3.component.css'
 })
 export class CARDIOFITNESS3Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

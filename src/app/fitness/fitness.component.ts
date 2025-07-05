@@ -101,6 +101,7 @@ export class FitnessComponent implements OnInit {
       this.toastr.error('❌ You must be signed in.');
       return;
     }
+    
 
     this.http
       .post('http://localhost:3000/api/generate-exercise-plan', {
@@ -204,5 +205,8 @@ export class FitnessComponent implements OnInit {
         next: () => (location.href = '/cart'),
         error: (err) => console.error('Failed to buy now', err),
       });
+  }
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './strength-training2.component.css'
 })
 export class STRENGTHTRAINING2Component {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
