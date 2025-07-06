@@ -79,4 +79,7 @@ export class HomeComponent implements OnInit {
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (char) => char.toUpperCase());
   }
+   scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
