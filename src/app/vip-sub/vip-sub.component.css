@@ -1,19 +1,21 @@
+/* === General Page Styling === */
 body {
-  margin-top: 60px;
-  background-color: #f5f5f5;
+  margin-top: 6.8dvh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #222;
+  color: #1a1a1a;
+  background-color: #f4f4f4;
   overflow-x: hidden;
-    animation: fadeIn 1.5s ease-in-out;
-
+  animation: fadeIn 1.2s ease-in-out;
 }
 
+/* === Container === */
 .container {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
+/* === Credit Card Base === */
 .creditcard {
   width: 400px;
   height: 250px;
@@ -23,8 +25,10 @@ body {
   transform-style: preserve-3d;
   position: relative;
   background: white;
+  perspective: 1000px;
 }
 
+/* === Card Faces === */
 .creditcard .front,
 .creditcard .back {
   position: absolute;
@@ -36,14 +40,12 @@ body {
 }
 
 .creditcard .front {
-  background: linear-gradient(135deg, #f9d976, #f39910);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .creditcard .back {
-  background: linear-gradient(135deg, #f4c10f, #c49e02);
   transform: rotateY(180deg);
   display: flex;
   align-items: center;
@@ -54,15 +56,17 @@ body {
   transform: rotateY(180deg);
 }
 
+/* === Form Container === */
 .form-container {
   max-width: 400px;
-  margin: auto;
-  background-color: #ffffff;
-  padding: 28px;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  margin: 0 auto 60px;
+  background: linear-gradient(to right, #2b3a4a, #00b8a9);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* === Field Styling === */
 .field-container {
   display: flex;
   flex-direction: column;
@@ -72,42 +76,44 @@ body {
 label {
   font-size: 15px;
   margin-bottom: 6px;
-  color: #444;
+  color: #f5f5f5;
 }
 
 input {
-  padding: 12px 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 15px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
   transition: border 0.3s ease;
 }
 
 input:focus {
-  border-color: #f4c10f;
+  border-color: #00b8a9;
   outline: none;
   background-color: #fff;
 }
 
+/* === Pay Button === */
 .pay-button {
   padding: 14px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #f9d976;
-  color: #1a1a1a;
+  background-color: #2b3a4a82;
+  color: #ffffff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .pay-button:hover {
-  background-color: #f4c10f;
+  background-color:#2b3a4ad5;
   transform: scale(1.03);
 }
 
+/* === Fade In Animation === */
 @keyframes fadeIn {
   from {
     opacity: 0;

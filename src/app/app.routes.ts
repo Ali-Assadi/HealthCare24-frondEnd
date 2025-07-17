@@ -64,6 +64,7 @@ import { CARDIOFITNESS5Component } from './fitness/fitnessComponents/cardio-fitn
 import { CARDIOFITNESS6Component } from './fitness/fitnessComponents/cardio-fitness6/cardio-fitness6.component';
 import { vipSubComponent } from './vip-sub/vip-sub.component';
 import { CardAddComponent } from './card-add/card-add.component';
+import { AdminReviewsComponent } from './admin-reviews/admin-reviews.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -118,6 +119,7 @@ export const routes: Routes = [
   { path: 'better-sleep-4', component: BetterSleep4Component },
   { path: 'admin-dashboard', component: AdminComponent },
   { path: 'admin-users', component: AdminUsersComponent },
+  { path: 'admin-reviews', component: AdminReviewsComponent },
   { path: 'admin-diets', component: AdminDietsComponent },
   { path: 'admin-exercise', component: AdminExerciseComponent },
   { path: 'admin-requests', component: AdminRequestsComponent },

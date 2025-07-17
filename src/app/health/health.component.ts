@@ -12,6 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-health',
@@ -33,7 +34,8 @@ export class HealthComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     private renderer: Renderer2,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -130,10 +132,15 @@ export class HealthComponent implements OnInit {
         quantity: 1,
       })
       .subscribe({
-        next: () => alert(`${product.name} added to cart.`),
-        error: (err) => console.error('Failed to add to cart', err),
+        next: () =>
+          this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
+        error: (err) => {
+          console.error('Failed to add to cart', err);
+          this.toastr.error('Failed to add product to cart.', '❌ Error');
+        },
       });
   }
+
   checkSub() {
     console.log('Checking subscription...');
     const email = localStorage.getItem('userEmail');

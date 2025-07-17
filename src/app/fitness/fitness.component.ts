@@ -101,7 +101,6 @@ export class FitnessComponent implements OnInit {
       this.toastr.error('❌ You must be signed in.');
       return;
     }
-    
 
     this.http
       .post('http://localhost:3000/api/generate-exercise-plan', {
@@ -122,7 +121,7 @@ export class FitnessComponent implements OnInit {
     }
 
     this.http
-      .post('http://localhost:3000/api/request-new-plan', {
+      .post('http://localhost:3000/api/request-new-fitness-plan', {
         email,
         message: `User ${email} is requesting a new Exercise plan.`,
       })

@@ -1,0 +1,49 @@
+<div class="admin-reviews">
+  <h2>📝 All User Reviews</h2>
+
+  <!-- 🔍 Search by email -->
+  <input
+    type="text"
+    class="search-box"
+    placeholder="Search by user email..."
+    [(ngModel)]="searchQuery"
+  />
+
+  <div *ngIf="loading" class="loading-msg">⏳ Loading reviews...</div>
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngFor="let user of filteredReviews" class="user-review-section">
+      <h4>📧 {{ user.email }}</h4>
+
+      <!-- Diet Reviews -->
+      <div class="review-subsection">
+        <h5>🥗 Diet Reviews</h5>
+        <div *ngIf="user.dietReviews.length === 0" class="no-review">
+          No diet reviews.
+        </div>
+        <ul class="list-group" *ngIf="user.dietReviews.length > 0">
+          <li class="list-group-item" *ngFor="let review of user.dietReviews">
+            {{ review.text }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exercise Reviews -->
+      <div class="review-subsection exercise">
+        <h5>🏋️ Exercise Reviews</h5>
+        <div *ngIf="user.exerciseReviews.length === 0" class="no-review">
+          No exercise reviews.
+        </div>
+        <ul class="list-group" *ngIf="user.exerciseReviews.length > 0">
+          <li
+            class="list-group-item"
+            *ngFor="let review of user.exerciseReviews"
+          >
+            {{ review.text }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

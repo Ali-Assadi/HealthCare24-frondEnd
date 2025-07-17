@@ -91,7 +91,7 @@ export class MyDietPlanComponent implements OnInit {
     this.calculateProgress();
 
     this.http
-      .patch('http://localhost:3000/api/reset-finished-diet', {
+      .patch('http://localhost:3000/api/dietPlan/restart-plan', {
         email: this.userEmail,
       })
       .subscribe({
@@ -197,7 +197,7 @@ export class MyDietPlanComponent implements OnInit {
 
     const payload: any = {
       email: this.userEmail,
-      text: this.feedbackText.trim(),
+      review: this.feedbackText.trim(), // ✅ updated
       type: 'diet',
     };
 
