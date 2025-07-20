@@ -3,17 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   styleUrls: ['./admin-users.component.css'],
   standalone: true,
 })
 export class AdminUsersComponent implements OnInit {
   users: any[] = [];
-
+  searchQuery: string = '';
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
@@ -83,5 +84,11 @@ export class AdminUsersComponent implements OnInit {
         },
         error: () => this.toastr.error('❌ Failed to clear exercise plan'),
       });
+  }
+  get filteredUsers(): any[] {
+    const query = this.searchQuery.trim().toLowerCase();
+    return this.users.filter((user) =>
+      user.email.toLowerCase().includes(query)
+    );
   }
 }

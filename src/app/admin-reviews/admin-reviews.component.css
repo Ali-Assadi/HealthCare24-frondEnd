@@ -1,0 +1,82 @@
+.admin-reviews {
+  padding: 32px;
+  margin-left: 12dvw;
+  font-family: 'Segoe UI', sans-serif;
+  color: #222; /* Coal dark gray */
+}
+
+h2 {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #b00020; /* Admin red */
+}
+
+.loading-msg,
+.error-msg {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.error-msg {
+  color: #b00020;
+  font-weight: bold;
+}
+
+.user-review-section {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.user-review-section h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.review-subsection {
+  margin-top: 12px;
+}
+
+.review-subsection h5 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #b00020; /* Red tone for section titles */
+}
+
+.review-subsection.exercise h5 {
+  color: #a53838; /* Darker red for exercise */
+}
+
+.list-group {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.list-group-item {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  margin-bottom: 6px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #222;
+}
+
+.no-review {
+  font-style: italic;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.search-box {
+  width: 280px;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

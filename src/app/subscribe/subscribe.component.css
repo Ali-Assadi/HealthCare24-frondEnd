@@ -1,4 +1,4 @@
-/* General Reset */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -7,8 +7,8 @@
 
 /* Body Styling */
 body {
-  font-family: 'Georgia', serif;
-  background: #fdfdfd;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
   color: #1a1a1a;
   display: flex;
   justify-content: center;
@@ -29,13 +29,13 @@ body {
 /* VIP Card Styling */
 .vip-card {
   background: #ffffff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dcdcdc;
   border-radius: 20px;
   padding: 40px 60px;
   text-align: center;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
   animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -44,94 +44,76 @@ body {
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 15px;
-  letter-spacing: 1px;
-  color: #f5b800; /* Gold accent */
+  letter-spacing: 0.5px;
+  color: #2b3a4a;
 }
 
 /* Description */
 .vip-card p {
   font-size: 16px;
   margin-bottom: 30px;
-  color: #555555;
+  color: #555;
 }
 
-/* Input Field */
-.vip-form input[type="email"] {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background: #f9f9f9;
-  color: #222;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.vip-form input[type="email"]:focus {
-  background: #fff;
-  outline: none;
-  box-shadow: 0 0 10px rgba(245, 184, 0, 0.4);
-}
-
-/* Submit Button */
+/* Form Styling */
 .vip-form button {
   width: 100%;
   padding: 15px;
-  background: #f5b800;
+  background: #2b3a4a;
   color: #ffffff;
   border: none;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .vip-form button:hover {
-  background: #e5a800;
+  background: #00b8a9;
   transform: scale(1.05);
 }
 
 /* Benefits List */
 .benefits-list {
   list-style: none;
-  margin-top: 20px;
+  margin-top: 25px;
   padding: 0;
 }
 
 .benefits-list li {
   font-size: 16px;
-  margin-bottom: 10px;
-  color: #444;
+  margin-bottom: 12px;
+  color: #333;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .benefits-list li i {
-  color: #f5b800;
+  color: #00b8a9;
+  font-size: 18px;
 }
 
-/* Terms & Conditions Link */
+/* Terms & Conditions */
 .vip-card small {
   display: block;
-  margin-top: 20px;
+  margin-top: 25px;
   font-size: 14px;
   color: #888;
 }
 
 .vip-card small a {
-  color: #f5b800;
+  color: #2b3a4a;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .vip-card small a:hover {
-  color: #e5a800;
+  color: #00b8a9;
 }
 
-/* Fade-In Animation */
+/* Fade-in Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -150,7 +132,7 @@ body {
   }
 
   .vip-card h1 {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .vip-card p {

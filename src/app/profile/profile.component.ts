@@ -22,7 +22,7 @@ export class ProfileComponent {
   details: string = '';
   visaCard: any = null;
   private confirmedDelete = false;
-
+  private confirmedVisaDelete = false;
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -71,8 +71,22 @@ export class ProfileComponent {
   }
 
   deleteVisaCard() {
-    if (!confirm('Are you sure you want to remove your Visa card?')) return;
+    if (!this.confirmedVisaDelete) {
+      this.toastr.warning(
+        'Click again to confirm Visa removal.',
+        '⚠️ Confirm Delete',
+        { timeOut: 3000 }
+      );
+      this.confirmedVisaDelete = true;
 
+      // Reset confirmation after 3 seconds
+      setTimeout(() => {
+        this.confirmedVisaDelete = false;
+      }, 3000);
+      return;
+    }
+
+    // Second click confirmed
     this.http
       .delete(`http://localhost:3000/api/user/${this.email}/visa`)
       .subscribe({

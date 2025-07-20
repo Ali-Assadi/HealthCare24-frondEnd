@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr'; // ✅ Import Toastr
 
 @Component({
   selector: 'app-vip-sub',
@@ -25,7 +26,11 @@ export class vipSubComponent {
   @ViewChild('svgexpire', { static: true }) svgExpire!: ElementRef;
   @ViewChild('svgsecurity', { static: true }) svgSecurity!: ElementRef;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService // ✅ Inject Toastr
+  ) {}
 
   ngOnInit(): void {
     this.email = localStorage.getItem('userEmail') || '';
@@ -72,22 +77,34 @@ export class vipSubComponent {
     const securityCodePattern = /^\d{3}$/;
 
     if (!cardNumberPattern.test(this.cardNumber)) {
-      alert('❌ Invalid card number. Format should be: 1234 5678 9012 3456');
+      this.toastr.error(
+        'Invalid card number. Format should be: 1234 5678 9012 3456',
+        '❌ Invalid Card'
+      );
       return;
     }
 
     if (!namePattern.test(this.cardName.toUpperCase())) {
-      alert('❌ Invalid name. Please use uppercase letters and spaces only.');
+      this.toastr.error(
+        'Invalid name. Use uppercase letters and spaces only.',
+        '❌ Invalid Name'
+      );
       return;
     }
 
     if (!expirationPattern.test(this.expirationDate)) {
-      alert('❌ Invalid expiration date. Format should be: MM/YY');
+      this.toastr.error(
+        'Invalid expiration date. Format should be: MM/YY',
+        '❌ Invalid Expiry'
+      );
       return;
     }
 
     if (!securityCodePattern.test(this.securityCode)) {
-      alert('❌ Invalid CVV. It must be exactly 3 digits.');
+      this.toastr.error(
+        'Invalid CVV. It must be exactly 3 digits.',
+        '❌ Invalid CVV'
+      );
       return;
     }
 
@@ -107,7 +124,6 @@ export class vipSubComponent {
         .toPromise();
 
       const visaExists = !!(res && res.visaCard);
-
       const url = `http://localhost:3000/api/user/${this.email}/visa`;
       const request$ = visaExists
         ? this.http.put(url, payload)
@@ -115,18 +131,24 @@ export class vipSubComponent {
 
       request$.subscribe({
         next: () => {
-          alert('✅ Visa card saved and subscription confirmed!');
+          this.toastr.success(
+            'Visa card saved and subscription confirmed!',
+            '✅ Subscribed'
+          );
           this.isSubscribed = true;
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
         },
         error: (err) => {
           console.error('❌ Visa save failed:', err);
-          alert('❌ Could not save card. Try again.');
+          this.toastr.error('Could not save card. Try again.', '❌ Error');
         },
       });
     } catch (err) {
       console.error('❌ Error checking Visa card:', err);
-      alert('❌ Failed to check existing card. Please try again.');
+      this.toastr.error(
+        'Failed to check existing card. Please try again.',
+        '❌ Network Error'
+      );
     }
   }
 }

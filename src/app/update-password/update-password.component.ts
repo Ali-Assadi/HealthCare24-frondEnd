@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core'; // ✅ import OnInit
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'; // ✅ import ActivatedRoute
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-password',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './update-password.component.html',
-  styleUrl: './update-password.component.css'
+  styleUrl: './update-password.component.css',
 })
-export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
+export class UpdatePasswordComponent implements OnInit {
+  // ✅ implement OnInit
   email = '';
   newPassword = '';
   confirmPassword = '';
@@ -18,16 +20,17 @@ export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
   constructor(
     private http: HttpClient,
     private router: Router,
+    private toast: ToastrService,
     private route: ActivatedRoute // ✅ inject ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     // ✅ Read email from query param like: ?email=user@example.com
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.email = params['email'] || '';
 
       if (!this.email) {
-        alert("You're not authorized to be here.");
+        this.toast.error("You're not authorized to be here.");
         this.router.navigate(['/sign-in']);
       }
     });
@@ -35,21 +38,23 @@ export class UpdatePasswordComponent implements OnInit { // ✅ implement OnInit
 
   updatePassword() {
     if (this.newPassword !== this.confirmPassword) {
-      alert('Passwords do not match!');
+      this.toast.error('Passwords do not match!');
       return;
     }
 
-    this.http.put('http://localhost:3000/api/update-password', {
-      email: this.email,
-      newPassword: this.newPassword
-    }).subscribe({
-      next: () => {
-        alert('Password updated successfully!');
-        this.router.navigate(['/sign-in']);
-      },
-      error: () => {
-        alert('Failed to update password.');
-      }
-    });
+    this.http
+      .put('http://localhost:3000/api/update-password', {
+        email: this.email,
+        newPassword: this.newPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.toast.success('Password updated successfully!');
+          this.router.navigate(['/sign-in']);
+        },
+        error: () => {
+          this.toast.error('Failed to update password.');
+        },
+      });
   }
 }
