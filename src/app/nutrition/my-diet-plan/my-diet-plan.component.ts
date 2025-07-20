@@ -29,6 +29,7 @@ export class MyDietPlanComponent implements OnInit {
   feedbackText: string = '';
   feedbackWeight: number | null = null;
   feedbackDetails: string = '';
+  toggledReplaceMenus: { [key: string]: boolean } = {};
 
   constructor(
     private http: HttpClient,
@@ -52,6 +53,30 @@ export class MyDietPlanComponent implements OnInit {
       },
       error: () => console.error('❌ Failed to fetch user plan.'),
     });
+  }
+
+  toggleReplaceMenu(weekIndex: number, dayIndex: number): void {
+    const key = `${weekIndex}-${dayIndex}`;
+    this.toggledReplaceMenus[key] = !this.toggledReplaceMenus[key];
+  }
+
+  replaceMeal(weekIndex: number, dayIndex: number, mealType: string): void {
+    this.http
+      .patch('http://localhost:3000/api/dietplan/shuffle-meal', {
+        email: this.userEmail,
+        weekIndex,
+        dayIndex,
+        mealType,
+      })
+      .subscribe({
+        next: (res: any) => {
+          this.generatedPlans[weekIndex].days[dayIndex][mealType] = res.newMeal;
+          this.toastr.success(`✅ ${mealType} replaced with: ${res.newMeal}`);
+        },
+        error: () => {
+          this.toastr.error(`❌ Failed to replace ${mealType}`);
+        },
+      });
   }
 
   finishDay(weekIndex: number, dayIndex: number): void {
@@ -241,6 +266,32 @@ export class MyDietPlanComponent implements OnInit {
           this.toastr.error('❌ Failed to clear existing plan.');
         },
       });
+  }
+  scrollToTop(): void {
+    this.smoothScrollBy(-800); // Scroll up smoothly
+  }
+
+  scrollToBottom(): void {
+    this.smoothScrollBy(800); // Scroll down smoothly
+  }
+
+  smoothScrollBy(offset: number, duration: number = 500): void {
+    const start = window.scrollY;
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1); // Clamp to [0, 1]
+      const ease = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+
+      window.scrollTo(0, start + offset * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
   }
 
   downloadExcel(): void {

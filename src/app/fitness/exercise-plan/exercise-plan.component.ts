@@ -19,7 +19,14 @@ export class ExercisePlanComponent implements OnInit {
   userGoal: string = '';
   generating = false;
 
-  restrictionOptions = ['noLegs', 'noPush', 'noPull', 'noWeights', 'noBack'];
+  exerciseRestrictions: string[] = [
+    'noLegs',
+    'noBack',
+    'noPush',
+    'noPull',
+    'noWeights',
+  ];
+
   selectedRestrictions: string[] = [];
 
   constructor(
@@ -81,10 +88,12 @@ export class ExercisePlanComponent implements OnInit {
 
     this.generating = true;
 
+    const selected = this.selectedRestrictions;
+
     const payload = {
       email: this.userEmail,
       goal: this.userGoal,
-      restrictions: this.selectedRestrictions,
+      exerciseRestrictions: selected,
     };
 
     this.http

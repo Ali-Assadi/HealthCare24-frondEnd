@@ -35,8 +35,7 @@ export class SignUpComponent {
       !this.confirmPassword ||
       !this.age ||
       !this.height ||
-      !this.weight ||
-      !this.details
+      !this.weight
     ) {
       this.toastr.warning('Please fill all fields.', '⚠️ Incomplete Form');
       return;

@@ -24,22 +24,27 @@ export class MyExercisePlanComponent implements OnInit {
   review: string = '';
   reviewSubmitted = false;
   hasReviewedExercise = false;
-
+  isSubscribed = false;
+  userRestrictions: string[] = [];
   completedDays = 0;
   totalDays = 0;
   progressPercent = 0;
   showCongratulations = false;
+  customizingWeek: number | null = null;
+  customizingDay: number | null = null;
+  availableExercises: string[] = [];
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    // First, load user profile to check hasReviewedExercise
     this.http
       .get<any>(`http://localhost:3000/api/user/${this.userEmail}`)
       .subscribe({
         next: (userData) => {
           this.hasReviewedExercise = userData.hasReviewedExercise || false;
-          this.loadExercisePlan(); // Then load the actual exercise plan
+          this.isSubscribed = userData.isSubscribed || false;
+          this.userRestrictions = userData.restrictions || [];
+          this.loadExercisePlan();
         },
         error: () => {
           this.toastr.error('❌ Failed to load user profile.');
@@ -190,6 +195,94 @@ export class MyExercisePlanComponent implements OnInit {
       });
   }
 
+  openCustomization(weekIndex: number, dayIndex: number): void {
+    const restriction =
+      this.userRestrictions.length > 0 ? this.userRestrictions[0] : 'default';
+
+    this.http
+      .get<any>(
+        `http://localhost:3000/api/exercise/suggestions?goal=${this.goal}&restriction=${restriction}`
+      )
+      .subscribe({
+        next: (res) => {
+          const exercises = res.exercises.slice(0, 3); // Pick top 3
+          this.exercisePlan[weekIndex].days[dayIndex].workout = exercises;
+          this.toastr.success('✅ Exercises updated!');
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to fetch suggestions');
+        },
+      });
+  }
+
+  toggleCustomization(w: number, d: number): void {
+    this.customizingWeek = w;
+    this.customizingDay = d;
+
+    const restriction =
+      this.userRestrictions.length > 0 ? this.userRestrictions[0] : 'default';
+
+    this.http
+      .get<any>(
+        `http://localhost:3000/api/exercise/suggestions?goal=${this.goal}&restriction=${restriction}`
+      )
+      .subscribe({
+        next: (res) => {
+          this.availableExercises = res.exercises;
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to fetch suggestions');
+        },
+      });
+  }
+
+  saveCustomizedDay(w: number, d: number): void {
+    const updatedWorkout = this.exercisePlan[w].days[d].workout;
+
+    this.http
+      .patch(`http://localhost:3000/api/exercise/customize-day`, {
+        email: this.userEmail,
+        weekIndex: w,
+        dayIndex: d,
+        newWorkout: updatedWorkout,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('✅ Day updated!');
+          this.customizingWeek = null;
+          this.customizingDay = null;
+        },
+        error: () => {
+          this.toastr.error('❌ Failed to update day');
+        },
+      });
+  }
+  scrollToTop(): void {
+    this.smoothScrollBy(-800); // Scroll up smoothly
+  }
+
+  scrollToBottom(): void {
+    this.smoothScrollBy(800); // Scroll down smoothly
+  }
+
+  smoothScrollBy(offset: number, duration: number = 500): void {
+    const start = window.scrollY;
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1); // Clamp to [0, 1]
+      const ease = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+
+      window.scrollTo(0, start + offset * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  }
   downloadExcel(): void {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Exercise Plan');
@@ -251,5 +344,4 @@ export class MyExercisePlanComponent implements OnInit {
       saveAs(blob, 'exercise-plan-styled.xlsx');
     });
   }
-  
 }

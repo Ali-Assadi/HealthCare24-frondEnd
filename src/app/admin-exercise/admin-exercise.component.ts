@@ -130,16 +130,30 @@ export class AdminExerciseComponent implements OnInit {
         error: () => this.toastr.error('❌ Failed to update exercise plan'),
       });
   }
-  scrollToBottom(): void {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: 'smooth',
-    });
-  }
   scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    this.smoothScrollBy(-800); // Scroll up smoothly
+  }
+
+  scrollToBottom(): void {
+    this.smoothScrollBy(800); // Scroll down smoothly
+  }
+
+  smoothScrollBy(offset: number, duration: number = 500): void {
+    const start = window.scrollY;
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1); // Clamp to [0, 1]
+      const ease = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+
+      window.scrollTo(0, start + offset * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
   }
 }

@@ -33,8 +33,6 @@
         class="form-input"
       />
 
-
-
       <label for="review">⭐ Short Review:</label>
       <textarea
         id="review"
@@ -103,6 +101,33 @@
             </button>
             <div *ngIf="day.finished" class="finished-label">🎉 Completed!</div>
           </div>
+          <!-- 🛠️ Replace Button -->
+          <div *ngIf="userInfo?.isSubscribed" class="replace-container">
+            <button
+              class="btn-replace-toggle"
+              (click)="toggleReplaceMenu(wi, di)"
+            >
+              🔧 Replace a Meal
+            </button>
+
+            <div
+              class="replace-options"
+              *ngIf="toggledReplaceMenus[wi + '-' + di]"
+            >
+              <button (click)="replaceMeal(wi, di, 'breakfast')">
+                🍳 Replace Breakfast
+              </button>
+              <button (click)="replaceMeal(wi, di, 'lunch')">
+                🥗 Replace Lunch
+              </button>
+              <button (click)="replaceMeal(wi, di, 'dinner')">
+                🍽️ Replace Dinner
+              </button>
+              <button *ngIf="day.snack" (click)="replaceMeal(wi, di, 'snack')">
+                🍪 Replace Snack
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -114,4 +139,14 @@
       </button>
     </div>
   </div>
+    <button class="scroll-up-btn" (click)="scrollToTop()" title="Scroll to top">
+    ↑
+  </button>
+  <button
+    class="scroll-down-btn"
+    (click)="scrollToBottom()"
+    title="Scroll to bottom"
+  >
+    ↓
+  </button>
 </body>

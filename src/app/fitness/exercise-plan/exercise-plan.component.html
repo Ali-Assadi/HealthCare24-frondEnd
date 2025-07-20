@@ -21,15 +21,15 @@
 
   <!-- 🚫 Restrictions -->
   <div class="restrictions-section mb-4">
-    <p><strong>Any Restrictions?</strong> (Check all that apply)</p>
+    <p><strong>Any Exercise Restrictions?</strong> (Check all that apply)</p>
     <div class="restriction-checkboxes">
-      <label *ngFor="let r of restrictionOptions" class="checkbox-label">
+      <label *ngFor="let r of exerciseRestrictions" class="checkbox-label">
         <input
           type="checkbox"
           [checked]="isSelected(r)"
           (change)="toggleRestriction(r)"
         />
-        <span>{{ r }}</span>
+        <span>{{ r.replace("no", "No ") }}</span>
       </label>
     </div>
   </div>

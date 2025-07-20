@@ -1,3 +1,4 @@
+<body>
 <div class="exercise-container" *ngIf="!loading">
   <h2 class="goal-title">
     🏋️ Your Exercise Plan - Goal: {{ goal | titlecase }}
@@ -55,11 +56,11 @@
       📥 Download Exercise Plan as Excel
     </button>
   </div>
-<div class="text-center mt-4">
-  <button class="btn-view-completed" routerLink="/exePics">
-    🧾 See Exercises Pictures!
-  </button>
-</div>
+  <div class="text-center mt-4">
+    <button class="btn-view-completed" routerLink="/exePics">
+      🧾 See Exercises Pictures!
+    </button>
+  </div>
 
   <!-- Progress Bar -->
   <div class="progress-container">
@@ -97,8 +98,48 @@
         </button>
         <div *ngIf="day.finished" class="finished-label">🎉 Completed!</div>
       </div>
+      <div *ngIf="isSubscribed && !day.finished" class="customize-area">
+        <button class="btn-customize" (click)="toggleCustomization(w, d)">
+          ✏️ Customize Exercises
+        </button>
+
+        <div
+          *ngIf="customizingWeek === w && customizingDay === d"
+          class="customization-box"
+        >
+          <div
+            *ngFor="let ex of day.workout; let i = index"
+            class="custom-exercise"
+          >
+            <label>Exercise {{ i + 1 }}</label>
+            <select [(ngModel)]="exercisePlan[w].days[d].workout[i]">
+              <option *ngFor="let e of availableExercises" [value]="e">
+                {{ e }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            class="btn btn-success mt-2"
+            (click)="saveCustomizedDay(w, d)"
+          >
+            💾 Save Changes
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <div *ngIf="loading" class="loading-text">Loading your plan...</div>
+<button class="scroll-up-btn" (click)="scrollToTop()" title="Scroll to top">
+  ↑
+</button>
+<button
+  class="scroll-down-btn"
+  (click)="scrollToBottom()"
+  title="Scroll to bottom"
+>
+  ↓
+</button>
+</body>

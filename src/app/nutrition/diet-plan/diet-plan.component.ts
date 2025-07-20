@@ -82,6 +82,14 @@ export class DietPlanComponent implements OnInit {
       next: (user) => {
         this.userInfo = user;
         this.userGoal = this.recommendGoal(user.weight, user.height, user.age);
+
+        if (Array.isArray(user.dietRestrictions)) {
+          user.dietRestrictions.forEach((key: string) => {
+            if (key in this.restrictions) {
+              this.restrictions[key] = true;
+            }
+          });
+        }
       },
       error: () => console.error('Failed to load user'),
     });
