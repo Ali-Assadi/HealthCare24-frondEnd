@@ -187,3 +187,20 @@
     transform: translateY(0);
   }
 }
+.btn-view-completed {
+  background-color: #00b894;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 184, 148, 0.2);
+  margin: 10px;
+}
+
+.btn-view-completed:hover {
+  background-color: #019875;
+}

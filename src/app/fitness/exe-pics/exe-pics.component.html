@@ -1,0 +1,20 @@
+<div class="container" *ngIf="!loading">
+  <h2 class="title">🏋️ Exercise Pictures</h2>
+
+  <input
+    type="text"
+    placeholder="🔍 Search by name..."
+    [(ngModel)]="searchTerm"
+    (input)="filterPictures()"
+    class="search-box"
+  />
+
+  <div class="grid">
+    <div class="card" *ngFor="let pic of filteredPictures">
+      <img [src]="pic.path" [alt]="pic.name" />
+      <p class="name">{{ pic.name }}</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-text">Loading exercise pictures...</div>

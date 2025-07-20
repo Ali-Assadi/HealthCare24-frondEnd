@@ -5,11 +5,12 @@ import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-exercise-plan',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './my-exercise-plan.component.html',
   styleUrls: ['./my-exercise-plan.component.css'],
 })
@@ -250,4 +251,5 @@ export class MyExercisePlanComponent implements OnInit {
       saveAs(blob, 'exercise-plan-styled.xlsx');
     });
   }
+  
 }
