@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './exe-pics.component.html',
-  styleUrls: ['./exe-pics.component.css']
+  styleUrls: ['./exe-pics.component.css'],
 })
 export class ExePicsComponent implements OnInit {
   pictures: any[] = [];
@@ -23,23 +23,23 @@ export class ExePicsComponent implements OnInit {
   }
 
   fetchPictures(): void {
-    this.http.get<any>('http://localhost:3000/api/exePictures/all').subscribe({
+    this.http.get<any[]>('http://localhost:3000/api/exePictures').subscribe({
       next: (res) => {
         console.log('✅ Received pictures:', res);
-        this.pictures = res.exePictures;
-        this.filteredPictures = res.exePictures;
+        this.pictures = res;
+        this.filteredPictures = res;
         this.loading = false;
       },
       error: () => {
         console.error('❌ Failed to load pictures');
         this.loading = false;
-      }
+      },
     });
   }
 
   filterPictures(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredPictures = this.pictures.filter(pic =>
+    const term = this.searchTerm?.toLowerCase() || '';
+    this.filteredPictures = this.pictures.filter((pic) =>
       pic.name.toLowerCase().includes(term)
     );
   }
