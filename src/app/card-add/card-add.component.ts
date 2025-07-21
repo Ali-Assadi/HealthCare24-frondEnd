@@ -132,7 +132,7 @@ export class CardAddComponent {
 
       request$.subscribe({
         next: () => {
-          this.toastr.success('Visa card saved and subscription confirmed! ✅');
+          this.toastr.success('Visa card saved ✅');
           this.isSubscribed = true;
           this.router.navigate(['/cart']);
         },

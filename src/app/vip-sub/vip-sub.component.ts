@@ -114,16 +114,18 @@ export class vipSubComponent {
 
       // Then add the new one
       this.http
-        .post(`http://localhost:3000/api/user/${this.email}/visa`, payload)
+        .post(`http://localhost:3000/api/user/${this.email}/visaSub`, payload)
         .subscribe({
           next: () => {
             this.toastr.success(
               'Visa card replaced and subscription confirmed!',
               '✅ Subscribed'
             );
+
             this.isSubscribed = true;
             this.hasVisa = true;
             this.visaCard = payload;
+            console.log(this);
             this.router.navigate(['/home']);
           },
           error: (err) => {
@@ -164,10 +166,22 @@ export class vipSubComponent {
       },
     });
   }
-  confirmUsingVisa() {
-    this.toastr.success('✅ Subscribed using saved Visa!');
-    this.router.navigate(['/home']);
-  }
+ confirmUsingVisa() {
+  const url = `http://localhost:3000/api/user/${this.email}/subscribe`;
+
+  this.http.put(url, { isSubscribed: true }).subscribe({
+    next: () => {
+      this.toastr.success('✅ Subscribed using saved Visa!');
+      this.isSubscribed = true;
+      this.router.navigate(['/home']);
+    },
+    error: (err) => {
+      console.error('❌ Failed to update subscription:', err);
+      this.toastr.error('Failed to confirm subscription.', '❌ Error');
+    }
+  });
+}
+
 
   deleteVisa() {
     this.http
