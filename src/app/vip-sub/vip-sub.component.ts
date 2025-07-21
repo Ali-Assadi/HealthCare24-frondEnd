@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr'; // ✅ Import Toastr
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-vip-sub',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './vip-sub.component.html',
   styleUrls: ['./vip-sub.component.css'],
 })
@@ -19,7 +20,9 @@ export class vipSubComponent {
   isFlipped = false;
   isSubscribed = false;
   email = '';
-
+  hasVisa = false;
+  visaCard: any = null;
+  showVisaDialog = false;
   @ViewChild('svgnumber', { static: true }) svgNumber!: ElementRef;
   @ViewChild('svgname', { static: true }) svgName!: ElementRef;
   @ViewChild('svgnameback', { static: true }) svgNameBack!: ElementRef;
@@ -29,11 +32,32 @@ export class vipSubComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastr: ToastrService // ✅ Inject Toastr
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.email = localStorage.getItem('userEmail') || '';
+    this.checkVisaCard();
+  }
+
+  checkVisaCard() {
+    this.http
+      .get<{ visaCard?: any }>(
+        `http://localhost:3000/api/user/${this.email}/visa`
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.visaCard) {
+            this.hasVisa = true;
+            this.visaCard = res.visaCard;
+            this.showVisaDialog = true;
+          }
+        },
+        error: () => {
+          this.hasVisa = false;
+          this.visaCard = null;
+        },
+      });
   }
 
   updateCardDisplay() {
@@ -71,42 +95,8 @@ export class vipSubComponent {
   }
 
   async onPay() {
-    const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
-    const namePattern = /^[A-Z][A-Z\s]{1,25}$/;
-    const expirationPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
-    const securityCodePattern = /^\d{3}$/;
-
-    if (!cardNumberPattern.test(this.cardNumber)) {
-      this.toastr.error(
-        'Invalid card number. Format should be: 1234 5678 9012 3456',
-        '❌ Invalid Card'
-      );
-      return;
-    }
-
-    if (!namePattern.test(this.cardName.toUpperCase())) {
-      this.toastr.error(
-        'Invalid name. Use uppercase letters and spaces only.',
-        '❌ Invalid Name'
-      );
-      return;
-    }
-
-    if (!expirationPattern.test(this.expirationDate)) {
-      this.toastr.error(
-        'Invalid expiration date. Format should be: MM/YY',
-        '❌ Invalid Expiry'
-      );
-      return;
-    }
-
-    if (!securityCodePattern.test(this.securityCode)) {
-      this.toastr.error(
-        'Invalid CVV. It must be exactly 3 digits.',
-        '❌ Invalid CVV'
-      );
-      return;
-    }
+    // Validate first
+    if (!this.validateCard()) return;
 
     const [month, year] = this.expirationDate.split('/');
     const payload = {
@@ -117,38 +107,109 @@ export class vipSubComponent {
     };
 
     try {
-      const res = await this.http
-        .get<{ visaCard?: any }>(
-          `http://localhost:3000/api/user/${this.email}/visa`
-        )
+      // Always delete the old Visa card if it exists
+      await this.http
+        .delete(`http://localhost:3000/api/user/${this.email}/visa`)
         .toPromise();
 
-      const visaExists = !!(res && res.visaCard);
-      const url = `http://localhost:3000/api/user/${this.email}/visa`;
-      const request$ = visaExists
-        ? this.http.put(url, payload)
-        : this.http.post(url, payload);
+      // Then add the new one
+      this.http
+        .post(`http://localhost:3000/api/user/${this.email}/visa`, payload)
+        .subscribe({
+          next: () => {
+            this.toastr.success(
+              'Visa card replaced and subscription confirmed!',
+              '✅ Subscribed'
+            );
+            this.isSubscribed = true;
+            this.hasVisa = true;
+            this.visaCard = payload;
+            this.router.navigate(['/home']);
+          },
+          error: (err) => {
+            console.error('❌ Failed to save Visa:', err);
+            this.toastr.error(
+              'Failed to save new Visa. Try again.',
+              '❌ Error'
+            );
+          },
+        });
+    } catch (err) {
+      console.error('❌ Failed to delete old Visa:', err);
+      this.toastr.error('Could not remove old Visa. Try again.', '❌ Error');
+    }
+  }
 
-      request$.subscribe({
+  submitVisa() {
+    if (!this.validateCard()) return;
+
+    const [month, year] = this.expirationDate.split('/');
+    const payload = {
+      cardHolderName: this.cardName.toUpperCase(),
+      last4Digits: this.cardNumber.replace(/\s/g, '').slice(-4),
+      expiryMonth: parseInt(month),
+      expiryYear: 2000 + parseInt(year),
+    };
+
+    const url = `http://localhost:3000/api/user/${this.email}/visaSub`;
+
+    this.http.post(url, payload).subscribe({
+      next: () => {
+        this.toastr.success('Visa card saved and subscription confirmed!');
+        this.isSubscribed = true;
+        this.router.navigate(['/home']);
+      },
+      error: () => {
+        this.toastr.error('Could not save card. Try again.', '❌ Error');
+      },
+    });
+  }
+  confirmUsingVisa() {
+    this.toastr.success('✅ Subscribed using saved Visa!');
+    this.router.navigate(['/home']);
+  }
+
+  deleteVisa() {
+    this.http
+      .delete(`http://localhost:3000/api/user/${this.email}/visa`)
+      .subscribe({
         next: () => {
-          this.toastr.success(
-            'Visa card saved and subscription confirmed!',
-            '✅ Subscribed'
-          );
-          this.isSubscribed = true;
-          this.router.navigate(['/home']);
+          this.toastr.success('💳 Visa card removed');
+          this.hasVisa = false;
+          this.visaCard = null;
+          this.showVisaDialog = false;
         },
-        error: (err) => {
-          console.error('❌ Visa save failed:', err);
-          this.toastr.error('Could not save card. Try again.', '❌ Error');
+        error: () => {
+          this.toastr.error('❌ Could not remove Visa card');
         },
       });
-    } catch (err) {
-      console.error('❌ Error checking Visa card:', err);
-      this.toastr.error(
-        'Failed to check existing card. Please try again.',
-        '❌ Network Error'
-      );
+  }
+  validateCard(): boolean {
+    const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
+    const namePattern = /^[A-Z][A-Z\s]{1,25}$/;
+    const expirationPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const securityCodePattern = /^\d{3}$/;
+
+    if (!cardNumberPattern.test(this.cardNumber)) {
+      this.toastr.error('Invalid card number...', '❌ Invalid Card');
+      return false;
     }
+
+    if (!namePattern.test(this.cardName.toUpperCase())) {
+      this.toastr.error('Invalid name...', '❌ Invalid Name');
+      return false;
+    }
+
+    if (!expirationPattern.test(this.expirationDate)) {
+      this.toastr.error('Invalid expiration...', '❌ Invalid Expiry');
+      return false;
+    }
+
+    if (!securityCodePattern.test(this.securityCode)) {
+      this.toastr.error('Invalid CVV...', '❌ Invalid CVV');
+      return false;
+    }
+
+    return true;
   }
 }

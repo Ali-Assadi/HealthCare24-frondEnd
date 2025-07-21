@@ -136,4 +136,18 @@
       </div>
     </div>
   </div>
+  <!-- ✅ Confirm Visa Usage Dialog -->
+  <div *ngIf="showVisaDialog" class="dialog-overlay">
+    <div class="payment-dialog">
+      <h3>💳 Use Saved Visa?</h3>
+      <p>
+        Card ending in <strong>{{ visaCard?.last4Digits }}</strong
+        ><br />
+        Exp: {{ visaCard?.expiryMonth }}/{{ visaCard?.expiryYear }}
+      </p>
+      <button (click)="confirmUsingVisa()">✔ Use This Card</button>
+      <button (click)="deleteVisa()">❌ Remove Card</button>
+      <button (click)="showVisaDialog = false">Cancel</button>
+    </div>
+  </div>
 </body>

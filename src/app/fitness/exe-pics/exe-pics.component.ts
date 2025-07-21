@@ -43,4 +43,5 @@ export class ExePicsComponent implements OnInit {
       pic.name.toLowerCase().includes(term)
     );
   }
+  
 }
