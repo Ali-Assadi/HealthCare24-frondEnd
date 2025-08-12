@@ -21,14 +21,34 @@
 
   <!-- 🚫 Restrictions -->
   <div class="restrictions-section mb-4">
-    <p><strong>Any Restrictions?</strong> (Check all that apply)</p>
+    <p><strong>Any Restriction?</strong> (Choose one)</p>
+
     <div class="restriction-checkboxes">
       <label
         *ngFor="let entry of restrictions | keyvalue"
         class="checkbox-label"
       >
-        <input type="checkbox" [(ngModel)]="restrictions[entry.key]" />
-        <span>No {{ entry.key | titlecase }}</span>
+        <input
+          #cb
+          type="checkbox"
+          [checked]="restrictions[entry.key]"
+          (change)="
+            restrictions['egg'] = false;
+            restrictions['milk'] = false;
+            restrictions['meat'] = false;
+            restrictions['fish'] = false;
+            restrictions['gluten'] = false;
+            restrictions['vegetarian'] = false;
+            restrictions[entry.key] = cb.checked
+          "
+        />
+        <span>
+          {{
+            entry.key === "vegetarian"
+              ? "Vegetarian"
+              : "No " + (entry.key | titlecase)
+          }}
+        </span>
       </label>
     </div>
   </div>

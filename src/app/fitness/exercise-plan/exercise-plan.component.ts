@@ -111,4 +111,13 @@ export class ExercisePlanComponent implements OnInit {
         },
       });
   }
+
+  onRestrictionChange(r: string, checked: boolean): void {
+    if (typeof (this as any).selectedRestrictions?.clear === 'function') {
+      (this as any).selectedRestrictions.clear();
+      if (checked) (this as any).selectedRestrictions.add(r);
+    } else {
+      (this as any).selectedRestrictions = checked ? [r] : [];
+    }
+  }
 }

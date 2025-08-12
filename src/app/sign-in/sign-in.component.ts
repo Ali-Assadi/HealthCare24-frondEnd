@@ -40,16 +40,33 @@ export class SignInComponent {
             return;
           }
 
+          // 🔒 Check if password update is required before storing login
+          const mustUpdate = !!(
+            response.mustUpdatePassword ??
+            response.user?.mustUpdatePassword ??
+            response.mustUpdate
+          );
+
+          if (mustUpdate) {
+            this.toastr.info(
+              'Please set a new password to continue.',
+              'Security check'
+            );
+            this.router.navigate(['/update-password'], {
+              queryParams: { email: response.email },
+              replaceUrl: true,
+            });
+            return; // 🚫 Don't save login data
+          }
+
+          // ✅ Only store login if password update is NOT required
           localStorage.setItem('userEmail', response.email);
           localStorage.setItem('userId', response._id);
-
           this.authService.setAdminStatus(response.isAdmin || false);
 
+          // Normal flow
           this.toastr.success('Login successful! 🎉', 'Welcome!');
-
-          if (response.mustUpdate) {
-            this.router.navigate(['/update-password']);
-          } else if (response.isAdmin) {
+          if (response.isAdmin) {
             this.router.navigate(['/admin-dashboard']);
           } else {
             this.router.navigate(['/home']);

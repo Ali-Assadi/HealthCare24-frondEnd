@@ -18,25 +18,23 @@
       <option value="loss">Lose Weight</option>
     </select>
   </div>
+  <p><strong>Any Restriction?</strong> (Choose one)</p>
 
-  <!-- 🚫 Restrictions -->
-  <div class="restrictions-section mb-4">
-    <p><strong>Any Exercise Restrictions?</strong> (Check all that apply)</p>
-    <div class="restriction-checkboxes">
-      <label *ngFor="let r of exerciseRestrictions" class="checkbox-label">
-        <input
-          type="checkbox"
-          [checked]="isSelected(r)"
-          (change)="toggleRestriction(r)"
-        />
-        <span>{{ r.replace("no", "No ") }}</span>
-      </label>
-    </div>
+  <div class="restriction-checkboxes">
+    <label *ngFor="let r of exerciseRestrictions" class="checkbox-label">
+      <input
+        #cb
+        type="checkbox"
+        [checked]="isSelected(r)"
+        (change)="onRestrictionChange(r, cb.checked)"
+      />
+      <span>{{ r.replace("no", "No ") }}</span>
+    </label>
   </div>
 
   <!-- 🟢 Generate Button -->
   <button
-    class="btn btn-success"
+    class="btn btn-succes mt-3"
     (click)="generatePlan()"
     [disabled]="generating"
   >
