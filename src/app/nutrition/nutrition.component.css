@@ -445,3 +445,18 @@ html {
   font-size: 0.9em;
 }
 
+.product-card.sold-out {
+  opacity: 0.85;
+  background: #fff1f1;
+  border: 1px solid #f5c2c2;
+}
+
+.badge-unavail {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #ffe7e7;
+  color: #c62828;
+  border: 1px solid #f5b5b5;
+}

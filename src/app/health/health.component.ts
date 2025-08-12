@@ -83,24 +83,33 @@ export class HealthComponent implements OnInit {
           console.error(`Failed to load ${category} articles`, err),
       });
   }
+  private verifyStock(productId: string) {
+    return this.http.get<any>(
+      `http://localhost:3000/api/products/${productId}`
+    );
+  }
 
   loadProducts() {
-    console.log('Loading products... Subscribed:', this.subscribed);
-
     this.http
       .get<any[]>('http://localhost:3000/api/products/category/health')
       .subscribe({
         next: (data) => {
-          console.log('Loaded products from backend:', data);
-          if (this.subscribed) {
-            this.products = data.map((product) => ({
-              ...product,
-              originalPrice: product.price,
-              price: (product.price * 0.9).toFixed(2),
-            }));
-          } else {
-            this.products = data;
-          }
+          const normalized = data.map((p) => {
+            const qty = Number(p?.quantity ?? 0);
+            const soldOut = p?.available === false || qty <= 0;
+
+            if (this.subscribed) {
+              return {
+                ...p,
+                originalPrice: p.price,
+                price: +(p.price * 0.9).toFixed(2),
+                quantity: qty,
+                soldOut,
+              };
+            }
+            return { ...p, quantity: qty, soldOut };
+          });
+          this.products = normalized;
         },
         error: (err) => console.error('Failed to load health products', err),
       });
@@ -119,26 +128,6 @@ export class HealthComponent implements OnInit {
         subType,
       })
       .subscribe();
-  }
-
-  // Add product to cart
-  addToCart(product: any) {
-    const userId = localStorage.getItem('userId');
-    if (!userId) return;
-
-    this.http
-      .post(`http://localhost:3000/api/cart/${userId}/add`, {
-        productId: product._id,
-        quantity: 1,
-      })
-      .subscribe({
-        next: () =>
-          this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
-        error: (err) => {
-          console.error('Failed to add to cart', err);
-          this.toastr.error('Failed to add product to cart.', '❌ Error');
-        },
-      });
   }
 
   checkSub() {
@@ -165,19 +154,100 @@ export class HealthComponent implements OnInit {
     });
   }
 
-  // Add product to cart and navigate to cart
+  // ✅ prevent add if sold out + double-check with server
+  addToCart(product: any) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    if (product?.soldOut) {
+      this.toastr.warning(
+        'This product is currently out of stock. Coming soon!',
+        '⚠️ Not available'
+      );
+      return;
+    }
+
+    this.verifyStock(product._id).subscribe({
+      next: (fresh) => {
+        const qty = Number(fresh?.quantity ?? 0);
+        if (fresh?.available === false || qty <= 0) {
+          this.toastr.warning(
+            'This product just went out of stock. Coming soon!',
+            '⚠️ Not available'
+          );
+          return;
+        }
+
+        this.http
+          .post(`http://localhost:3000/api/cart/${userId}/add`, {
+            productId: product._id,
+            quantity: 1,
+          })
+          .subscribe({
+            next: () =>
+              this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
+            error: (err) => {
+              if (err?.status === 400) {
+                this.toastr.warning(
+                  'This product is out of stock. Coming soon!',
+                  '⚠️ Not available'
+                );
+              } else {
+                this.toastr.error('Failed to add product to cart.', '❌ Error');
+              }
+            },
+          });
+      },
+      error: () =>
+        this.toastr.error('Failed to verify stock. Try again.', '❌ Error'),
+    });
+  }
+
+  // ✅ same guard for Buy Now
   buyNow(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
 
-    this.http
-      .post(`http://localhost:3000/api/cart/${userId}/add`, {
-        productId: product._id,
-        quantity: 1,
-      })
-      .subscribe({
-        next: () => this.router.navigate(['/cart']),
-        error: (err) => console.error('Failed to buy now', err),
-      });
+    if (product?.soldOut) {
+      this.toastr.warning(
+        'This product is currently out of stock. Coming soon!',
+        '⚠️ Not available'
+      );
+      return;
+    }
+
+    this.verifyStock(product._id).subscribe({
+      next: (fresh) => {
+        const qty = Number(fresh?.quantity ?? 0);
+        if (fresh?.available === false || qty <= 0) {
+          this.toastr.warning(
+            'This product just went out of stock. Coming soon!',
+            '⚠️ Not available'
+          );
+          return;
+        }
+
+        this.http
+          .post(`http://localhost:3000/api/cart/${userId}/add`, {
+            productId: product._id,
+            quantity: 1,
+          })
+          .subscribe({
+            next: () => this.router.navigate(['/cart']),
+            error: (err) => {
+              if (err?.status === 400) {
+                this.toastr.warning(
+                  'This product is out of stock. Coming soon!',
+                  '⚠️ Not available'
+                );
+              } else {
+                this.toastr.error('Failed to start purchase.', '❌ Error');
+              }
+            },
+          });
+      },
+      error: () =>
+        this.toastr.error('Failed to verify stock. Try again.', '❌ Error'),
+    });
   }
 }

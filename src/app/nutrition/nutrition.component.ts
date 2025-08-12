@@ -70,6 +70,13 @@ export class NutritionComponent implements OnInit {
       },
     });
   }
+
+  private verifyStock(productId: string) {
+    return this.http.get<any>(
+      `http://localhost:3000/api/products/${productId}`
+    );
+  }
+
   checkSubscriptionAndLoadProducts() {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
@@ -171,36 +178,104 @@ export class NutritionComponent implements OnInit {
       })
       .subscribe();
   }
+
   addToCart(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
 
-    this.http
-      .post(`http://localhost:3000/api/cart/${userId}/add`, {
-        productId: product._id,
-        quantity: 1,
-      })
-      .subscribe({
-        next: () =>
-          this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
-        error: (err) => console.error('Failed to add to cart', err),
-      });
+    // 1) quick local check
+    if (product?.available === false || Number(product?.quantity ?? 0) <= 0) {
+      this.toastr.warning(
+        'This product is currently out of stock. Coming soon!',
+        '⚠️ Not available'
+      );
+      return;
+    }
+
+    // 2) authoritative server check
+    this.verifyStock(product._id).subscribe({
+      next: (fresh) => {
+        if (fresh?.available === false || Number(fresh?.quantity ?? 0) <= 0) {
+          this.toastr.warning(
+            'This product just went out of stock. Coming soon!',
+            '⚠️ Not available'
+          );
+          return;
+        }
+
+        // 3) safe to add
+        this.http
+          .post(`http://localhost:3000/api/cart/${userId}/add`, {
+            productId: product._id,
+            quantity: 1,
+          })
+          .subscribe({
+            next: () =>
+              this.toastr.success(`${product.name} added to cart.`, '🛒 Added'),
+            error: (err) => {
+              console.error('Failed to add to cart', err);
+              this.toastr.error(
+                'Could not add to cart. Please try again.',
+                '❌ Error'
+              );
+            },
+          });
+      },
+      error: (err) => {
+        console.error('Stock check failed', err);
+        this.toastr.error('Failed to verify stock. Try again.', '❌ Error');
+      },
+    });
   }
 
   buyNow(product: any) {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
 
-    this.http
-      .post(`http://localhost:3000/api/cart/${userId}/add`, {
-        productId: product._id,
-        quantity: 1,
-      })
-      .subscribe({
-        next: () => (location.href = '/cart'),
-        error: (err) => console.error('Failed to buy now', err),
-      });
+    // 1) quick local check
+    if (product?.available === false || Number(product?.quantity ?? 0) <= 0) {
+      this.toastr.warning(
+        'This product is currently out of stock. Coming soon!',
+        '⚠️ Not available'
+      );
+      return;
+    }
+
+    // 2) authoritative server check
+    this.verifyStock(product._id).subscribe({
+      next: (fresh) => {
+        if (fresh?.available === false || Number(fresh?.quantity ?? 0) <= 0) {
+          this.toastr.warning(
+            'This product just went out of stock. Coming soon!',
+            '⚠️ Not available'
+          );
+          return;
+        }
+
+        // 3) safe to add then redirect to cart
+        this.http
+          .post(`http://localhost:3000/api/cart/${userId}/add`, {
+            productId: product._id,
+            quantity: 1,
+          })
+          .subscribe({
+            next: () => (location.href = '/cart'),
+            error: (err) => {
+              console.error('Failed to buy now', err);
+              this.toastr.error(
+                'Could not start purchase. Please try again.',
+                '❌ Error'
+              );
+            },
+          });
+      },
+      error: (err) => {
+        console.error('Stock check failed', err);
+        this.toastr.error('Failed to verify stock. Try again.', '❌ Error');
+      },
+    });
   }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

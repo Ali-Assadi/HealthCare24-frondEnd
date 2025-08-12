@@ -63,7 +63,7 @@
       class="healthy-meals"
       *ngFor="let meal of meals"
       [routerLink]="[meal.route]"
-       (click)="scrollToTop()"
+      (click)="scrollToTop()"
     >
       <div class="text-container">
         <h3>HEALTHY MEALS</h3>
@@ -95,7 +95,7 @@
           *ngFor="let diet of diets"
           [routerLink]="[diet.route]"
           (click)="logView(diet.route, 'diets')"
-           (click)="scrollToTop()"
+          (click)="scrollToTop()"
           #fadeElement
           appFadeIn
         >
@@ -122,10 +122,25 @@
             *ngFor="let product of products"
             #fadeElement
             appFadeIn
+            [ngClass]="{
+              'sold-out':
+                product?.available === false || (product?.quantity ?? 0) <= 0
+            }"
           >
             <img [src]="product.image" [alt]="product.name" />
-            <h4>{{ product.name }}</h4>
+            <h4>
+              {{ product.name }}
+              <span
+                *ngIf="
+                  product?.available === false || (product?.quantity ?? 0) <= 0
+                "
+                class="badge-unavail"
+                >Out of stock</span
+              >
+            </h4>
+
             <p>{{ product.description }}</p>
+
             <p>
               <strong *ngIf="subscribed">
                 ${{ product.price }}
@@ -137,47 +152,32 @@
             <button
               class="btn btn-sm btn-outline-success"
               (click)="addToCart(product)"
+              [disabled]="
+                product?.available === false || (product?.quantity ?? 0) <= 0
+              "
+              [title]="
+                product?.available === false || (product?.quantity ?? 0) <= 0
+                  ? 'Out of stock'
+                  : 'Add to cart'
+              "
             >
               🛒 Add to Cart
             </button>
+
             <button
               class="btn btn-sm btn-outline-primary"
               (click)="buyNow(product)"
+              [disabled]="
+                product?.available === false || (product?.quantity ?? 0) <= 0
+              "
+              [title]="
+                product?.available === false || (product?.quantity ?? 0) <= 0
+                  ? 'Out of stock'
+                  : 'Buy now'
+              "
             >
               💳 Buy Now
             </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Healthy Recipes Section -->
-    <section
-      id="healthy-recipes"
-      class="healthy-recipes fade-in"
-      #fadeElement
-      appFadeIn
-    >
-      <div class="text-container">
-        <h3>HEALTHY RECIPES</h3>
-        <div class="underline"></div>
-        <h2>
-          Our test kitchen-created healthy recipes are sure to hit the spot.
-        </h2>
-        <div class="recipe-grid">
-          <div
-            class="recipe-item fade-in"
-            *ngFor="let recipe of recipes"
-            [routerLink]="[recipe.route]"
-            (click)="logView(recipe.route, 'recipes')"
-             (click)="scrollToTop()"
-            #fadeElement
-            appFadeIn
-          >
-            <img [src]="recipe.image" [alt]="recipe.title" />
-            <p>
-              <strong>{{ recipe.title }}</strong>
-            </p>
           </div>
         </div>
       </div>

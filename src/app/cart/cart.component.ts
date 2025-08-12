@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import jsPDF from 'jspdf';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
@@ -22,6 +23,7 @@ export class CartComponent implements OnInit {
   userEmail = localStorage.getItem('userEmail') || '';
   visaCard: any = null;
   showPaymentDialog: boolean = false;
+  hasUnavailable = false;
 
   constructor(
     private http: HttpClient,
@@ -32,6 +34,35 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     this.checkSubscriptionStatus();
     this.checkVisaCard();
+  }
+
+  incQty(item: any) {
+    const q = Number(item.quantity) || 1;
+    item.quantity = q + 1;
+  }
+
+  decQty(item: any) {
+    const q = Number(item.quantity) || 1;
+    item.quantity = Math.max(1, q - 1);
+  }
+
+  applyQty(item: any) {
+    const productId = item?.productId?._id;
+    const qty = Math.max(1, Number(item.quantity) || 1);
+    if (!this.userId || !productId) return;
+
+    this.http
+      .put<any>(`http://localhost:3000/api/cart/${this.userId}/update`, {
+        productId,
+        quantity: qty,
+      })
+      .subscribe({
+        next: () => this.loadCart(), // refresh totals (and VIP pricing)
+        error: (err) => {
+          console.error('Failed to update quantity', err);
+          this.toastr.error('Could not update quantity');
+        },
+      });
   }
 
   checkSubscriptionStatus() {
@@ -77,20 +108,49 @@ export class CartComponent implements OnInit {
       .get<any>(`http://localhost:3000/api/cart/${this.userId}`)
       .subscribe({
         next: (data) => {
-          if (this.subscribed) {
-            data.items = data.items.map((item: any) => ({
-              ...item,
-              originalPrice: item.price,
-              price: (item.price * 0.9).toFixed(2),
-            }));
-            data.totalPrice = data.items
-              .reduce(
-                (sum: number, item: any) => sum + item.price * item.quantity,
-                0
-              )
-              .toFixed(2);
-          }
-          this.cart = data;
+          const items = (data.items || []).map((item: any) => {
+            const basePrice = Number(item.price) || 0;
+            const qty = Number(item.quantity) || 0;
+
+            // 👇 stock info from populated product
+            const stockQty = Number(item?.productId?.quantity ?? 0);
+            const availableFlag = item?.productId?.available;
+            const soldOut = availableFlag === false || stockQty <= 0;
+
+            if (this.subscribed) {
+              const discounted = +(basePrice * 0.9).toFixed(2);
+              return {
+                ...item,
+                originalPrice: basePrice,
+                price: discounted,
+                lineTotal: +(discounted * qty).toFixed(2),
+                available: !soldOut,
+                soldOut,
+                stockQty,
+              };
+            } else {
+              return {
+                ...item,
+                price: basePrice,
+                lineTotal: +(basePrice * qty).toFixed(2),
+                available: !soldOut,
+                soldOut,
+                stockQty,
+              };
+            }
+          });
+
+          const totalPrice = +items
+            .reduce(
+              (sum: number, it: any) => sum + (Number(it.lineTotal) || 0),
+              0
+            )
+            .toFixed(2);
+
+          // 🚫 Disable purchase if any line is sold out
+          this.hasUnavailable = items.some((it: any) => it.soldOut);
+
+          this.cart = { ...data, items, totalPrice };
         },
         error: (err) => console.error('Error loading cart', err),
       });

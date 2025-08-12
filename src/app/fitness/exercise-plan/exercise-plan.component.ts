@@ -93,7 +93,7 @@ export class ExercisePlanComponent implements OnInit {
     const payload = {
       email: this.userEmail,
       goal: this.userGoal,
-      exerciseRestrictions: selected,
+      restrictions: selected,
     };
 
     this.http

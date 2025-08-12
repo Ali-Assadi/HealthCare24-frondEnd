@@ -83,20 +83,42 @@
             *ngFor="let product of products"
             #fadeElement
             appFadeIn
+            [ngClass]="{ 'sold-out': product?.soldOut }"
           >
             <img [src]="product.image" [alt]="product.name" />
-            <h4>{{ product.name }}</h4>
+            <h4>
+              {{ product.name }}
+              <span *ngIf="product?.soldOut" class="badge-unavail"
+                >Out of stock</span
+              >
+            </h4>
+
             <p>{{ product.description }}</p>
+
             <p>
-              <strong *ngIf="subscribed">
+              <strong *ngIf="subscribed; else priceOnly">
                 ${{ product.price }}
                 <span class="original-price">${{ product.originalPrice }}</span>
               </strong>
-              <strong *ngIf="!subscribed"> ${{ product.price }} </strong>
+              <ng-template #priceOnly>
+                <strong>${{ product.price }}</strong>
+              </ng-template>
             </p>
 
-            <button (click)="addToCart(product)">🛒 Add to Cart</button>
-            <button (click)="buyNow(product)">💳 Buy Now</button>
+            <button
+              (click)="addToCart(product)"
+              [disabled]="product?.soldOut"
+              [title]="product?.soldOut ? 'Out of stock' : 'Add to cart'"
+            >
+              🛒 Add to Cart
+            </button>
+            <button
+              (click)="buyNow(product)"
+              [disabled]="product?.soldOut"
+              [title]="product?.soldOut ? 'Out of stock' : 'Buy now'"
+            >
+              💳 Buy Now
+            </button>
           </div>
         </div>
       </div>

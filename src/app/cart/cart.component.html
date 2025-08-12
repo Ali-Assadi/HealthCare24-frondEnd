@@ -1,33 +1,94 @@
 <body>
-  <!-- Cart View -->
+  <!-- VIP Banner -->
   <div *ngIf="subscribed" class="vip-banner">
     🌟 You're a VIP! Enjoy 10% off on all your purchases.
   </div>
 
+  <!-- Cart View -->
   <div
     *ngIf="cart && cart.items.length > 0; else emptyCart"
     class="cart-wrapper"
   >
     <h2>Your Cart</h2>
-    <div *ngFor="let item of cart.items" class="cart-item">
-      <p>
+
+    <div
+      *ngFor="let item of cart.items"
+      class="cart-item"
+      [ngClass]="{ 'sold-out': item.soldOut }"
+    >
+      <p class="item-title">
         <strong>{{ item.productId.name }}</strong>
-      </p>
-      <p>Quantity: {{ item.quantity }}</p>
-      <p>
-        Price:
-        <strong *ngIf="subscribed">${{ item.price }}</strong>
-        <span *ngIf="subscribed" class="original-price"
-          >${{ item.originalPrice }}</span
+        <span *ngIf="item.soldOut" class="badge-unavail">Out of stock</span>
+        <span
+          *ngIf="!item.soldOut && item.stockQty !== undefined"
+          class="badge-stock"
+          >In stock: {{ item.stockQty }}</span
         >
-        <strong *ngIf="!subscribed">${{ item.price }}</strong>
       </p>
+
+      <!-- Unit Price (no duplicates) -->
+      <div class="price-row">
+        <ng-container *ngIf="subscribed; else unitPrice">
+          <strong class="price">${{ item.price | number : "1.2-2" }}</strong>
+          <span class="original-price"
+            >${{ item.originalPrice | number : "1.2-2" }}</span
+          >
+          <span class="vip-tag">-10%</span>
+        </ng-container>
+        <ng-template #unitPrice>
+          <strong class="price">${{ item.price | number : "1.2-2" }}</strong>
+        </ng-template>
+      </div>
+
+      <!-- Quantity controls -->
+      <div class="qty-line">
+        <label class="qty-label">Quantity:</label>
+        <div class="qty-controls">
+          <button
+            class="qty-btn"
+            (click)="decQty(item)"
+            [disabled]="item.soldOut || item.quantity <= 1"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            class="qty-input"
+            [(ngModel)]="item.quantity"
+            min="1"
+            [disabled]="item.soldOut"
+          />
+          <button
+            class="qty-btn"
+            (click)="incQty(item)"
+            [disabled]="item.soldOut"
+          >
+            ＋
+          </button>
+        </div>
+        <button
+          class="update-btn"
+          (click)="applyQty(item)"
+          [disabled]="item.soldOut"
+        >
+          Update
+        </button>
+      </div>
+
+      <!-- Line total -->
+      <p class="line-total">
+        Line Total:
+        <strong>${{ item.price * item.quantity | number : "1.2-2" }}</strong>
+      </p>
+
       <button class="remove-btn" (click)="removeItem(item.productId._id)">
         Remove
       </button>
     </div>
 
     <hr />
+
+    <!-- Summary -->
     <div class="cart-summary">
       <p>
         <strong>Total: ${{ cart.totalPrice }}</strong>
@@ -35,9 +96,27 @@
           >10% VIP Discount Applied 🎉</span
         >
       </p>
+
+      <!-- Block purchase if any item is unavailable -->
+      <div *ngIf="hasUnavailable" class="warn-unavail">
+        Some items in your cart are unavailable. Please remove them to proceed
+        with purchase.
+      </div>
+
       <div class="cart-buttons">
         <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
-        <button class="purchase-btn" (click)="purchase()">Purchase</button>
+        <button
+          class="purchase-btn"
+          (click)="purchase()"
+          [disabled]="hasUnavailable"
+          [title]="
+            hasUnavailable
+              ? 'Remove unavailable items to continue'
+              : 'Proceed to purchase'
+          "
+        >
+          Purchase
+        </button>
       </div>
     </div>
   </div>
@@ -52,6 +131,7 @@
   <!-- Orders Section -->
   <div class="orders-wrapper">
     <h2>🧾 My Orders</h2>
+
     <div *ngIf="orders.length === 0">
       <p>You have no orders yet.</p>
     </div>
@@ -66,12 +146,12 @@
       <div class="order-items">
         <ul>
           <li *ngFor="let item of order.items">
-            {{ item.productId.name }} -
-            <span *ngIf="subscribed">
+            {{ item.productId.name }} –
+            <ng-container *ngIf="subscribed; else orderPrice">
               ${{ item.price }}
               <span class="original-price">${{ item.originalPrice }}</span>
-            </span>
-            <span *ngIf="!subscribed"> ${{ item.price }} </span>
+            </ng-container>
+            <ng-template #orderPrice> ${{ item.price }} </ng-template>
             × {{ item.quantity }}
           </li>
         </ul>
@@ -105,5 +185,6 @@
     </div>
   </div>
 
+  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
