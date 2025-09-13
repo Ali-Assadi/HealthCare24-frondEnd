@@ -15,10 +15,11 @@ import { ToastrService } from 'ngx-toastr';
 export class ExercisePlanComponent implements OnInit {
   userEmail: string = localStorage.getItem('userEmail') || '';
   userInfo: any = {};
-  bmiValue: number = 0;
-  userGoal: string = '';
+  bmiValue = 0;
+  userGoal = '';
   generating = false;
 
+  // buckets expected by backend/DB
   exerciseRestrictions: string[] = [
     'noLegs',
     'noBack',
@@ -27,7 +28,8 @@ export class ExercisePlanComponent implements OnInit {
     'noWeights',
   ];
 
-  selectedRestrictions: string[] = [];
+  // single selection
+  selectedRestriction: string = 'default'; // 'default' means no restriction
 
   constructor(
     private http: HttpClient,
@@ -44,26 +46,38 @@ export class ExercisePlanComponent implements OnInit {
         next: (user) => {
           this.userInfo = user;
           this.userGoal = this.recommendGoal(
-            user.weight,
-            user.height,
-            user.age
+            user?.weight,
+            user?.height,
+            user?.age
           );
+
+          // preload last choice if you store it (either as string or first of array)
+          const saved =
+            (user &&
+              typeof user.exerciseRestrictions?.[0] === 'string' &&
+              user.exerciseRestrictions[0]) ||
+            (user &&
+              typeof user.exerciseRestriction === 'string' &&
+              user.exerciseRestriction) ||
+            'default';
+          this.selectedRestriction = saved;
         },
         error: () => console.warn('⚠️ Failed to load user info for BMI.'),
       });
   }
 
-  recommendGoal(weight: number, heightCm: number, age: number): string {
+  recommendGoal(weight?: number, heightCm?: number, age?: number): string {
+    if (!weight || !heightCm) return 'balance';
     const heightM = heightCm / 100;
     const bmi = weight / (heightM * heightM);
     this.bmiValue = +bmi.toFixed(1);
 
-    if (age < 18) {
+    if ((age ?? 0) < 18) {
       if (bmi < 18.5) return 'gain';
       if (bmi < 25) return 'balance';
       return 'loss';
     }
-    if (age >= 65) {
+    if ((age ?? 0) >= 65) {
       if (bmi < 22) return 'gain';
       if (bmi < 27) return 'balance';
       return 'loss';
@@ -73,35 +87,40 @@ export class ExercisePlanComponent implements OnInit {
     return 'loss';
   }
 
-  toggleRestriction(restriction: string): void {
-    const index = this.selectedRestrictions.indexOf(restriction);
-    if (index > -1) this.selectedRestrictions.splice(index, 1);
-    else this.selectedRestrictions.push(restriction);
+  /** Radio/checkbox handler — enforce single selection */
+  onRestrictionChange(restriction: string, checked: boolean): void {
+    this.selectedRestriction = checked ? restriction : 'default';
   }
 
   isSelected(restriction: string): boolean {
-    return this.selectedRestrictions.includes(restriction);
+    return this.selectedRestriction === restriction;
   }
 
   generatePlan(): void {
-    if (!this.userGoal || !this.userEmail) return;
+    if (!this.userEmail) {
+      this.toastr.error('❌ Missing user email. Please log in again.', 'Error');
+      return;
+    }
+    if (!this.userGoal) {
+      this.toastr.error('❌ Please choose a goal.', 'Error');
+      return;
+    }
 
     this.generating = true;
-
-    const selected = this.selectedRestrictions;
 
     const payload = {
       email: this.userEmail,
       goal: this.userGoal,
-      restrictions: selected,
+      restriction: this.selectedRestriction || 'default', // SINGLE value
     };
 
     this.http
       .post(`http://localhost:3000/api/exercise/generate`, payload)
       .subscribe({
         next: () => {
+          this.toastr.success('✅ Exercise plan generated!');
           setTimeout(() => {
-            this.toastr.success('✅ Exercise plan generated!');
+            this.generating = false;
             this.router.navigate(['/fitness']);
           }, 2000);
         },
@@ -110,14 +129,5 @@ export class ExercisePlanComponent implements OnInit {
           this.toastr.error('❌ Failed to generate plan', 'Error');
         },
       });
-  }
-
-  onRestrictionChange(r: string, checked: boolean): void {
-    if (typeof (this as any).selectedRestrictions?.clear === 'function') {
-      (this as any).selectedRestrictions.clear();
-      if (checked) (this as any).selectedRestrictions.add(r);
-    } else {
-      (this as any).selectedRestrictions = checked ? [r] : [];
-    }
   }
 }

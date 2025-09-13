@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
 
         this.lastTopics = lastThree.map((v) => v.topic);
 
-        // Count section occurrences
+        // counts how many times each section appears in the last 3 views.
         const sectionCounts = lastThree.reduce(
           (acc: Record<string, number>, v) => {
             acc[v.section] = (acc[v.section] || 0) + 1;
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
           {}
         );
 
-        // Determine dominant section
+        // get section with hight count
         const dominantSection = Object.keys(sectionCounts).reduce((a, b) =>
           sectionCounts[a] >= sectionCounts[b] ? a : b
         ) as Section;
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (char) => char.toUpperCase());
   }
-   scrollToTop() {
+  scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

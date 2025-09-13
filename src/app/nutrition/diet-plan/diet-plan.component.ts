@@ -12,17 +12,12 @@ interface DayPlan {
   snack?: string;
   finished?: boolean;
 }
-
 interface WeekPlan {
   days: DayPlan[];
 }
 interface DietPlanResponse {
   message: string;
-  plan: {
-    goal: string;
-    email: string;
-    weeks: WeekPlan[];
-  };
+  plan: { goal: string; email: string; weeks: WeekPlan[] };
 }
 
 type RestrictionKey =
@@ -42,26 +37,20 @@ type RestrictionKey =
 })
 export class DietPlanComponent implements OnInit {
   userInfo: any = {};
-  userEmail: string = '';
-  userGoal: string = '';
-  bmiValue: number = 0;
+  userEmail = '';
+  userGoal = '';
+  bmiValue = 0;
 
-  restrictions: { [key: string]: boolean } = {
-    egg: false,
-    milk: false,
-    meat: false,
-    fish: false,
-    gluten: false,
-    vegetarian: false,
-  };
-
-  getRestriction(key: string): boolean {
-    return this.restrictions[key as keyof typeof this.restrictions];
-  }
-
-  setRestriction(key: string, value: boolean): void {
-    this.restrictions[key as keyof typeof this.restrictions] = value;
-  }
+  // one-of list for the UI
+  restrictionKeys: RestrictionKey[] = [
+    'egg',
+    'milk',
+    'meat',
+    'fish',
+    'gluten',
+    'vegetarian',
+  ];
+  selectedRestriction: string = 'default'; // 'default' = no restriction
 
   generatedPlans: WeekPlan[] = [];
   loading = false;
@@ -83,12 +72,18 @@ export class DietPlanComponent implements OnInit {
         this.userInfo = user;
         this.userGoal = this.recommendGoal(user.weight, user.height, user.age);
 
-        if (Array.isArray(user.dietRestrictions)) {
-          user.dietRestrictions.forEach((key: string) => {
-            if (key in this.restrictions) {
-              this.restrictions[key] = true;
-            }
-          });
+        // preload single restriction if present; else fall back to first legacy entry
+        if (
+          typeof user.dietRestriction === 'string' &&
+          user.dietRestriction.trim()
+        ) {
+          this.selectedRestriction = user.dietRestriction.trim();
+        } else if (
+          Array.isArray(user.dietRestrictions) &&
+          user.dietRestrictions.length
+        ) {
+          this.selectedRestriction =
+            String(user.dietRestrictions[0]).trim() || 'default';
         }
       },
       error: () => console.error('Failed to load user'),
@@ -100,20 +95,24 @@ export class DietPlanComponent implements OnInit {
     const bmi = weight / (heightM * heightM);
     this.bmiValue = +bmi.toFixed(1);
 
-    // 🚸 Special case: young AND underweight
     if (age < 18) {
       if (bmi < 18.5) return 'gain';
-      if (bmi >= 18.5 && bmi < 25) return 'balance';
+      if (bmi < 25) return 'balance';
       return 'loss';
     }
     if (age >= 65) {
       if (bmi < 22) return 'gain';
-      if (bmi >= 22 && bmi < 27) return 'balance';
+      if (bmi < 27) return 'balance';
       return 'loss';
     }
     if (bmi < 18.5) return 'gain';
-    if (bmi >= 18.5 && bmi < 25) return 'balance';
+    if (bmi < 25) return 'balance';
     return 'loss';
+  }
+
+  // if you keep checkboxes, call this on change to enforce single selection
+  onRestrictionChange(key: string, checked: boolean): void {
+    this.selectedRestriction = checked ? key : 'default';
   }
 
   generatePlan(): void {
@@ -121,17 +120,17 @@ export class DietPlanComponent implements OnInit {
       this.toastr.error('❌ Missing user email. Please log in again.', 'Error');
       return;
     }
+    if (!this.userGoal) {
+      this.toastr.error('❌ Please choose a goal.', 'Error');
+      return;
+    }
 
     this.loading = true;
-
-    const selectedRestrictions = Object.entries(this.restrictions)
-      .filter(([_, value]) => value)
-      .map(([key]) => key);
 
     const payload = {
       email: this.userEmail,
       goal: this.userGoal,
-      restrictions: selectedRestrictions,
+      restriction: this.selectedRestriction || 'default', // SINGLE value
     };
 
     console.log('🚀 Sending diet plan request with:', payload);
@@ -150,7 +149,6 @@ export class DietPlanComponent implements OnInit {
           );
           this.showPlan = true;
 
-          // ⏳ Show spinner for 2 seconds before redirect
           setTimeout(() => {
             this.loading = false;
             this.router.navigate(['/nutrition']);

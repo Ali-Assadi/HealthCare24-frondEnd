@@ -16,25 +16,37 @@ import { RouterLink } from '@angular/router';
 })
 export class MyExercisePlanComponent implements OnInit {
   exercisePlan: any[] = [];
-  goal: string = '';
+  goal = '';
   loading = true;
   userEmail = localStorage.getItem('userEmail') || '';
+
   updatedWeight: number | null = null;
-  updatedDetails: string = '';
-  review: string = '';
+  updatedDetails = '';
+  review = '';
   reviewSubmitted = false;
   hasReviewedExercise = false;
   isSubscribed = false;
-  userRestrictions: string[] = [];
+
+  // single restriction that affects suggestions
+  userRestriction: string = 'default';
+
   completedDays = 0;
   totalDays = 0;
   progressPercent = 0;
   showCongratulations = false;
+
   customizingWeek: number | null = null;
   customizingDay: number | null = null;
+
   availableExercises: string[] = [];
+  editWorkout: string[] = []; // <-- edit buffer for the 3 selects
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
+
+  // comparator & trackBy for robust select binding
+  stringCompare = (a: any, b: any) =>
+    (a ?? '').toString().trim() === (b ?? '').toString().trim();
+  trackByString = (_: number, v: string) => v;
 
   ngOnInit(): void {
     this.http
@@ -43,7 +55,14 @@ export class MyExercisePlanComponent implements OnInit {
         next: (userData) => {
           this.hasReviewedExercise = userData.hasReviewedExercise || false;
           this.isSubscribed = userData.isSubscribed || false;
-          this.userRestrictions = userData.restrictions || [];
+
+          // prefer single value; fall back to first legacy value; else default
+          this.userRestriction =
+            userData.exerciseRestriction ||
+            (Array.isArray(userData.exerciseRestrictions) &&
+              userData.exerciseRestrictions[0]) ||
+            'default';
+
           this.loadExercisePlan();
         },
         error: () => {
@@ -59,7 +78,7 @@ export class MyExercisePlanComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.exercisePlan = data.exercisePlan || [];
-          this.goal = data.goal;
+          this.goal = data.goal || '';
           this.addFinishedFieldIfMissing();
           this.calculateProgress();
           this.loading = false;
@@ -89,18 +108,14 @@ export class MyExercisePlanComponent implements OnInit {
           this.hasReviewedExercise = true;
           this.showCongratulations = false;
         },
-        error: () => {
-          this.toastr.error('❌ Failed to submit feedback');
-        },
+        error: () => this.toastr.error('❌ Failed to submit feedback'),
       });
   }
 
   addFinishedFieldIfMissing(): void {
-    for (let week of this.exercisePlan) {
-      for (let day of week.days) {
-        if (day.finished === undefined) {
-          day.finished = false;
-        }
+    for (const week of this.exercisePlan) {
+      for (const day of week.days) {
+        if (day.finished === undefined) day.finished = false;
       }
     }
   }
@@ -119,12 +134,9 @@ export class MyExercisePlanComponent implements OnInit {
         }
       )
       .subscribe({
-        next: () => {
-          console.log('✅ Exercise day marked as finished in DB!');
-        },
-        error: (err) => {
-          console.error('❌ Failed to update exercise day in DB', err);
-        },
+        next: () => console.log('✅ Exercise day marked as finished in DB!'),
+        error: (err) =>
+          console.error('❌ Failed to update exercise day in DB', err),
       });
   }
 
@@ -137,10 +149,8 @@ export class MyExercisePlanComponent implements OnInit {
       return;
     }
 
-    for (let week of this.exercisePlan) {
-      for (let day of week.days) {
-        day.finished = false;
-      }
+    for (const week of this.exercisePlan) {
+      for (const day of week.days) day.finished = false;
     }
     this.calculateProgress();
 
@@ -149,33 +159,24 @@ export class MyExercisePlanComponent implements OnInit {
         email: this.userEmail,
       })
       .subscribe({
-        next: () => {
-          this.toastr.success('✅ Exercise plan has been reset!');
-        },
-        error: () => {
-          this.toastr.error('❌ Failed to reset exercise plan');
-        },
+        next: () => this.toastr.success('✅ Exercise plan has been reset!'),
+        error: () => this.toastr.error('❌ Failed to reset exercise plan'),
       });
   }
 
   calculateProgress(): void {
     let completed = 0;
     let total = 0;
-
-    for (let week of this.exercisePlan) {
-      for (let day of week.days) {
+    for (const week of this.exercisePlan) {
+      for (const day of week.days) {
         total++;
-        if (day.finished) {
-          completed++;
-        }
+        if (day.finished) completed++;
       }
     }
-
     this.completedDays = completed;
     this.totalDays = total;
     this.progressPercent =
       total > 0 ? Math.round((completed / total) * 100) : 0;
-
     this.showCongratulations = this.progressPercent === 100;
   }
 
@@ -189,38 +190,21 @@ export class MyExercisePlanComponent implements OnInit {
           this.toastr.success('✅ Cleared current plan');
           window.location.href = '/exercise-plan';
         },
-        error: () => {
-          this.toastr.error('❌ Failed to reset exercise plan');
-        },
+        error: () => this.toastr.error('❌ Failed to reset exercise plan'),
       });
   }
 
-  openCustomization(weekIndex: number, dayIndex: number): void {
-    const restriction =
-      this.userRestrictions.length > 0 ? this.userRestrictions[0] : 'default';
-
-    this.http
-      .get<any>(
-        `http://localhost:3000/api/exercise/suggestions?goal=${this.goal}&restriction=${restriction}`
-      )
-      .subscribe({
-        next: (res) => {
-          const exercises = res.exercises.slice(0, 3); // Pick top 3
-          this.exercisePlan[weekIndex].days[dayIndex].workout = exercises;
-          this.toastr.success('✅ Exercises updated!');
-        },
-        error: () => {
-          this.toastr.error('❌ Failed to fetch suggestions');
-        },
-      });
-  }
-
+  /** Open the editor: build options = current 3 + suggestions (de-duped) */
   toggleCustomization(w: number, d: number): void {
     this.customizingWeek = w;
     this.customizingDay = d;
 
-    const restriction =
-      this.userRestrictions.length > 0 ? this.userRestrictions[0] : 'default';
+    // current 3 exercises (copy into buffer)
+    const current = (this.exercisePlan[w]?.days?.[d]?.workout ??
+      []) as string[];
+    this.editWorkout = [current[0] ?? '', current[1] ?? '', current[2] ?? ''];
+
+    const restriction = this.userRestriction || 'default';
 
     this.http
       .get<any>(
@@ -228,16 +212,51 @@ export class MyExercisePlanComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          this.availableExercises = res.exercises;
+          const suggestions = Array.isArray(res.exercises) ? res.exercises : [];
+          const merged = [...current, ...suggestions];
+
+          // de-dup while preserving order
+          const seen = new Set<string>();
+          this.availableExercises = merged
+            .map((s) => (s ?? '').toString().trim())
+            .filter((s) => {
+              if (seen.has(s)) return false;
+              seen.add(s);
+              return !!s;
+            });
+
+          // ensure all 3 buffer values are present in options
+          for (let i = 0; i < 3; i++) {
+            if (
+              !this.editWorkout[i] ||
+              !this.availableExercises.includes(this.editWorkout[i])
+            ) {
+              this.editWorkout[i] = this.availableExercises[0] ?? '';
+            }
+          }
         },
         error: () => {
+          // fallback: allow editing current only
+          const seen = new Set<string>();
+          this.availableExercises = current
+            .map((s) => (s ?? '').toString().trim())
+            .filter((s) => {
+              if (seen.has(s)) return false;
+              seen.add(s);
+              return !!s;
+            });
+          for (let i = 0; i < 3; i++) {
+            if (!this.editWorkout[i])
+              this.editWorkout[i] = this.availableExercises[0] ?? '';
+          }
           this.toastr.error('❌ Failed to fetch suggestions');
         },
       });
   }
 
+  /** Persist the edited day */
   saveCustomizedDay(w: number, d: number): void {
-    const updatedWorkout = this.exercisePlan[w].days[d].workout;
+    const updatedWorkout = [...this.editWorkout];
 
     this.http
       .patch(`http://localhost:3000/api/exercise/customize-day`, {
@@ -248,41 +267,37 @@ export class MyExercisePlanComponent implements OnInit {
       })
       .subscribe({
         next: () => {
+          // update local plan after success
+          this.exercisePlan[w].days[d].workout = updatedWorkout;
           this.toastr.success('✅ Day updated!');
           this.customizingWeek = null;
           this.customizingDay = null;
         },
-        error: () => {
-          this.toastr.error('❌ Failed to update day');
-        },
+        error: () => this.toastr.error('❌ Failed to update day'),
       });
   }
-  scrollToTop(): void {
-    this.smoothScrollBy(-800); // Scroll up smoothly
-  }
 
+  // smooth scrolling & export kept as-is
+  scrollToTop(): void {
+    this.smoothScrollBy(-800);
+  }
   scrollToBottom(): void {
-    this.smoothScrollBy(800); // Scroll down smoothly
+    this.smoothScrollBy(800);
   }
 
   smoothScrollBy(offset: number, duration: number = 500): void {
     const start = window.scrollY;
     const startTime = performance.now();
-
-    const animateScroll = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1); // Clamp to [0, 1]
-      const ease = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
-
+    const animate = (t: number) => {
+      const elapsed = t - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
       window.scrollTo(0, start + offset * ease);
-
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      }
+      if (progress < 1) requestAnimationFrame(animate);
     };
-
-    requestAnimationFrame(animateScroll);
+    requestAnimationFrame(animate);
   }
+
   downloadExcel(): void {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Exercise Plan');
@@ -294,7 +309,6 @@ export class MyExercisePlanComponent implements OnInit {
       'Workout',
       'Finished',
     ]);
-
     headerRow.eachCell((cell) => {
       cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
       cell.fill = {
@@ -305,8 +319,8 @@ export class MyExercisePlanComponent implements OnInit {
       cell.alignment = { horizontal: 'center' };
     });
 
-    for (let week of this.exercisePlan) {
-      for (let day of week.days) {
+    for (const week of this.exercisePlan) {
+      for (const day of week.days) {
         const row = worksheet.addRow([
           week.week,
           day.day,
@@ -314,7 +328,6 @@ export class MyExercisePlanComponent implements OnInit {
           day.workout,
           day.finished ? 'Yes' : 'No',
         ]);
-
         const finishedCell = row.getCell(5);
         finishedCell.font = {
           color: { argb: day.finished ? '00C853' : 'D50000' },
@@ -329,9 +342,7 @@ export class MyExercisePlanComponent implements OnInit {
       column.eachCell?.({ includeEmpty: true }, (cell: any) => {
         if (cell.value) {
           const length = cell.value.toString().length;
-          if (length > maxLength) {
-            maxLength = length;
-          }
+          if (length > maxLength) maxLength = length;
         }
       });
       column.width = maxLength + 5;

@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 text-content">
-          <h1><span class="highlight">Health&Care24</span></h1>
+          <h1><span class="highlight">HealthCare24</span></h1>
           <p class="lead">Discover the best products at unbeatable prices.</p>
         </div>
         <div class="col-md-6">
@@ -26,9 +26,11 @@
       <p class="section-subtitle">Here are the last topics you visited</p>
       <div class="row mt-4">
         <div class="col-md-3" *ngFor="let topic of lastTopics">
-          <a [routerLink]="['/' + topic]" class="recommendation-card" (click)="scrollToTop()"
- >
-            
+          <a
+            [routerLink]="['/' + topic]"
+            class="recommendation-card"
+            (click)="scrollToTop()"
+          >
             <div class="recent-card">
               <i class="fas fa-history feature-icon"></i>
               <h5 class="topic-name">{{ formatTopicName(topic) }}</h5>
@@ -49,8 +51,11 @@
       <h2 class="section-title">You Might Also Like</h2>
       <div class="row mt-4">
         <div class="col-md-3" *ngFor="let rec of sectionRecommendations">
-          <a [routerLink]="[rec.route]" class="recommendation-card" (click)="scrollToTop()"
->
+          <a
+            [routerLink]="[rec.route]"
+            class="recommendation-card"
+            (click)="scrollToTop()"
+          >
             <div class="feature-card">
               <img
                 [src]="rec.image"
