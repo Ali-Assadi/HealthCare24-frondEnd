@@ -166,22 +166,21 @@ export class vipSubComponent {
       },
     });
   }
- confirmUsingVisa() {
-  const url = `http://localhost:3000/api/user/${this.email}/subscribe`;
+  confirmUsingVisa() {
+    const url = `http://localhost:3000/api/user/${this.email}/subscribe`;
 
-  this.http.put(url, { isSubscribed: true }).subscribe({
-    next: () => {
-      this.toastr.success('✅ Subscribed using saved Visa!');
-      this.isSubscribed = true;
-      this.router.navigate(['/home']);
-    },
-    error: (err) => {
-      console.error('❌ Failed to update subscription:', err);
-      this.toastr.error('Failed to confirm subscription.', '❌ Error');
-    }
-  });
-}
-
+    this.http.put(url, { isSubscribed: true }).subscribe({
+      next: () => {
+        this.toastr.success('✅ Subscribed using saved Visa!');
+        this.isSubscribed = true;
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('❌ Failed to update subscription:', err);
+        this.toastr.error('Failed to confirm subscription.', '❌ Error');
+      },
+    });
+  }
 
   deleteVisa() {
     this.http
@@ -209,7 +208,8 @@ export class vipSubComponent {
       return false;
     }
 
-    if (!namePattern.test(this.cardName.toUpperCase())) {
+    const nameUpper = this.cardName.toUpperCase().trim();
+    if (!namePattern.test(nameUpper)) {
       this.toastr.error('Invalid name...', '❌ Invalid Name');
       return false;
     }
@@ -218,12 +218,42 @@ export class vipSubComponent {
       this.toastr.error('Invalid expiration...', '❌ Invalid Expiry');
       return false;
     }
+    if (!this.isValidExpiry(this.expirationDate)) {
+      this.toastr.error(
+        'Card is expired. Please use a valid future date.',
+        '❌ Expired'
+      );
+      return false;
+    }
 
     if (!securityCodePattern.test(this.securityCode)) {
       this.toastr.error('Invalid CVV...', '❌ Invalid CVV');
       return false;
     }
 
+    // normalize name once validated
+    this.cardName = nameUpper;
     return true;
+  }
+
+  /** Returns true if expiry is this month or later (MM/YY). */
+  private isValidExpiry(exp: string): boolean {
+    // Expecting MM/YY
+    const m = exp.match(/^(\d{2})\/(\d{2})$/);
+    if (!m) return false;
+
+    const mm = parseInt(m[1], 10); // 1..12
+    const yy2 = parseInt(m[2], 10); // 00..99
+    if (mm < 1 || mm > 12 || Number.isNaN(yy2)) return false;
+
+    const now = new Date();
+    const currYear = now.getFullYear(); // e.g., 2025
+    const currMonth = now.getMonth() + 1; // 1..12
+
+    const fullYear = 2000 + yy2; // 20YY
+    // valid if later year, or same year and same/later month
+    if (fullYear > currYear) return true;
+    if (fullYear < currYear) return false;
+    return mm >= currMonth;
   }
 }

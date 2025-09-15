@@ -17,6 +17,9 @@ export class AdminDietsComponent implements OnInit {
   selectedUser: any = null;
   searchEmail: string = '';
   selectedIndex: number | null = null;
+  completedDays = 0;
+  totalDays = 0;
+  progressPercent = 0;
 
   constructor(private http: HttpClient, private toast: ToastrService) {}
 
@@ -32,6 +35,30 @@ export class AdminDietsComponent implements OnInit {
       },
       error: (err) => console.error('Failed to load diets:', err),
     });
+  }
+  private calculateProgress(): void {
+    if (!this.selectedUser?.dietPlan) {
+      this.completedDays = 0;
+      this.totalDays = 0;
+      this.progressPercent = 0;
+      return;
+    }
+
+    let completed = 0;
+    let total = 0;
+
+    for (const week of this.selectedUser.dietPlan) {
+      const days = week?.days ?? [];
+      for (const day of days) {
+        total++;
+        if (day?.finished === true) completed++;
+      }
+    }
+
+    this.completedDays = completed;
+    this.totalDays = total;
+    this.progressPercent =
+      total > 0 ? Math.round((completed / total) * 100) : 0;
   }
 
   searchByEmail(): void {
@@ -50,6 +77,7 @@ export class AdminDietsComponent implements OnInit {
   selectUser(user: any, index: number): void {
     this.selectedUser = JSON.parse(JSON.stringify(user)); // Deep copy for safe editing
     this.selectedIndex = index;
+    this.calculateProgress();
   }
 
   updateMeal(weekIndex: number, dayIndex: number, type: string, value: string) {
@@ -84,6 +112,7 @@ export class AdminDietsComponent implements OnInit {
     if (confirm('Are you sure you want to delete this week?')) {
       this.selectedUser.dietPlan.splice(index, 1);
       this.toast.info('🗑️ Week deleted.');
+      this.calculateProgress();
     }
   }
 
@@ -93,14 +122,15 @@ export class AdminDietsComponent implements OnInit {
       this.toast.warning('⚠️ There is no 8 days in a week, Don’t try.');
       return;
     }
-
     days.push({ breakfast: '', lunch: '', dinner: '', snack: '' });
+    this.calculateProgress();
   }
 
   deleteDay(weekIndex: number, dayIndex: number): void {
     if (confirm('Delete this day?')) {
       this.selectedUser.dietPlan[weekIndex].days.splice(dayIndex, 1);
       this.toast.info('🗑️ Day deleted.');
+      this.calculateProgress();
     }
   }
 

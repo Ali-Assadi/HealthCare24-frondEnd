@@ -25,6 +25,18 @@
     </div>
 
     <div class="exercise-details" *ngIf="selectedUser">
+      <!-- Progress Bar -->
+      <div class="progress-container" *ngIf="selectedUser">
+        <p>
+          Progress: {{ completedDays }}/{{ totalDays }} Days Completed ({{
+            progressPercent
+          }}%) ✅
+        </p>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+      </div>
+
       <h4 class="email-label">Editing: {{ selectedUser.email }}</h4>
 
       <div

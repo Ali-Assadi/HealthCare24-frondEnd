@@ -52,8 +52,15 @@ export class CardAddComponent {
 
   formatExpirationDate() {
     const raw = this.expirationDate.replace(/\D/g, '').substring(0, 4);
-    this.expirationDate =
-      raw.length >= 3 ? `${raw.slice(0, 2)}/${raw.slice(2)}` : raw;
+    let mm = raw.slice(0, 2);
+    const yy = raw.slice(2);
+
+    if (mm.length === 2) {
+      const m = Math.max(1, Math.min(12, parseInt(mm, 10) || 0));
+      mm = m.toString().padStart(2, '0');
+    }
+
+    this.expirationDate = yy ? `${mm}/${yy}` : mm;
     this.svgExpire.nativeElement.textContent = this.expirationDate.padEnd(
       5,
       '•'
@@ -96,6 +103,15 @@ export class CardAddComponent {
       this.toastr.error(
         'Invalid expiration date. Format should be: MM/YY',
         '❌ Invalid Expiry'
+      );
+      return;
+    }
+
+    // 🔒 New: block expired cards (must be this month or later)
+    if (!this.isValidExpiry(this.expirationDate)) {
+      this.toastr.error(
+        'Card is expired. Please use a future date.',
+        '❌ Expired'
       );
       return;
     }
@@ -148,5 +164,23 @@ export class CardAddComponent {
         '❌ Network Error'
       );
     }
+  }
+  /** Valid if expiry (MM/YY) is this month or later. */
+  private isValidExpiry(exp: string): boolean {
+    const m = exp.match(/^(\d{2})\/(\d{2})$/);
+    if (!m) return false;
+
+    const mm = parseInt(m[1], 10);
+    const yy = parseInt(m[2], 10);
+    if (Number.isNaN(mm) || Number.isNaN(yy) || mm < 1 || mm > 12) return false;
+
+    const now = new Date();
+    const currYear = now.getFullYear(); // e.g. 2025
+    const currMonth = now.getMonth() + 1; // 1..12
+    const fullYear = 2000 + yy; // 20YY
+
+    if (fullYear > currYear) return true;
+    if (fullYear < currYear) return false;
+    return mm >= currMonth; // same year → month must be >= current month
   }
 }

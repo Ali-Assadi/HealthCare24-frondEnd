@@ -17,6 +17,9 @@ export class AdminExerciseComponent implements OnInit {
   selectedUser: any = null;
   selectedIndex: number | null = null;
   searchEmail: string = '';
+  completedDays = 0;
+  totalDays = 0;
+  progressPercent = 0;
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
@@ -35,6 +38,30 @@ export class AdminExerciseComponent implements OnInit {
         error: (err) => console.error('Failed to load exercise plans:', err),
       });
   }
+  private calculateProgress(): void {
+    if (!this.selectedUser?.exercisePlan) {
+      this.completedDays = 0;
+      this.totalDays = 0;
+      this.progressPercent = 0;
+      return;
+    }
+
+    let completed = 0;
+    let total = 0;
+
+    for (const week of this.selectedUser.exercisePlan) {
+      const days = week?.days ?? [];
+      for (const day of days) {
+        total++;
+        if (day?.finished === true) completed++; // count ONLY finished days
+      }
+    }
+
+    this.completedDays = completed;
+    this.totalDays = total;
+    this.progressPercent =
+      total > 0 ? Math.round((completed / total) * 100) : 0;
+  }
 
   searchByEmail(): void {
     const email = this.searchEmail.trim().toLowerCase();
@@ -49,11 +76,10 @@ export class AdminExerciseComponent implements OnInit {
 
   selectUser(user: any, index: number): void {
     const safeUser = JSON.parse(JSON.stringify(user));
-    if (!safeUser.exercisePlan) {
-      safeUser.exercisePlan = [];
-    }
+    if (!safeUser.exercisePlan) safeUser.exercisePlan = [];
     this.selectedUser = safeUser;
     this.selectedIndex = index;
+    this.calculateProgress(); // <-- recalc
   }
 
   updateDay(
@@ -64,6 +90,8 @@ export class AdminExerciseComponent implements OnInit {
   ): void {
     if (this.selectedUser?.exercisePlan[weekIndex]?.days[dayIndex]) {
       this.selectedUser.exercisePlan[weekIndex].days[dayIndex][field] = value;
+      // If you later add a UI to toggle day.finished, keep this call:
+      this.calculateProgress();
     }
   }
 
@@ -76,8 +104,9 @@ export class AdminExerciseComponent implements OnInit {
       return;
     }
 
-    week.days.push({ day: 0, type: '', workout: '' });
+    week.days.push({ day: 0, type: '', workout: '', finished: false });
     this.selectedUser = { ...this.selectedUser };
+    this.calculateProgress(); // <-- recalc
   }
 
   removeDay(weekIndex: number, dayIndex: number): void {
@@ -85,6 +114,7 @@ export class AdminExerciseComponent implements OnInit {
       this.selectedUser.exercisePlan[weekIndex].days.splice(dayIndex, 1);
       this.selectedUser = { ...this.selectedUser };
       this.toastr.info('🗑️ Day removed');
+      this.calculateProgress(); // <-- recalc
     }
   }
 
@@ -100,6 +130,7 @@ export class AdminExerciseComponent implements OnInit {
     });
 
     this.selectedUser = { ...this.selectedUser };
+    this.calculateProgress(); // <-- recalc
   }
 
   removeWeek(weekIndex: number): void {
@@ -107,6 +138,7 @@ export class AdminExerciseComponent implements OnInit {
       this.selectedUser.exercisePlan.splice(weekIndex, 1);
       this.selectedUser = { ...this.selectedUser };
       this.toastr.info('🗑️ Week removed');
+      this.calculateProgress(); // <-- recalc
     }
   }
 

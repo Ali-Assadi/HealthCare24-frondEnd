@@ -113,13 +113,11 @@ export class DietPlanComponent implements OnInit {
     return bmi < 18.5 ? 'gain' : bmi < 25 ? 'balance' : 'loss';
   }
 
-  /** Checkbox change handler (works with either *ngFor over keys or | keyvalue) */
   onRestrictionChange(key: RestrictionKey, event: Event): void {
     const checked = (event.target as HTMLInputElement | null)?.checked ?? false;
     this.setOnly(checked ? key : 'default');
   }
 
-  /** If your template uses (change)="onRestrictionToggle(key, $event.target.checked)" use this alias */
   onRestrictionToggle(key: RestrictionKey, checked: boolean): void {
     this.setOnly(checked ? key : 'default');
   }
