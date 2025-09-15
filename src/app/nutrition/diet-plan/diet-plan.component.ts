@@ -41,7 +41,7 @@ export class DietPlanComponent implements OnInit {
   userGoal = '';
   bmiValue = 0;
 
-  // one-of list for the UI
+  // one-of list for the UI (handy if you prefer *ngFor="let key of restrictionKeys")
   restrictionKeys: RestrictionKey[] = [
     'egg',
     'milk',
@@ -50,7 +50,19 @@ export class DietPlanComponent implements OnInit {
     'gluten',
     'vegetarian',
   ];
-  selectedRestriction: string = 'default'; // 'default' = no restriction
+
+  // single value sent to backend; 'default' = no restriction
+  selectedRestriction: string = 'default';
+
+  // checkbox UI state (keeps your styles; only one true at a time)
+  restrictions: Record<RestrictionKey, boolean> = {
+    egg: false,
+    milk: false,
+    meat: false,
+    fish: false,
+    gluten: false,
+    vegetarian: false,
+  };
 
   generatedPlans: WeekPlan[] = [];
   loading = false;
@@ -72,19 +84,20 @@ export class DietPlanComponent implements OnInit {
         this.userInfo = user;
         this.userGoal = this.recommendGoal(user.weight, user.height, user.age);
 
-        // preload single restriction if present; else fall back to first legacy entry
+        // preload single restriction if present; else fall back to first legacy entry; else default
+        let preload = 'default';
         if (
           typeof user.dietRestriction === 'string' &&
           user.dietRestriction.trim()
         ) {
-          this.selectedRestriction = user.dietRestriction.trim();
+          preload = user.dietRestriction.trim();
         } else if (
           Array.isArray(user.dietRestrictions) &&
           user.dietRestrictions.length
         ) {
-          this.selectedRestriction =
-            String(user.dietRestrictions[0]).trim() || 'default';
+          preload = String(user.dietRestrictions[0]).trim() || 'default';
         }
+        this.setOnly(preload as RestrictionKey | 'default');
       },
       error: () => console.error('Failed to load user'),
     });
@@ -95,24 +108,29 @@ export class DietPlanComponent implements OnInit {
     const bmi = weight / (heightM * heightM);
     this.bmiValue = +bmi.toFixed(1);
 
-    if (age < 18) {
-      if (bmi < 18.5) return 'gain';
-      if (bmi < 25) return 'balance';
-      return 'loss';
-    }
-    if (age >= 65) {
-      if (bmi < 22) return 'gain';
-      if (bmi < 27) return 'balance';
-      return 'loss';
-    }
-    if (bmi < 18.5) return 'gain';
-    if (bmi < 25) return 'balance';
-    return 'loss';
+    if (age < 18) return bmi < 18.5 ? 'gain' : bmi < 25 ? 'balance' : 'loss';
+    if (age >= 65) return bmi < 22 ? 'gain' : bmi < 27 ? 'balance' : 'loss';
+    return bmi < 18.5 ? 'gain' : bmi < 25 ? 'balance' : 'loss';
   }
 
-  // if you keep checkboxes, call this on change to enforce single selection
-  onRestrictionChange(key: string, checked: boolean): void {
-    this.selectedRestriction = checked ? key : 'default';
+  /** Checkbox change handler (works with either *ngFor over keys or | keyvalue) */
+  onRestrictionChange(key: RestrictionKey, event: Event): void {
+    const checked = (event.target as HTMLInputElement | null)?.checked ?? false;
+    this.setOnly(checked ? key : 'default');
+  }
+
+  /** If your template uses (change)="onRestrictionToggle(key, $event.target.checked)" use this alias */
+  onRestrictionToggle(key: RestrictionKey, checked: boolean): void {
+    this.setOnly(checked ? key : 'default');
+  }
+
+  /** Utility: set exactly one option true, update selectedRestriction */
+  private setOnly(key: RestrictionKey | 'default'): void {
+    (Object.keys(this.restrictions) as RestrictionKey[]).forEach(
+      (k) => (this.restrictions[k] = false)
+    );
+    if (key !== 'default') this.restrictions[key] = true;
+    this.selectedRestriction = key; // 'default' or one of RestrictionKey
   }
 
   generatePlan(): void {
@@ -132,8 +150,6 @@ export class DietPlanComponent implements OnInit {
       goal: this.userGoal,
       restriction: this.selectedRestriction || 'default', // SINGLE value
     };
-
-    console.log('🚀 Sending diet plan request with:', payload);
 
     this.http
       .post<DietPlanResponse>(
